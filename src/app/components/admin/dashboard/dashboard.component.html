@@ -1,0 +1,31 @@
+<h1>Sider</h1>
+<div class="addnewpage" (click)="toggleAddNewPage()">
+  Add new
+</div>
+<div class="newpagefields" *ngIf=showAddPage>
+  <form (submit)="addPage(title.value, link.value, content.value, rank.value)">
+    <div>
+      <label for="title">Navn</label>
+      <input type="text" #title />
+    </div>
+    <div>
+        <label for="link">Link</label>
+        <input type="text" #link />
+      </div>
+    <div>
+      <label for="content">Tekst</label>
+      <input type="text" #content />
+    </div>
+    <div>
+        <label for="rank">Rank</label>
+        <input type="text" #rank />
+      </div>
+    <button type="submit">Opret side</button>
+  </form>
+</div>
+<div class="pages_content" *ngFor="let page of pages; let first = first; let last = last">
+  <div id="{{page.uid}}">
+    <h4>{{page.title}}</h4>
+    <h5><a href="admin/page/{{page.uid}}">Edit</a></h5>
+  </div>
+</div>

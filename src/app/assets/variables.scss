@@ -1,0 +1,83 @@
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/mixins";
+
+/* Image editor - https://pixlr.com */
+/* Brand colors - http://brandcolors.net - Buffer */
+$bg-black: '#323b43';
+$bg-gray: '#59626a';
+$bg-blue: '#168eea';
+$bg-red: '#ee4f4f';
+
+$font-family: 'Anaheim', sans-serif;
+$font-color-primary: '#f4f7f9';
+$font-color-secondary: '#eff3f6';
+$font-color-light: '#ced7df';
+$font-size-default: '14px';
+
+$brown-dark: #403121;
+$brown-middle: #a65e09;
+$brown-light: #ed9728;
+$brown-creme: #f4cc94;
+
+@mixin defaultTexts {
+    font-family: 'Anaheim';
+
+    & .brand-text-h1 {
+        font-size: 30px !important;
+        color: $brown-middle !important;
+
+        &:hover {
+            text-decoration: none !important;
+        }
+    }
+
+    & .brand-text-h2 {
+        font-size: 16px !important;
+        color: $brown-middle !important;
+
+        &:hover {
+            text-decoration: none !important;
+        }
+    }
+}
+
+@mixin defaultInputs {
+    & form {
+        width: 100%;
+    }
+    & label {
+        margin-bottom: 0 !important;
+        font-size: 12px;
+    }
+
+    & input {
+        font-size: 16px;
+        padding: 5px 10px;
+        border: 2px solid #dedede;
+        border-radius: 2px;
+        outline: none;
+        width: 100%;
+
+        &:active, &:focus {
+            border-color: steelblue;
+        }
+    }
+
+    & button {
+        font-size: 16px;
+        padding: 5px 10px;
+        color: #fff;
+        background-color: steelblue;
+        border: none;
+        border-radius: 2px;
+
+        &:active, &:focus {
+            border: none;
+        }
+
+        &:active {
+            margin-top: 1px;
+        }
+    }
+}

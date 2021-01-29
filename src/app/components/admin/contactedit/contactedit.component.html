@@ -1,0 +1,10 @@
+<h1>Kontakt beskeder</h1>
+<div class="contactcontainer" *ngFor="let contact of contacts">
+  <div class="contacts c{{contact.done}}">
+    {{contact.timestamp | date:'dd-MM-yyyy HH:mm' }}<br />
+    <h4>Afsender: {{contact.name}}</h4>
+    <p>
+      {{contact.message}}
+    </p>
+  </div>
+</div>

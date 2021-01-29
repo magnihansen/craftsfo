@@ -1,0 +1,4 @@
+.contacts { border-left: solid 3px red; padding-left: 10px; }
+.contacts:nth-of-type(1n+2) { border-top: solid 1px gray; margin-top: 10px; }
+.contacts:nth-of-type(even) { background-color: #fff; }
+.contacts.ctrue { border-left: solid 3px green; }

@@ -1,0 +1,7 @@
+<div class="navbar-collapse collapse">
+  <ul class="nav navbar-nav navbar-right">
+    <li [routerLinkActive]="['active']" *ngFor="let page of pages">
+      <a routerLink="/{{page.link}}">{{page.title}}</a>
+    </li>
+  </ul>
+</div>

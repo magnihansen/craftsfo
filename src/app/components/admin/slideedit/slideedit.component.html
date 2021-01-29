@@ -1,0 +1,31 @@
+<h1>Slider billeder</h1>
+<div class="addnewslide" (click)="toggleAddNewSlide()">
+  Add new
+</div>
+<div class="editor_message">{{messageStatus}}</div>
+<div class="newslidefields" *ngIf=showAddSlide>
+  <form (ngSubmit)="addSlide(path.value, alttext.value, rank.value)">
+    <div>
+      <label for="path">Sti</label>
+      <input type="text" #path />
+    </div>
+    <div>
+        <label for="alttext">Alternativ tekst</label>
+        <input type="text" #alttext />
+    </div>
+    <div>
+      <label for="rank">Rank</label>
+      <input type="number" #rank />
+    </div>
+    <button type="submit">Opret slide</button>
+  </form>
+</div>
+<div class="slidecontainer" *ngFor="let slide of slides">
+  <div class="slide">
+    <h4>{{slide.path}}</h4>
+    <p>
+      Beskrivelse: {{slide.alttext}}<br />
+      Rank: {{slide.rank}}
+    </p>
+  </div>
+</div>

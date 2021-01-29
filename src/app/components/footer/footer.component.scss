@@ -1,0 +1,47 @@
+@import '../../assets/variables.scss';
+
+:host {
+    display: flex;
+    flex: 1;
+}
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+
+    & a {
+        color: $brown-creme;
+    }
+
+    & .footer-text {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 0;
+        justify-content: flex-start;
+    }
+
+    & .login {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        & .facebook-link, .login-link {
+            display: flex;
+            justify-content: center;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        & .login-link:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.link { text-decoration: underline; }
+.link:hover { cursor: pointer; }

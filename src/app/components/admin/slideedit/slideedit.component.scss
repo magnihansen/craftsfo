@@ -1,0 +1,7 @@
+.addnewslide { width: 150px; padding: 10px; text-align: center; color: #fff; background-color: darkgreen; border: solid 1px #566778; border-radius: 5px; }
+.addnewslide:hover { cursor: pointer; }
+.newslidefields { width:100%; margin-top: 10px; border: solid 1px #566778; border-radius: 5px; padding: 10px; }
+.slidecontainer { margin-top: 10px; }
+.slidecontainer .slide { border-left: solid 3px darkgreen; padding-left: 10px; }
+.slidecontainer .slide:nth-of-type(1n+2) { border-top: solid 1px gray; margin-top: 10px; }
+.slidecontainer .slide:nth-of-type(even) { background-color: #fff; }

@@ -1,0 +1,33 @@
+<div class="login-backdrop">
+  <div class="login">
+    <form (ngSubmit)="onSubmit()">
+      <div>
+        <label for="email">Teldupostur:</label><br />
+        <input 
+          type="email" 
+          name="email"
+          [(ngModel)]="email" 
+          [ngModelOptions]="{updateOn:'blur'}" 
+        />
+      </div>
+      <div>
+        <label for="password">Loyniorð:</label><br />
+        <input 
+          type="password" 
+          name="password"
+          [(ngModel)]="password" 
+          [ngModelOptions]="{updateOn:'submit'}"
+          (keyup.enter)="onSubmit()"
+        />
+      </div>
+      <div class="form-buttons">
+        <button type="submit">Innrita</button>
+        <button type="button" (click)="cancelLogin()">Avbrót</button>
+      </div>
+      <div
+        class="loginstatus" 
+        [innerHTML]="loginmessage"
+      ></div>
+    </form>
+  </div>
+</div>
