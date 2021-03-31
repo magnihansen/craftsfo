@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-notfound',
   templateUrl: './notfound.component.html',
   styleUrls: ['./notfound.component.scss']
 })
-export class NotfoundComponent implements OnInit {
+export class NotfoundComponent {
 
-  constructor() {
-    console.log('activatedRoute');
+  constructor(
+    private activatedRoute: ActivatedRoute
+  ) {
+    console.log('NotfoundComponent');
+    console.log('activatedRoute', activatedRoute.url);
   }
-
-  ngOnInit() {
-  }
-
 }

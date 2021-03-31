@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
 import { Contact } from '../../../interfaces/contact';
 
 @Component({
@@ -9,13 +8,13 @@ import { Contact } from '../../../interfaces/contact';
 })
 export class ContacteditComponent {
   contacts: Contact[] = [];
-  date: Date | null = null;
 
   constructor(
-    private af: AngularFireDatabase
   ) {
-    this.af.list('/contacts', ref => ref.orderByChild('timestamp')).valueChanges().subscribe(snapshots => {
-      this.contacts = snapshots as Contact[];
-    });
+    console.log('ContacteditComponent');
+    // this.af.list('/contacts', ref => ref.orderByChild('timestamp')).valueChanges().subscribe(snapshots => {
+    //   console.log('contacts', snapshots);
+    //   this.contacts = snapshots as Contact[];
+    // });
   }
 }

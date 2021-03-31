@@ -58,7 +58,11 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "rxjs-compat",
+              "rxjs/internal/observable/throwError"
+            ]
           },
           "configurations": {
             "production": {

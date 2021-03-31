@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AngularFireDatabase } from '@angular/fire/database';
 import { AuthService } from '../../services/auth.service';
 import { Page } from '../../interfaces/page';
 import { Contact } from '../../interfaces/contact';
@@ -22,7 +21,6 @@ export class ContactComponent {
   messageStatus = '';
 
   constructor(
-    private db: AngularFireDatabase,
     private route: ActivatedRoute,
     private authService: AuthService
   ) {
@@ -31,10 +29,10 @@ export class ContactComponent {
   }
 
   loadPage(url: string): void {
-    this.db.database.ref('/pages').orderByChild('link').equalTo(url).once('value')
-    .then(snapshot => {
-      this.content = (Object.values(snapshot.val())[0] as Page).content;
-    });
+    // this.db.database.ref('/pages').orderByChild('link').equalTo(url).once('value')
+    // .then(snapshot => {
+    //   this.content = (Object.values(snapshot.val())[0] as Page).content;
+    // });
   }
   onSubmit(): void {
     const now = new Date();
@@ -49,21 +47,21 @@ export class ContactComponent {
     };
 
     if (this.name && this.email && this.message) {
-      const newGuid = this.db.list(this.dbPath).push(this.contact).key ?? '';
-      this.contact.uid = newGuid;
-      this.update(newGuid, this.contact);
-      this.messageStatus = 'Beskeden sendt';
+      // const newGuid = this.db.list(this.dbPath).push(this.contact).key ?? '';
+      // this.contact.uid = newGuid;
+      // this.update(newGuid, this.contact);
+      // this.messageStatus = 'Beskeden sendt';
     } else {
       this.messageStatus = 'Beskeden kunne ikke sendes.';
     }
   }
 
   update(key: string, contact: Contact): void {
-    this.db.object<Contact>(this.dbPath + '/' + contact.uid).update({
-      uid: contact.uid
-    })
-    .then(msg => this.handleSuccess(msg))
-    .catch(error => this.handleError(error));
+    // this.db.object<Contact>(this.dbPath + '/' + contact.uid).update({
+    //   uid: contact.uid
+    // })
+    // .then(msg => this.handleSuccess(msg))
+    // .catch(error => this.handleError(error));
   }
 
   handleSuccess(msg: any): void {

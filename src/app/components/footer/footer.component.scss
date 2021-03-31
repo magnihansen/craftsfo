@@ -11,6 +11,10 @@
     flex: 1;
     align-items: center;
     justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    background-color: $brown-dark;
+    color: $brown-creme;
 
     & a {
         color: $brown-creme;
@@ -19,7 +23,7 @@
     & .footer-text {
         display: flex;
         flex-direction: column;
-        flex: 1 1 0;
+        flex: 1;
         justify-content: flex-start;
     }
 
@@ -28,20 +32,16 @@
         flex-direction: column;
         justify-content: flex-end;
 
-        & .facebook-link, .login-link {
+        & .login-link {
             display: flex;
-            justify-content: center;
-
-            &:hover {
-                cursor: pointer;
-            }
+            justify-content: flex-end;
+            padding: 14px 16px;
         }
 
-        & .login-link:hover {
-            text-decoration: underline;
+        &:hover {
+            background-color: #ddd;
+            color: black;
+            cursor: pointer;
         }
     }
 }
-
-.link { text-decoration: underline; }
-.link:hover { cursor: pointer; }

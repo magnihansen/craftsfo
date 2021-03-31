@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 import { Company } from '../../interfaces/company';
 import { Developer } from '../../interfaces/developer';
-import { AuthService } from '../../services/auth.service';
-import * as firebase from 'firebase';
-import { AngularFireDatabase } from '@angular/fire/database';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-footer',
@@ -15,32 +12,30 @@ import { AngularFireDatabase } from '@angular/fire/database';
 export class FooterComponent implements OnInit {
   company: Company;
   developer: Developer;
-  date: Date;
+  date: Date = new Date();
   hasCompanyLoaded = false;
   hasDeveloperLoaded = false;
 
   constructor(
-    private db: AngularFireDatabase,
-    public afAuth: AngularFireAuth,
-    public authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute
+    private authenticationService: AuthenticationService,
+    private router: Router
   ) {
-      this.date = new Date();
-      this.company = { name: '', address: '', zip: 0, city: '', phone: 0, email: '', cvr: 0 };
-      this.developer = { name: '', url: '', facebook: '' };
+    console.log('FooterComponent');
+    // this.date = new Date();
+    this.company = { name: '', address: '', zip: 0, city: '', phone: 0, email: '', cvr: 0 };
+    this.developer = { name: '', url: '', facebook: '' };
 
-      const companyItem = sessionStorage.getItem('company');
-      if (companyItem != null) {
-        this.company = JSON.parse(companyItem) as Company;
-        this.hasCompanyLoaded = true;
-      }
-      const developItem = sessionStorage.getItem('developer');
-      if (developItem != null) {
-        this.developer = JSON.parse(developItem) as Developer;
-        this.hasDeveloperLoaded = true;
-      }
-    }
+    // const companyItem = sessionStorage.getItem('company');
+    // if (companyItem != null) {
+    //   this.company = JSON.parse(companyItem) as Company;
+    //   this.hasCompanyLoaded = true;
+    // }
+    // const developItem = sessionStorage.getItem('developer');
+    // if (developItem != null) {
+    //   this.developer = JSON.parse(developItem) as Developer;
+    //   this.hasDeveloperLoaded = true;
+    // }
+  }
 
   ngOnInit(): void {
     // if (!this.hasCompanyLoaded) {
@@ -63,6 +58,12 @@ export class FooterComponent implements OnInit {
     // }
   }
 
+  // public isAuthenticatedAsync(): Promise<boolean> {
+  //   return this.authService.isAuthenticated()
+  //     .then(result => result)
+  //     .catch(() => false);
+  // }
+
   clearSearch(search: any): void {
     search.value = '';
   }
@@ -76,19 +77,6 @@ export class FooterComponent implements OnInit {
     return Object.keys(obj).map((key) => obj[key]);
   }
   gotoLogin(): void {
-    this.router.navigate(['/loginpage']);
-  }
-  gotoDashboard(): void {
-    this.router.navigate(['/admin/dashboard']);
-  }
-  gotoContactboard(): void {
-    this.router.navigate(['/admin/contact']);
-  }
-  gotoSlideboard(): void {
-    this.router.navigate(['/admin/slides']);
-  }
-  onSignOut(): void {
-    this.authService.logout();
-    this.router.navigate(['/']);
+    this.router.navigateByUrl('/login', { skipLocationChange: true });
   }
 }

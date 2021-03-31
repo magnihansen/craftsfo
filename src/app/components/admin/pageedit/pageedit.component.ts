@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { AuthService } from '../../../services/auth.service';
+import { AuthenticationService } from '../../../services/authentication.service';
 import { PageService } from '../../../services/page.service';
 import { Page } from '../../../interfaces/page';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -67,32 +66,39 @@ export class PageeditComponent implements OnInit {
   };
 
   constructor(
-    private db: AngularFireDatabase,
-    private authService: AuthService,
+    private authenticationService: AuthenticationService,
     private pageService: PageService,
     private router: Router,
     private route: ActivatedRoute
   ) {
+    console.log('PageeditComponent');
     this.route.params.subscribe(params => this.loadPage(params.id));
   }
 
   ngOnInit(): void {
+    console.log('PageeditComponent :: ngOnInit');
   }
 
   generateArray(obj: string): any {
     return Object.keys(obj).map((key: any) => obj[key]);
   }
 
-  loadPage(uid: string): void {
-    this.pageuid = uid;
-
-    this.db.object<Page>('/pages/' + uid).valueChanges().subscribe(p => {
-      const pageObj: Page = p as Page;
-      this.page = pageObj;
-      this.title = pageObj.title;
-      this.rank = pageObj.rank;
-      this.content = pageObj.content.replace('\n', '<br />');
-    });
+  loadPage(uid: number): void {
+    // this.pageService.getPage(uid).subscribe({
+    //   next: (result: Page) => {
+    //     console.log(result);
+    //     this.page = result;
+    //     this.title = result.title;
+    //     this.rank = result.rank.toString();
+    //     this.content = result.content.replace('\n', '<br />');
+    //   },
+    //   error: (err: any) => {
+    //     console.log(err);
+    //   },
+    //   complete: () => {
+    //     console.log('complete');
+    //   }
+    // });
   }
 
   gotoDashboard(): void {
@@ -100,16 +106,16 @@ export class PageeditComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.authService.isAuthenticated()) {
-      if (this.page) {
-        this.page.content = this.content;
-        this.page.title = this.title;
-        this.pageService.updatePage(this.page.uid, this.page);
+    // if (this.authService.isAuthenticated()) {
+    //   if (this.page) {
+    //     this.page.content = this.content;
+    //     this.page.title = this.title;
+    //     this.pageService.updatePage(this.page.uid, this.page);
 
-        this.messageStatus = 'Teksten gemt';
-      } else {
-        this.messageStatus = 'Teksten ikke gemt!';
-      }
-    }
+    //     this.messageStatus = 'Teksten gemt';
+    //   } else {
+    //     this.messageStatus = 'Teksten ikke gemt!';
+    //   }
+    // }
   }
 }

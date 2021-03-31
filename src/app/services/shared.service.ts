@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Company } from '../interfaces/company';
-import * as fb from 'firebase';
 import { Page } from '../interfaces/page';
 import { PageService } from './page.service';
 
@@ -17,7 +15,6 @@ export class SharedService {
   private pagesObj: Page[] = [];
 
   constructor(
-    private db: AngularFireDatabase,
     private pageService: PageService
   ) {
     this.loadCompany();

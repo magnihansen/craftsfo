@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { AuthService } from '../../services/auth.service';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Page } from '../../interfaces/page';
+import { PageService } from 'src/app/services/page.service';
+import { PageHubService } from 'src/app/services/pagehub.service';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-navigation',
@@ -10,17 +13,43 @@ import { Page } from '../../interfaces/page';
   styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent implements OnInit {
-  pages: Page[] = [];
+  @Input() pageType = 'pages';
+  public pages: Page[] = [];
 
   constructor(
+    private pageHubService: PageHubService,
+    private pageService: PageService,
+    private http: HttpClient,
     private router: Router,
-    private authService: AuthService,
-    private af: AngularFireDatabase) { }
+    private authenticationService: AuthenticationService,
+    @Inject('HUB_URL') private apiUrl: string
+  ) { }
 
   ngOnInit(): void {
-    this.af.list('/pages', ref => ref.orderByChild('rank')).valueChanges().subscribe(snapshots => {
-      this.pages = snapshots as Page[];
+    if (this.pageType === 'pages') {
+      this.pageHubService.startConnection();
+      this.pageHubService.addTransferDataListener();
+      this.startHttpRequest();
+
+      this.pageHubService.getPages().subscribe(pages => {
+        console.log('pageHubService.getPages()');
+        this.pages = pages;
+      });
+    } else {
+      const adminPages: Page[] = this.pageService.getAdminPages();
+      console.log('load admin pages', adminPages);
+      this.pages = adminPages;
+    }
+  }
+
+  private startHttpRequest = () => {
+    this.http.get(`${this.apiUrl}/Page/GetPages`).subscribe(res => {
+      this.pages = res as Page[];
     });
   }
 
+  public onSignOut(): void {
+    this.authenticationService.logout();
+    this.router.navigate(['/']);
+  }
 }

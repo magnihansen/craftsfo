@@ -1,7 +1,6 @@
 @import '../../assets/variables.scss';
 
 #wrapper {
-    position: relative;
     display: flex;
     flex-direction: column;
     flex: 1 1 100%;
@@ -18,7 +17,7 @@
         @include defaultTexts;
     }
 
-    & .main-layout-container {
+    & > .main-layout-container {
         display: flex;
         flex-grow: 1;
 
@@ -28,25 +27,19 @@
             height: 200px;
             margin-left: auto;
             margin-right: auto;
+            border: solid 1px red;
         }
     }
 }
 
 .scrollup {
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    bottom: 85px;
+    bottom: 10px;
     right: 20px;
     width: 30px;
     height: 30px;
-    background-color: #333;
-    color: #f2f2f2;
-    text-decoration: none;
-
-    &:hover {
-        text-decoration: none;
-        color: #f4cc94;
-    }
+    background-color: $bg-gray;
+    color: $font-color-light;
+    text-align: center;
+    vertical-align: middle;
 }

@@ -4,21 +4,12 @@
     <span *ngIf="developer.url">Design og layout by <a href="{{developer.url}}" target="_blank">{{developer.name}}</a></span>
   </div>
   <div class="login">
-    <div *ngIf="!authService.isAuthenticated()">
-      <div class="facebook-link" *ngIf="developer.facebook">
-        <a href="{{developer.facebook}}" title="Besøg mig på Facebook" target="_blank">
-          <img src="/assets/img/facebook_small.png" alt="Besøg mig på Facebook" />
-        </a>
-      </div>
-      <div class="login-link" (click)="gotoLogin()">Login</div>
+    <div class="facebook-link" *ngIf="developer.facebook">
+      <a href="{{developer.facebook}}" title="Besøg mig på Facebook" target="_blank">
+        <img src="/assets/img/facebook_small.png" alt="Besøg mig på Facebook" />
+      </a>
     </div>
-    <div *ngIf="authService.isAuthenticated()">
-        <div class="link" (click)="onSignOut()">Logout</div>
-        <div class="link" (click)="gotoDashboard()">Dashboard</div>
-        <div class="link" (click)="gotoContactboard()">Contactboard</div>
-        <div class="link" (click)="gotoSlideboard()">Slideboard</div>
-    </div>
-  </div>
+    <div class="login-link" (click)="gotoLogin()">Login</div>
 </div>
 <div id="sb-search" class="sb-search" style="display:none;">
     <form (submit)="onSearch(search.value)" >

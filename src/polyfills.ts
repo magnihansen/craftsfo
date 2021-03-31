@@ -18,6 +18,7 @@
  * BROWSER POLYFILLS
  */
 
+// tslint:disable-next-line:jsdoc-format
 /** IE9, IE10 and IE11 requires all of the following polyfills. **/
 // import 'core-js/es6/symbol';
 // import 'core-js/es6/object';
@@ -41,6 +42,7 @@
 // import 'core-js/es6/reflect';
 
 
+// tslint:disable-next-line:jsdoc-format
 /** Evergreen browsers require these. **/
 // Used for reflect-metadata in JIT. If you use AOT (and only Angular decorators), you can remove.
 import 'core-js/es/reflect';
@@ -49,7 +51,7 @@ import 'core-js/es/reflect';
 /**
  * Required to support Web Animations `@angular/platform-browser/animations`.
  * Needed for: All but Chrome, Firefox and Opera. http://caniuse.com/#feat=web-animation
- **/
+ */
 // import 'web-animations-js';  // Run `npm install --save web-animations-js`.
 
 

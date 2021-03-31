@@ -3,19 +3,19 @@
     <form (ngSubmit)="onSubmit()" [ngFormOptions]="{updateOn:'submit'}">
         <div>
           <label for="name">Navn:</label><br />
-          <input type="text" name="name" [(ngModel)]="name" [ngModelOptions]="{updateOn:'blur'}" />
+          <input type="text" name="name" ngModel />
         </div>
         <div>
           <label for="name">Email:</label><br />
-          <input type="text" name="email" [(ngModel)]="email" [ngModelOptions]="{updateOn:'blur'}" />
+          <input type="text" name="email" ngModel />
         </div>
         <div>
           <label for="name">Telefon:</label><br />
-          <input type="text" name="phone" [(ngModel)]="phone" [ngModelOptions]="{updateOn:'blur'}" />
+          <input type="text" name="phone" ngModel />
         </div>
         <div>
           <label for="name">Besked:</label><br />
-          <textarea name="message" [(ngModel)]="message" [ngModelOptions]="{updateOn:'blur'}"></textarea>
+          <textarea name="message" ngModel></textarea>
         </div>
         <button type="submit">Send besked</button>
         <div class="message_status">{{messageStatus}}</div>

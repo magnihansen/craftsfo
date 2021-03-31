@@ -1,0 +1,15 @@
+<div id="wrapper">
+    <header>
+        <app-navigation [pageType]="'admin'"></app-navigation>
+    </header>
+
+    <section class="main-layout-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
