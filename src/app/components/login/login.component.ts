@@ -1,60 +1,57 @@
-import { Component, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormGroup } from '@angular/forms';
-
-import { AuthenticationService } from '../../services/authentication.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
-  userForm: FormGroup | null = null;
-  email = '';
-  password = '';
-  loginmessage = '';
-  isRunningLoginSequence = false;
+export class LoginComponent implements OnInit {
+  loginForm: FormGroup;
+  loading = false;
+  submitted = false;
+  returnUrl = '';
 
   constructor(
-    private authenticationService: AuthenticationService,
-    public ngZone: NgZone,
-    private router: Router
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthenticationService
   ) {
-    console.log('LoginComponent');
+    this.loginForm = this.fb.group({
+      username: this.fb.control('', Validators.required),
+      password: this.fb.control('', Validators.required)
+    });
+  }
+
+  ngOnInit(): void {
+    // get return url from route parameters or default to '/'
+    const qParam = 'returnUrl';
+    this.returnUrl = this.route.snapshot.queryParams[qParam] || '/';
+  }
+
+  get f(): any {
+    return this.loginForm.controls;
   }
 
   onSubmit(): void {
-    this.loginmessage = '';
-    if (this.email && this.password && this.isRunningLoginSequence === false) {
-      this.isRunningLoginSequence = true;
-
-      // this.authService.signinUser(this.email, this.password)
-      // .then(user => {
-      //   this.ngZone.run(() => {
-      //     this.isRunningLoginSequence = false;
-      //     this.authService.isAuthenticated().then()
-      //     if (this.authService.isAuthenticated()) {
-      //       this.loginmessage = '';
-      //       console.log('Navigate to admin..');
-      //       this.router.navigate(['/admin/dashboard']);
-      //     } else {
-      //       this.authService.clearLocalstorage();
-      //       this.loginmessage = 'Brúkari ikki funnin. Feilboð: ' + localStorage.getItem('LoginError');
-      //     }
-      //   });
-      // })
-      // .catch((error) => {
-      //   this.authService.clearLocalstorage();
-      //   this.loginmessage = error;
-      // });
-    } else {
-      // this.authenticationService.clearLocalstorage();
-      this.loginmessage = 'Teldupostur og/ella loyniorð eru ikki útfylt';
+    this.submitted = true;
+    if (this.loginForm.invalid) {
+        return;
     }
-  }
 
-  cancelLogin(): void {
-    this.router.navigate(['/']);
+    this.loading = true;
+    this.authenticationService.login(this.f.username.value, this.f.password.value)
+    .subscribe({
+      next: (res: boolean) => {
+        if (res) {
+          this.router.navigate([this.returnUrl]);
+        }
+      },
+      error: (err) => console.log(err)
+    });
   }
 }

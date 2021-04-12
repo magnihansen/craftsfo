@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { Page } from '../../interfaces/page';
 import { Contact } from '../../interfaces/contact';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-contact',
@@ -22,7 +22,7 @@ export class ContactComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authenticationService: AuthenticationService
   ) {
     const path: string = this.route.routeConfig?.path ?? '';
     this.loadPage(path);

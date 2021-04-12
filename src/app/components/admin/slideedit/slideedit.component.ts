@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
 import { Imageslide } from '../../../interfaces/imageslide';
 import { NgForm } from '@angular/forms';
 import * as uuid from 'uuid';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-slideedit',
@@ -19,7 +19,7 @@ export class SlideeditComponent {
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authenticationService: AuthenticationService
   ) {
     // this.af.list('/slides', ref => ref.orderByChild('rank')).valueChanges().subscribe(snapshots => {
     //   this.slides = snapshots as Imageslide[];

@@ -1,44 +1,66 @@
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import { Observable, of } from 'rxjs';
+import { catchError, map, retry, tap } from 'rxjs/operators';
 import { User } from '../models/user';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AuthenticationService {
-    private currentUserSubject: BehaviorSubject<User>;
-    public currentUser: Observable<User>;
+  isUserLoggedIn = false;
+  userLoggedInId = 0;
 
-    constructor(
-        private http: HttpClient,
-        @Inject('HUB_URL') private apiUrl: string
-    ) {
-        const currentUserStr: string = localStorage.getItem('currentUser') || '{}';
-        const currentUser: User = JSON.parse(currentUserStr);
-        this.currentUserSubject = new BehaviorSubject<User>(currentUser);
-        this.currentUser = this.currentUserSubject.asObservable();
-    }
+  constructor(
+    private http: HttpClient,
+    @Inject('HUB_URL') private apiUrl: string
+  ) { }
 
-    public get currentUserValue(): User {
-        return this.currentUserSubject.value;
-    }
+  login(userName: string, passWord: string): Observable<boolean> {
+    const body = {
+      username: userName,
+      password: passWord
+    };
+    return this.http.post<string>(`${this.apiUrl}/login/authenticate`, body)
+      .pipe(
+        map(response => {
+          console.log('Http login response', response);
+          localStorage.setItem('apitoken', response);
+          localStorage.setItem('isUserLoggedIn', this.isUserLoggedIn ? 'true' : 'false');
+          return true;
+        })
+      );
+  }
 
-    login(username: string, password: string): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}/login/authenticate`, { username, password })
-            .pipe(map(user => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                this.currentUserSubject.next(user);
-                return user;
-            }));
-    }
+  logout(): void {
+    this.isUserLoggedIn = false;
+    localStorage.removeItem('isUserLoggedIn');
+  }
 
-    logout(): void {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(new User());
-    }
+  getUser(): Observable<User> {
+    const apiToken: string = localStorage.getItem('apitoken') || '';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: apiToken
+      })
+    };
+    return this.http.get<User>(`${this.apiUrl}/login/getuser`, httpOptions)
+      .pipe(
+        retry(1),
+        map(user => user),
+        catchError(this.handleError<User>('getUserByToken'))
+      );
+  }
+
+  private handleError<T>(operation = 'operation', result?: T): any {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      this.log(`${operation} failed: ${error.message}`);
+      return of(result as T);
+    };
+  }
+
+  private log(message: string): void {
+    console.log(message);
+  }
 }

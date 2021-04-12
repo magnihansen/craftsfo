@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from '../../interfaces/page';
 import { PageService } from 'src/app/services/page.service';
+import { MiscHelper } from 'src/app/helpers/misc.helper';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-routerpagecontent',
@@ -15,27 +17,20 @@ export class RouterpagecontentComponent {
   constructor(
     private pageService: PageService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private miscHelper: MiscHelper
   ) {
-    console.log('RouterpagecontentComponent');
-    console.log('router', this.router);
-
     this.activatedRoute.params.subscribe(params => {
-      console.log('params.link', params.link);
       this.loadPage(params.link);
     });
   }
 
-  private loadPage(pageLink: string): void {
+  private loadPage(pageLink: string | undefined): void {
     this.pageService.getPageByLink(pageLink).subscribe({
       next: (result: Page) => {
         this.content = result.content.replace('\n', '<br />');
       },
-      error: (err: any) => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('Page content for ' + pageLink + ' complete');
+      error: (err: HttpErrorResponse) => {
+        this.miscHelper.handleError(err);
       }
     });
   }

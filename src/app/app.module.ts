@@ -43,10 +43,6 @@ enableProdMode();
   providers: [
     MySqlService,
     PageHubService,
-    // {
-    //   provide: APP_BASE_HREF,
-    //   useFactory: getBaseHref
-    // },
     {
       provide: APP_BASE_HREF,
       useValue: '/' + (window.location.pathname.split('/')[1] || '')

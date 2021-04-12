@@ -1,20 +1,20 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Page } from '../../interfaces/page';
 import { PageService } from 'src/app/services/page.service';
 import { PageHubService } from 'src/app/services/pagehub.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, OnChanges {
   @Input() pageType = 'pages';
   public pages: Page[] = [];
+  public isLoggedIn = false;
 
   constructor(
     private pageHubService: PageHubService,
@@ -26,19 +26,26 @@ export class NavigationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isLoggedIn = this.authenticationService.isUserLoggedIn;
     if (this.pageType === 'pages') {
       this.pageHubService.startConnection();
       this.pageHubService.addTransferDataListener();
       this.startHttpRequest();
 
       this.pageHubService.getPages().subscribe(pages => {
-        console.log('pageHubService.getPages()');
         this.pages = pages;
       });
     } else {
       const adminPages: Page[] = this.pageService.getAdminPages();
-      console.log('load admin pages', adminPages);
       this.pages = adminPages;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes) {
+      if (changes.pages) {
+        this.isLoggedIn = this.authenticationService.isUserLoggedIn;
+      }
     }
   }
 

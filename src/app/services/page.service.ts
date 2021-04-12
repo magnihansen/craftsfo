@@ -1,9 +1,10 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { throwError } from 'rxjs/internal/observable/throwError';
-import { catchError, tap } from 'rxjs/operators';
 import { Page } from '../interfaces/page';
+import { StateUser } from '../models/state-user.model';
+import { User } from '../models/user';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,32 +17,23 @@ export class PageService {
   };
 
   constructor(
-    private httpService: HttpClient,
+    private http: HttpClient,
+    private authenticationService: AuthenticationService,
     @Inject('HUB_URL') private apiUrl: string
   ) { }
 
   getPage(pageId: number): Observable<Page> {
-    return this.httpService.get<Page>(`${this.apiUrl}/Page/GetPage/${pageId}`, this.httpOptions)
-    .pipe(
-      tap(data => data),
-      catchError(this.handleError)
-    );
+    return this.http.get<Page>(`${this.apiUrl}/Page/GetPage/${pageId}`, this.httpOptions);
   }
 
-  getPageByLink(pageLink: string): Observable<Page> {
-    if (pageLink === undefined || pageLink === ''){
-      return this.httpService.get<Page>(`${this.apiUrl}/Page/GetDefaultPage`, this.httpOptions)
-      .pipe(
-        tap(data => data),
-        catchError(this.handleError)
-      );
+  getPageByLink(pageLink: string | undefined): Observable<Page> {
+    let pageUrl: string;
+    if (pageLink === undefined || pageLink === '') {
+      pageUrl = `${this.apiUrl}/Page/GetDefaultPage`;
     } else {
-      return this.httpService.get<Page>(`${this.apiUrl}/Page/GetPageByLink/${pageLink}`, this.httpOptions)
-      .pipe(
-        tap(data => data),
-        catchError(this.handleError)
-      );
+      pageUrl = `${this.apiUrl}/Page/GetPageByLink/${pageLink}`;
     }
+    return this.http.get<Page>(pageUrl, this.httpOptions);
   }
 
   createPage(page: Page): void {
@@ -49,15 +41,21 @@ export class PageService {
   }
 
   updatePage(key: string, page: Page): void {
-    // this.af.object<Page>('/pages/' + page.uid).update({
-    //   uid: page.uid,
-    //   // rank: page.rank,
-    //   // parent: page.parent,
-    //   title: page.title,
-    //   link: page.link,
-    //   content: page.content
-    // })
-    // .then(msg => this.handleSuccess(msg));
+    this.authenticationService.getUser().subscribe(user => {
+      const body = {
+        id: page.id,
+        uid: page.uid,
+        title: page.title,
+        parent: page.parent,
+        content: page.content,
+        pageRank: page.pageRank,
+        link: page.link,
+        active: page.active,
+        updatedDate: new Date(),
+        updatedBy: user.id
+      };
+      this.http.put(`${this.apiUrl}/Page/UpdatePage`, body, this.httpOptions);
+    });
   }
 
   deletePage(key: string): void {
@@ -74,17 +72,6 @@ export class PageService {
 
   deleteAll(): void {
     // this.pages?.remove().catch(error => this.handleError(error));
-  }
-
-  private handleError(err: HttpErrorResponse): Observable<never> {
-    let errorMessage = '';
-    if (err.error instanceof ErrorEvent) {
-        errorMessage = `An error occurred: ${err.error.message}`;
-    } else {
-        errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
-    }
-    console.error(errorMessage);
-    return throwError(errorMessage);
   }
 
   getAdminPages(): Page[] {

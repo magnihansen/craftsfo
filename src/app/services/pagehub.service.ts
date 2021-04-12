@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, HttpTransportType } from '@microsoft/signalr';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Page } from '../interfaces/page';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PageHubService {
-    public data: Subject<Page[]> = new Subject<Page[]>();
+    public data: BehaviorSubject<Page[]> = new BehaviorSubject<Page[]>([]);
     private hubConnection!: HubConnection;
 
     public startConnection = () => {
@@ -30,6 +30,7 @@ export class PageHubService {
     ) { }
 
     public addTransferDataListener = () => {
+        // runs all the time
         // this.hubConnection.on('pagesReceived', (pages) => {
         //     console.log('pagesReceived', pages);
         //     this.sendPages(pages);
@@ -41,11 +42,10 @@ export class PageHubService {
     }
 
     clearMessages(): void {
-        this.data.next();
+        this.data.next([]);
     }
 
-    getPages(): Observable<any> {
-        console.log('getPages()');
+    getPages(): Observable<Page[]> {
         return this.data.asObservable();
     }
 }

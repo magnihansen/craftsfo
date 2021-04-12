@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import * as uuid from 'uuid';
-import { AuthenticationService } from '../../../services/authentication.service';
 import { Page } from '../../../interfaces/page';
 
 @Component({
@@ -14,9 +13,7 @@ export class DashboardComponent implements OnInit {
   guid = '';
   showAddPage = false;
 
-  constructor(
-    private authenticationService: AuthenticationService
-  ) {
+  constructor() {
     console.log('Dashboard');
   }
 

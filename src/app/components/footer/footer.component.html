@@ -9,7 +9,8 @@
         <img src="/assets/img/facebook_small.png" alt="Besøg mig på Facebook" />
       </a>
     </div>
-    <div class="login-link" (click)="gotoLogin()">Login</div>
+    <div class="login-link" *ngIf="!isLoggedIn" (click)="gotoLogin()">Innrita</div>
+    <div class="login-link" *ngIf="isLoggedIn" (click)="gotoLogout()">Útrita</div>
 </div>
 <div id="sb-search" class="sb-search" style="display:none;">
     <form (submit)="onSearch(search.value)" >

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthenticationService } from '../../../services/authentication.service';
 import { PageService } from '../../../services/page.service';
 import { Page } from '../../../interfaces/page';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-pageedit',
