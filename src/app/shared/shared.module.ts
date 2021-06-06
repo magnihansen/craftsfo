@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../components/footer/footer.component';
 import { NavigationComponent } from '../components/navigation/navigation.component';
 import { PageService } from '../services/page.service';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
     declarations: [
@@ -12,7 +13,8 @@ import { PageService } from '../services/page.service';
     ],
     imports: [
         RouterModule,
-        CommonModule
+        CommonModule,
+        CKEditorModule
     ],
     exports: [
       NavigationComponent,

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PageService } from '../../../services/page.service';
 import { Page } from '../../../interfaces/page';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+// import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-pageedit',
@@ -11,6 +12,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./pageedit.component.scss']
 })
 export class PageeditComponent implements OnInit {
+  public Editor = ClassicEditor;
   pages: Page[] = [];
   title = '';
   content = '';
@@ -19,51 +21,55 @@ export class PageeditComponent implements OnInit {
   messageStatus = '';
   page: Page | null = null;
 
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-      spellcheck: true,
-      height: 'auto',
-      minHeight: '0',
-      maxHeight: 'auto',
-      width: 'auto',
-      minWidth: '0',
-      translate: 'yes',
-      enableToolbar: true,
-      showToolbar: true,
-      placeholder: 'Enter text here...',
-      defaultParagraphSeparator: '',
-      defaultFontName: '',
-      defaultFontSize: '',
-      fonts: [
-        {class: 'arial', name: 'Arial'},
-        {class: 'times-new-roman', name: 'Times New Roman'},
-        {class: 'calibri', name: 'Calibri'},
-        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-      ],
-      customClasses: [
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
-    uploadUrl: 'v1/image',
-    uploadWithCredentials: false,
-    sanitize: true,
-    toolbarPosition: 'top',
-    toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize']
-    ]
+  public model = {
+    editorData: '<p>Hello, world!</p>'
   };
+
+  // editorConfig: AngularEditorConfig = {
+  //   editable: true,
+  //     spellcheck: true,
+  //     height: 'auto',
+  //     minHeight: '0',
+  //     maxHeight: 'auto',
+  //     width: 'auto',
+  //     minWidth: '0',
+  //     translate: 'yes',
+  //     enableToolbar: true,
+  //     showToolbar: true,
+  //     placeholder: 'Enter text here...',
+  //     defaultParagraphSeparator: '',
+  //     defaultFontName: '',
+  //     defaultFontSize: '',
+  //     fonts: [
+  //       {class: 'arial', name: 'Arial'},
+  //       {class: 'times-new-roman', name: 'Times New Roman'},
+  //       {class: 'calibri', name: 'Calibri'},
+  //       {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+  //     ],
+  //     customClasses: [
+  //     {
+  //       name: 'quote',
+  //       class: 'quote',
+  //     },
+  //     {
+  //       name: 'redText',
+  //       class: 'redText'
+  //     },
+  //     {
+  //       name: 'titleText',
+  //       class: 'titleText',
+  //       tag: 'h1',
+  //     },
+  //   ],
+  //   uploadUrl: 'v1/image',
+  //   uploadWithCredentials: false,
+  //   sanitize: true,
+  //   toolbarPosition: 'top',
+  //   toolbarHiddenButtons: [
+  //     ['bold', 'italic'],
+  //     ['fontSize']
+  //   ]
+  // };
 
   constructor(
     private authenticationService: AuthenticationService,
