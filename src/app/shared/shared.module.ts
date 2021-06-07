@@ -18,7 +18,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     ],
     exports: [
       NavigationComponent,
-      FooterComponent
+      FooterComponent,
+      CKEditorModule
     ],
     providers: [
       // LoginActivate,

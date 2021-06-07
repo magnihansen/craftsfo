@@ -12,7 +12,7 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
   styleUrls: ['./pageedit.component.scss']
 })
 export class PageeditComponent implements OnInit {
-  public Editor = ClassicEditor;
+  public classicEditor = ClassicEditor;
   pages: Page[] = [];
   title = '';
   content = '';

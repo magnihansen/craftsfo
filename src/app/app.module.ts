@@ -15,7 +15,6 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { MySqlService } from './services/mysql.service';
 import { PageHubService } from './services/pagehub.service';
 
-
 const routes: Routes = [
   { path: '', redirectTo: '/page/start' },
   { path: '404', component: NotfoundComponent },

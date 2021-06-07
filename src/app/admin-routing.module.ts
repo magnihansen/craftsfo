@@ -24,7 +24,8 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        AdminLayoutComponent
+        AdminLayoutComponent,
+        PageeditComponent
     ],
     imports: [
       SharedModule,
