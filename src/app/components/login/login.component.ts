@@ -1,7 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -48,7 +47,7 @@ export class LoginComponent implements OnInit {
     .subscribe({
       next: (res: boolean) => {
         if (res) {
-          this.router.navigate([this.returnUrl]);
+          this.router.navigate(['/admin/dashboard']);
         }
       },
       error: (err) => console.log(err)

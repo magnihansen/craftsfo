@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { PageService } from 'src/app/services/page.service';
 import * as uuid from 'uuid';
 import { Page } from '../../../interfaces/page';
 
@@ -8,23 +9,52 @@ import { Page } from '../../../interfaces/page';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  pages: Page[] = [];
-  newPage: Page | null = null;
-  guid = '';
-  showAddPage = false;
+  private _pages: Page[] = [];
+  private _showAddPage = false;
+  public newPage: Page | null = null;
+  public guid = '';
 
-  constructor() {
+  public get pages(): Page[] {
+    return this._pages;
+  }
+  public set pages(p: Page[]) {
+    this._pages = p;
+  }
+
+  public get showAddPage(): boolean {
+    return this._showAddPage;
+  }
+  public set showAddPage(value: boolean) {
+    this._showAddPage = value;
+  }
+
+  constructor(
+    private pageService: PageService,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
+  ) {
     console.log('Dashboard');
   }
 
   ngOnInit(): void {
-    // this.af.list('/pages', ref => ref.orderByChild('rank')).valueChanges().subscribe(snapshots => {
-    //   this.pages = snapshots as Page[];
-    // });
+    this.ngZone.run(() => {
+      this.loadPages();
+    });
+  }
+
+  loadPages(): void {
+    this.pageService.getPages().subscribe({
+      next: (pages: Page[]) => {
+        this.pages = pages;
+        console.log('loadPages()');
+      },
+      error: (err: any) => console.log(err)
+    });
   }
 
   toggleAddNewPage(): void {
     this.showAddPage = !this.showAddPage;
+    console.log('this.showAddPage', this.showAddPage);
   }
 
   addPage(title: string, link: string, content: string, rank: string): void {

@@ -2,17 +2,33 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, retry, tap } from 'rxjs/operators';
+import { AppEvent, AppEventType } from '../event-queue';
+import { EventQueueService } from '../event-queue/event.queue';
 import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  isUserLoggedIn = false;
-  userLoggedInId = 0;
+  private isUserLoggedIn = false;
+
+  public get IsUserLoggedIn(): boolean {
+    const lsUserLoggedIn: string = localStorage.getItem('isUserLoggedIn') || '';
+    if (lsUserLoggedIn === 'true') {
+      return true;
+    }
+    return this.isUserLoggedIn;
+  }
+  public set IsUserLoggedIn(value: boolean) {
+    if (value === true) {
+      localStorage.setItem('isUserLoggedIn', 'true');
+    }
+    this.isUserLoggedIn = value;
+  }
 
   constructor(
     private http: HttpClient,
+    private eventQueueService: EventQueueService,
     @Inject('HUB_URL') private apiUrl: string
   ) { }
 
@@ -24,17 +40,19 @@ export class AuthenticationService {
     return this.http.post<string>(`${this.apiUrl}/login/authenticate`, body)
       .pipe(
         map(response => {
-          console.log('Http login response', response);
+          this.isUserLoggedIn = true;
           localStorage.setItem('apitoken', response);
-          localStorage.setItem('isUserLoggedIn', this.isUserLoggedIn ? 'true' : 'false');
+          this.IsUserLoggedIn = true;
+          this.eventQueueService.dispatch(new AppEvent(AppEventType.Login));
           return true;
         })
       );
   }
 
   logout(): void {
-    this.isUserLoggedIn = false;
+    this.IsUserLoggedIn = false;
     localStorage.removeItem('isUserLoggedIn');
+    this.eventQueueService.dispatch(new AppEvent(AppEventType.Logout));
   }
 
   getUser(): Observable<User> {

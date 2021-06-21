@@ -2,8 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Page } from '../interfaces/page';
-import { StateUser } from '../models/state-user.model';
-import { User } from '../models/user';
 import { AuthenticationService } from './authentication.service';
 
 @Injectable({
@@ -24,6 +22,10 @@ export class PageService {
 
   getPage(pageId: number): Observable<Page> {
     return this.http.get<Page>(`${this.apiUrl}/Page/GetPage/${pageId}`, this.httpOptions);
+  }
+
+  getPages(): Observable<Page[]> {
+    return this.http.get<Page[]>(`${this.apiUrl}/Page/GetPages`, this.httpOptions);
   }
 
   getPageByLink(pageLink: string | undefined): Observable<Page> {

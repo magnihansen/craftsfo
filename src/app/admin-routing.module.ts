@@ -7,6 +7,7 @@ import { ContacteditComponent } from './components/admin/contactedit/contactedit
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { PageeditComponent } from './components/admin/pageedit/pageedit.component';
 import { AuthGuard } from 'src/app/helpers/auth.guard';
+import { BrowserModule } from '@angular/platform-browser';
 
 const routes: Routes = [
   {
@@ -28,6 +29,7 @@ const routes: Routes = [
         PageeditComponent
     ],
     imports: [
+      BrowserModule,
       SharedModule,
       CommonModule,
       RouterModule.forChild(routes)

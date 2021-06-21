@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
+import { AppEventType } from 'src/app/event-queue';
+import { EventQueueService } from 'src/app/event-queue/event.queue';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Company } from '../../interfaces/company';
 import { Developer } from '../../interfaces/developer';
@@ -19,7 +22,8 @@ export class FooterComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private eventQueueService: EventQueueService
   ) {
     console.log('FooterComponent');
 
@@ -29,7 +33,17 @@ export class FooterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isLoggedIn = this.authenticationService.isUserLoggedIn;
+    this.eventQueueService.on(AppEventType.Login).subscribe({
+      next: () => {
+        this.isLoggedIn = this.authenticationService.IsUserLoggedIn;
+      }
+    });
+    this.eventQueueService.on(AppEventType.Logout).subscribe({
+      next: () => {
+        this.isLoggedIn = this.authenticationService.IsUserLoggedIn;
+      }
+    });
+    this.isLoggedIn = this.authenticationService.IsUserLoggedIn;
   }
 
   clearSearch(search: any): void {
