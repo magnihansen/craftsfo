@@ -36,7 +36,7 @@ enableProdMode();
     AdminRoutingModule,
     LoginRoutingModule,
     RouterModule.forRoot(routes, {
-        enableTracing: false
+        enableTracing: true
       }
     )
   ],

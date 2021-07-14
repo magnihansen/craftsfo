@@ -38,6 +38,16 @@ export class PageService {
     return this.http.get<Page>(pageUrl, this.httpOptions);
   }
 
+  getPageByUid(pageUid: string | undefined): Observable<Page> {
+    let pageUrl: string;
+    if (pageUid === undefined || pageUid === '') {
+      pageUrl = `${this.apiUrl}/Page/GetDefaultPage`;
+    } else {
+      pageUrl = `${this.apiUrl}/Page/GetPageByUid/${pageUid}`;
+    }
+    return this.http.get<Page>(pageUrl, this.httpOptions);
+  }
+
   createPage(page: Page): void {
     // this.pages?.push(page).then(msg => this.handleSuccess(msg));
   }

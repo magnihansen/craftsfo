@@ -1,1 +1,13 @@
+:host {
+    ::ng-deep {
+        .ck-editor {
+            min-width: 400px;
+            max-width: calc(100% - 32px);
+        }
+        .ck-editor__editable_inline {
+            min-height: 400px;
+        }
+    }
+}
+
 .field input { width: 200px; }

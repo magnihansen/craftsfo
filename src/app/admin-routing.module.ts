@@ -8,15 +8,17 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 import { PageeditComponent } from './components/admin/pageedit/pageedit.component';
 import { AuthGuard } from 'src/app/helpers/auth.guard';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    pathMatch: 'prefix',
     canActivate: [AuthGuard],
     children: [
-      { path: 'dashboard', pathMatch: 'full', component: DashboardComponent, data: {title: 'Dashboard'} },
-      { path: 'page/:id', pathMatch: 'full', component: PageeditComponent, data: {title: 'Edit page'} },
+      { path: 'dashboard', component: DashboardComponent, data: {title: 'Dashboard'} },
+      { path: 'editpage/:id', component: PageeditComponent, data: {title: 'Edit page'} },
       { path: 'contact', pathMatch: 'full', component: ContacteditComponent, data: {title: 'Contacts'} },
       { path: 'slides', pathMatch: 'full', component: PageeditComponent, data: {title: 'Slides'} }
     ]
@@ -25,10 +27,13 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        AdminLayoutComponent,
-        PageeditComponent
+      AdminLayoutComponent,
+      PageeditComponent,
+      ContacteditComponent,
+      DashboardComponent
     ],
     imports: [
+      FormsModule,
       BrowserModule,
       SharedModule,
       CommonModule,

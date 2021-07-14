@@ -9,6 +9,7 @@ const routes: Routes = [
   {
     path: 'page',
     component: MainLayoutComponent,
+    pathMatch: 'prefix',
     children: [
       {
         path: 'start',

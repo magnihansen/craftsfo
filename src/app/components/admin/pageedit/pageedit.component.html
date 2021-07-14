@@ -2,19 +2,15 @@
     <form (ngSubmit)="onSubmit()">
       <div class="field">
         <label for="title">Navn:</label><br />
-        <!-- <input type="text" name="title" [(ngModel)]="title" /> -->
+        <input type="text" name="title" [(ngModel)]="title" />
       </div>
       <div class="field">
         <label for="title">Rank:</label><br />
-        <!-- <input type="text" name="rank" [(ngModel)]="rank" /> -->
+        <input type="text" name="rank" [(ngModel)]="rank" />
       </div>
       <div class="field">
         <label for="content">Tekst:</label><br />
-        <!-- <angular-editor
-          [config]="editorConfig"
-          [placeholder]="'Loading...'" 
-        ></angular-editor> -->
-        <ckeditor [editor]="classicEditor" data="model.editorData"></ckeditor>
+        <ckeditor [editor]="classicEditor" [(ngModel)]="content"></ckeditor>
       </div>
       <button type="submit">Gem</button>
       <div class="editor_message">{{messageStatus}}</div>

@@ -5,6 +5,7 @@ import { FooterComponent } from '../components/footer/footer.component';
 import { NavigationComponent } from '../components/navigation/navigation.component';
 import { PageService } from '../services/page.service';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { TableModule } from '../components/table/table.module';
 
 @NgModule({
     declarations: [
@@ -12,14 +13,16 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
       FooterComponent
     ],
     imports: [
-        RouterModule,
-        CommonModule,
-        CKEditorModule
+      RouterModule,
+      CommonModule,
+      CKEditorModule,
+      TableModule
     ],
     exports: [
       NavigationComponent,
       FooterComponent,
-      CKEditorModule
+      CKEditorModule,
+      TableModule
     ],
     providers: [
       // LoginActivate,

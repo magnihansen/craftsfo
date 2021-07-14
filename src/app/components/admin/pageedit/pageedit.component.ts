@@ -89,22 +89,22 @@ export class PageeditComponent implements OnInit {
     return Object.keys(obj).map((key: any) => obj[key]);
   }
 
-  loadPage(uid: number): void {
-    // this.pageService.getPage(uid).subscribe({
-    //   next: (result: Page) => {
-    //     console.log(result);
-    //     this.page = result;
-    //     this.title = result.title;
-    //     this.rank = result.rank.toString();
-    //     this.content = result.content.replace('\n', '<br />');
-    //   },
-    //   error: (err: any) => {
-    //     console.log(err);
-    //   },
-    //   complete: () => {
-    //     console.log('complete');
-    //   }
-    // });
+  loadPage(uid: string): void {
+    this.pageService.getPageByUid(uid).subscribe({
+      next: (result: Page) => {
+        console.log(result);
+        this.page = result;
+        this.title = result.title;
+        this.rank = result.pageRank;
+        this.content = result.content.replace('\n', '<br />');
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('complete');
+      }
+    });
   }
 
   gotoDashboard(): void {

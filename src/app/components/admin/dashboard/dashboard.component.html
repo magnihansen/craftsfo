@@ -23,9 +23,11 @@
     <button type="submit">Opret side</button>
   </form>
 </div>
-<div class="pages_content" *ngFor="let page of pages; let first = first; let last = last">
+<!-- <div class="pages_content" *ngFor="let page of pages">
   <div id="{{page.uid}}">
     <h4>{{page.title}}</h4>
-    <h5><a href="admin/page/{{page.uid}}">Edit</a></h5>
+    <h5><a [routerLink]="['/admin/editpage', page.uid]">Edit</a></h5>
   </div>
-</div>
+</div> -->
+
+<!-- <app-table [data]="pageRows"></app-table> -->
