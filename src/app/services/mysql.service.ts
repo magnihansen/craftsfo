@@ -16,7 +16,7 @@ export class MySqlService {
 
     public getPages(): Observable<Page[]> {
         return this.http
-            .get<Page[]>(`${this.apiUrl}/Page/GetPages`)
+            .get<Page[]>(`${this.apiUrl}/V1/Page/GetPages`)
             .pipe(
                 catchError(this.handleError<Page[]>('getPages', []))
             );

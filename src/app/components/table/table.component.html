@@ -1,15 +1,38 @@
 <table class="table">
     <thead class="thead">
-        <th *ngFor="let column of columns" title="{{column}}">
+        <th 
+            *ngFor="let column of columns; let i = index"
+            title="{{ column.name | i18n }}" 
+            [attr.data-index]="i" 
+            [attr.style.width]="column.columnWidth ? column.columnWidth : null"
+        >
             <span>
-                {{column}}
+                {{ column.name | i18n }}
             </span>
         </th>
+        <th 
+            *ngIf="showContextMenu"
+            class="contextmenu"
+        ></th>
     </thead>
     <tbody class="tbody">
-        <tr *ngFor="let datarow of data">
-            <td *ngFor="let column of columns">
-                <span>{{column}}</span>
+        <tr *ngFor="let datarow of dataRows">
+            <td 
+                *ngFor="let column of columns; let i = index" 
+                [attr.data-index]="i" 
+                (click)="rowClick(datarow)"
+            >
+                <span>{{ datarow.dataColumns[i].value }}</span>
+            </td>
+            <td 
+                *ngIf="showContextMenu"
+                class="contextmenu"
+            >
+                <app-table-context-menu 
+                    *ngIf="allowDelete"
+                    [dataRow]="datarow"
+                    (deleteRowChange)="deleteRow($event)"
+                ></app-table-context-menu>
             </td>
         </tr>
     </tbody>

@@ -21,7 +21,7 @@ export class LogService {
   saveError(messageStr: string): void {
     const body = { message: messageStr };
 
-    this.httpService.put(`${this.apiUrl}/Log/SaveError`, body, this.httpOptions)
+    this.httpService.put(`${this.apiUrl}/V1/Log/SaveError`, body, this.httpOptions)
     .subscribe({
       next: data => {
           console.log('Error logged');

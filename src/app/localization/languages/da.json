@@ -1,0 +1,19 @@
+{
+  "User": "Bruger",
+  "Are you sure you want to delete?": "Er du sikker på at du vil slette?",
+  "User not authorized": "Bruger har ikke de nødvendige rettigheder",
+  "Cancel": "Annullér",
+  "Close": "Luk",
+  "Name": "Navn",
+  "Link": "Link",
+  "Content": "Indhold",
+  "Rank": "Sortering",
+  "Updated": "Opdateret",
+  "Pages": "Sider",
+  "Create page": "Opret side",
+  "Delete": "Slet",
+  "Page not saved": "Siden er ikke gemt",
+  "Page is saved": "Siden er gemt",
+  "Page not valid": "Siden er ikke gyldig",
+  "Error saving the page": "Fejl ved gemning af siden"
+}

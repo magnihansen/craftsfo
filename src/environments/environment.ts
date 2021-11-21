@@ -5,6 +5,9 @@
 
 export const environment = {
   production: false,
+  language: 'da',
+  logo: '../../assets/img/logo_house_small_transparent.png',
+  brandName: 'Crafts.fo',
   hubSettings: {
     url: 'https://localhost:5001'
   }

@@ -1,24 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PageService } from '../../../services/page.service';
 import { Page } from '../../../interfaces/page';
 // import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { I18nService } from 'src/app/localization/i18n.service';
+import { User } from 'src/app/models/user';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-pageedit',
   templateUrl: './pageedit.component.html',
   styleUrls: ['./pageedit.component.scss']
 })
-export class PageeditComponent implements OnInit {
+export class PageeditComponent {
   public classicEditor = ClassicEditor;
   pages: Page[] = [];
   title = '';
   content = '';
   rank = '';
   pageuid = '';
-  messageStatus = '';
   page: Page | null = null;
 
   public model = {
@@ -75,22 +77,15 @@ export class PageeditComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private pageService: PageService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private i18nService: I18nService,
+    private toastr: ToastrService
   ) {
-    console.log('PageeditComponent');
     this.route.params.subscribe(params => this.loadPage(params.id));
   }
 
-  ngOnInit(): void {
-    console.log('PageeditComponent :: ngOnInit');
-  }
-
-  generateArray(obj: string): any {
-    return Object.keys(obj).map((key: any) => obj[key]);
-  }
-
-  loadPage(uid: string): void {
-    this.pageService.getPageByUid(uid).subscribe({
+  private loadPage(pageId: number): void {
+    this.pageService.getPage(pageId).subscribe({
       next: (result: Page) => {
         console.log(result);
         this.page = result;
@@ -100,28 +95,52 @@ export class PageeditComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err);
-      },
-      complete: () => {
-        console.log('complete');
       }
     });
   }
 
-  gotoDashboard(): void {
+  public gotoDashboard(): void {
     this.router.navigate(['/admin/dashboard']);
   }
 
-  onSubmit(): void {
-    // if (this.authService.isAuthenticated()) {
-    //   if (this.page) {
-    //     this.page.content = this.content;
-    //     this.page.title = this.title;
-    //     this.pageService.updatePage(this.page.uid, this.page);
+  public onSubmit(): void {
+    if (this.authenticationService.IsUserLoggedIn) {
+      if (this.page) {
+        const user: User = this.authenticationService.getUser();
 
-    //     this.messageStatus = 'Teksten gemt';
-    //   } else {
-    //     this.messageStatus = 'Teksten ikke gemt!';
-    //   }
-    // }
+        this.page.content = this.content;
+        this.page.title = this.title;
+        this.page.pageRank = this.rank.toString();
+        this.page.updatedBy = user.username;
+
+        this.pageService.updatePage(this.page).subscribe({
+          next: (result: boolean) => {
+            if (result) {
+              this.toastr.success(
+                this.i18nService.getTranslation('Page is saved')
+              );
+            } else {
+              this.toastr.warning(
+                this.i18nService.getTranslation('Page not saved')
+              );
+            }
+          },
+          error: (err: any) => {
+            this.toastr.error(
+              err,
+              this.i18nService.getTranslation('Error'),
+            );
+          }
+        });
+      } else {
+        this.toastr.warning(
+          this.i18nService.getTranslation('Page not valid')
+        );
+      }
+    } else {
+      this.toastr.warning(
+        this.i18nService.getTranslation('User not authorized')
+      );
+    }
   }
 }

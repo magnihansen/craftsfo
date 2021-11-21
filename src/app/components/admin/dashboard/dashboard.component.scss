@@ -1,6 +1,25 @@
-.addnewpage { width: 150px; padding: 10px; text-align: center; color: #fff; background-color: darkgreen; border: solid 1px #566778; border-radius: 5px; }
-.addnewpage:hover { cursor: pointer; }
-.newpagefields { width:100%; border: solid 1px #566778; border-radius: 5px; }
-.pages_content { width:100%; border: solid 1px #566778; border-radius: 5px; text-align: center; }
-.pages_content:nth-of-type(n+1) { margin-top: 5px; }
-.pages_content:hover { background-color: #566778; color: #fff; cursor: pointer; }
+.addnewpage { 
+    width: 150px; 
+    padding: 10px; 
+    text-align: center; 
+    color: #fff; 
+    background-color: darkgreen; 
+    border: solid 1px #566778; 
+    border-radius: 5px; 
+
+    &:hover { cursor: pointer; }
+}
+
+.pages_content { 
+    width:100%; 
+    border: solid 1px #566778; 
+    border-radius: 5px; 
+    text-align: center;
+
+    &:nth-of-type(n+1) { margin-top: 5px; }
+    &:hover { background-color: #566778; color: #fff; cursor: pointer; }
+}
+
+.datatable {
+    margin-top: 20px;
+}

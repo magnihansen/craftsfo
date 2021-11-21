@@ -41,11 +41,20 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "da",
+        "locales": {
+          "da-DK": {
+            "translation": "src/locale/messages.da.xlf",
+            "baseHref": ""
+          }
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/craftsfo",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -55,7 +64,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
@@ -64,6 +74,9 @@
             ]
           },
           "configurations": {
+            "da": {
+              "localize": ["da"]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -81,8 +94,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -99,6 +112,9 @@
             "browserTarget": "craftsfo:build"
           },
           "configurations": {
+            "da": {
+              "browserTarget": "*project-name*:build:da"
+            },
             "production": {
               "browserTarget": "craftsfo:build:production"
             }

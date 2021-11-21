@@ -35,14 +35,7 @@ const routes: Routes = [
       CommonModule,
       RouterModule.forChild(routes)
     ],
-    providers: [
-      // LoginActivate,
-      // AngularFireDatabase,
-      // AuthService,
-      // PageService,
-      // SharedService,
-      // Title
-    ]
+    providers: []
 })
 
 export class AppRoutingModule {

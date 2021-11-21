@@ -1,8 +1,10 @@
+@import '../../../assets/variables.scss';
+
 :host {
     ::ng-deep {
         .ck-editor {
             min-width: 400px;
-            max-width: calc(100% - 32px);
+            max-width: 100%;
         }
         .ck-editor__editable_inline {
             min-height: 400px;
@@ -10,4 +12,4 @@
     }
 }
 
-.field input { width: 200px; }
+@include defaultFormInputs;

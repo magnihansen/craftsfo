@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { EventQueueService } from 'src/app/event-queue/event.queue';
 import { AppEventType } from 'src/app/event-queue';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-navigation',
@@ -15,18 +16,23 @@ import { AppEventType } from 'src/app/event-queue';
 })
 export class NavigationComponent implements OnInit {
   @Input() pageType = 'pages';
+
   public pages: Page[] = [];
   public isLoggedIn = false;
+  public brandName: string;
+  public logoUrl: string;
 
   constructor(
     private pageHubService: PageHubService,
     private pageService: PageService,
     private http: HttpClient,
-    private router: Router,
     private authenticationService: AuthenticationService,
     private eventQueueService: EventQueueService,
     @Inject('HUB_URL') private apiUrl: string
-  ) { }
+  ) {
+    this.brandName = environment.brandName;
+    this.logoUrl = environment.logo;
+  }
 
   ngOnInit(): void {
     this.eventQueueService.on(AppEventType.Login).subscribe({
@@ -49,24 +55,35 @@ export class NavigationComponent implements OnInit {
       const adminPages: Page[] = this.pageService.getAdminPages();
       this.pages = adminPages;
     } else {
-      this.pageHubService.startConnection();
-      this.pageHubService.addTransferDataListener();
-      this.startHttpRequest();
-
-      this.pageHubService.getPages().subscribe(pages => {
-        this.pages = pages;
-      });
+      this.setupSignalr();
     }
   }
 
   private startHttpRequest = () => {
-    this.http.get(`${this.apiUrl}/Page/GetPages`).subscribe(res => {
-      this.pages = res as Page[];
+    this.pageService.getPages().subscribe({
+      next: (pages: Page[]) => {
+        this.setAndSortPages(pages);
+      }
     });
+  }
+
+  private setupSignalr(): void {
+    this.pageHubService.startConnection();
+    this.pageHubService.addTransferDataListener();
+    this.startHttpRequest();
+
+    this.pageHubService.getPagesObservable().subscribe({
+      next: (pages: Page[]) => {
+        this.setAndSortPages(pages);
+      }
+    });
+  }
+
+  private setAndSortPages(pages: Page[]): void {
+    this.pages = pages.sort((a: Page, b: Page) => a.pageRank > b.pageRank ? 1 : -1);
   }
 
   public onSignOut(): void {
     this.authenticationService.logout();
-    this.router.navigate(['/']);
   }
 }

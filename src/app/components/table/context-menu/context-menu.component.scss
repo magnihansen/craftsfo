@@ -1,0 +1,60 @@
+:host {
+    position: relative;
+}
+.contextmenu-container {
+    &:hover {
+        & .material-icons:not(.no-hover) {
+            border-radius: 50%;
+            background-color: lightgray;
+        }
+    }
+
+    & .material-icons:not(.no-hover) {
+        position: relative;
+        z-index: 2;
+        padding: 10px;
+
+        &.context-menu-open {
+            border-radius: 50%;
+            background-color: lightgray;
+        }
+    }
+
+    & .contextmenu {
+        position: absolute;
+        right: 24px;
+        top: 0;
+        height: 42px !important;
+        border-top: solid 1px lightgray;
+        border-left: solid 1px lightgray;
+        border-bottom: solid 1px lightgray;
+        border-top-left-radius: 21px;
+        border-bottom-left-radius: 21px;
+        z-index: 1;
+        background-color: #fff;
+        transition: width 1s linear;
+
+        & ul {
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            min-width: 120px;
+            justify-content: flex-start;
+            padding: 0 5px;
+            margin: 0;
+            list-style-type: none;
+
+            & li {
+                display: flex;
+                flex-direction: row;
+                flex: 1;
+                align-items: center;
+
+                & .material-icons {
+                    color: #C51E3A;
+                    padding-right: 5px;
+                }
+            }
+        }
+    }
+}

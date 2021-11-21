@@ -1,11 +1,17 @@
 <div class="topnav" id="myTopnav">
   <a class="brand-icon" [routerLink]="'/'" routerLinkActive="router-link-active" >
-    <img title="Crafts.fo" src="../../assets/img/logo_house_small_transparent.png" />
+    <img title="{{ brandName }}" src="{{ logoUrl }}" />
   </a>
   <ng-container *ngFor="let page of pages">
     <a
+      *ngIf="page.link !== '/logout'"
       [routerLink]="page.link"
       class="nav-link m-2 menu-item"
+    >{{page['title']}}</a>
+    <a
+      *ngIf="page.link === '/logout'"
+      class="nav-link m-2 menu-item"
+      (click)="onSignOut()"
     >{{page['title']}}</a>
   </ng-container>
   

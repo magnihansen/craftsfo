@@ -45,7 +45,7 @@ export class PageHubService {
         this.data.next([]);
     }
 
-    getPages(): Observable<Page[]> {
+    getPagesObservable(): Observable<Page[]> {
         return this.data.asObservable();
     }
 }

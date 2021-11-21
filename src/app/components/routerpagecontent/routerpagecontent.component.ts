@@ -20,12 +20,12 @@ export class RouterpagecontentComponent {
     private miscHelper: MiscHelper
   ) {
     this.activatedRoute.params.subscribe(params => {
-      this.loadPageByUid(params.link);
+      this.loadPageByLink(params.link);
     });
   }
 
-  private loadPageByUid(pageUid: string | undefined): void {
-    this.pageService.getPageByUid(pageUid).subscribe({
+  private loadPageByLink(pageLink: string | undefined): void {
+    this.pageService.getPageByLink(pageLink).subscribe({
       next: (result: Page) => {
         this.content = result.content.replace('\n', '<br />');
       },

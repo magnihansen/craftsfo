@@ -2,22 +2,23 @@
 <div class="contactform">
     <form (ngSubmit)="onSubmit()" [ngFormOptions]="{updateOn:'submit'}">
         <div>
-          <label for="name">Navn:</label><br />
+          <label for="name">{{ 'Name' | i18n }}:</label><br />
           <input type="text" name="name" ngModel />
         </div>
         <div>
-          <label for="name">Email:</label><br />
+          <label for="name">{{ 'Email' | i18n }}:</label><br />
           <input type="text" name="email" ngModel />
         </div>
         <div>
-          <label for="name">Telefon:</label><br />
+          <label for="name">{{ 'Phone' | i18n }}:</label><br />
           <input type="text" name="phone" ngModel />
         </div>
         <div>
-          <label for="name">Besked:</label><br />
+          <label for="name">{{ 'Message' | i18n }}:</label><br />
           <textarea name="message" ngModel></textarea>
         </div>
-        <button type="submit">Send besked</button>
-        <div class="message_status">{{messageStatus}}</div>
+        <button type="submit">{{ 'Send message' | i18n }}</button>
+        <button type="reset">{{ 'Reset' | i18n }}</button>
     </form>
 </div>
+<div class="message_status">{{messageStatus}}</div>

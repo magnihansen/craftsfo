@@ -6,14 +6,13 @@
       </div>
       <div class="field">
         <label for="title">Rank:</label><br />
-        <input type="text" name="rank" [(ngModel)]="rank" />
+        <input type="number" name="rank" [(ngModel)]="rank" />
       </div>
       <div class="field">
         <label for="content">Tekst:</label><br />
         <ckeditor [editor]="classicEditor" [(ngModel)]="content"></ckeditor>
       </div>
       <button type="submit">Gem</button>
-      <div class="editor_message">{{messageStatus}}</div>
+      <button type="button" (click)="gotoDashboard()">Dashboard</button>
     </form>
   </div>
-  <button (click)="gotoDashboard()">Dashboard</button>

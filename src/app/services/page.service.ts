@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Page } from '../interfaces/page';
+import { User } from '../models/user';
 import { AuthenticationService } from './authentication.service';
 
 @Injectable({
@@ -20,58 +21,65 @@ export class PageService {
     @Inject('HUB_URL') private apiUrl: string
   ) { }
 
-  getPage(pageId: number): Observable<Page> {
-    return this.http.get<Page>(`${this.apiUrl}/Page/GetPage/${pageId}`, this.httpOptions);
+  public getPage(pageId: number): Observable<Page> {
+    return this.http.get<Page>(`${this.apiUrl}/V1/Page/GetPage/${pageId}`, this.httpOptions);
   }
 
-  getPages(): Observable<Page[]> {
-    return this.http.get<Page[]>(`${this.apiUrl}/Page/GetPages`, this.httpOptions);
+  public getPages(): Observable<Page[]> {
+    return this.http.get<Page[]>(`${this.apiUrl}/V1/Page/GetPages`, this.httpOptions);
   }
 
-  getPageByLink(pageLink: string | undefined): Observable<Page> {
+  public getPageByLink(pageLink: string | undefined): Observable<Page> {
     let pageUrl: string;
     if (pageLink === undefined || pageLink === '') {
-      pageUrl = `${this.apiUrl}/Page/GetDefaultPage`;
+      pageUrl = `${this.apiUrl}/V1/Page/GetDefaultPage`;
     } else {
-      pageUrl = `${this.apiUrl}/Page/GetPageByLink/${pageLink}`;
+      pageUrl = `${this.apiUrl}/V1/Page/GetPageByLink/${pageLink}`;
     }
     return this.http.get<Page>(pageUrl, this.httpOptions);
   }
 
-  getPageByUid(pageUid: string | undefined): Observable<Page> {
+  public getPageByUid(pageUid: string | undefined): Observable<Page> {
     let pageUrl: string;
     if (pageUid === undefined || pageUid === '') {
-      pageUrl = `${this.apiUrl}/Page/GetDefaultPage`;
+      pageUrl = `${this.apiUrl}/V1/Page/GetDefaultPage`;
     } else {
-      pageUrl = `${this.apiUrl}/Page/GetPageByUid/${pageUid}`;
+      pageUrl = `${this.apiUrl}/V1/Page/GetPageByUid/${pageUid}`;
     }
     return this.http.get<Page>(pageUrl, this.httpOptions);
   }
 
-  createPage(page: Page): void {
-    // this.pages?.push(page).then(msg => this.handleSuccess(msg));
+  public addPage(page: Page): Observable<boolean> {
+    return this.http.post<boolean>(
+      `${this.apiUrl}/V1/Page/AddPage`,
+      page,
+      this.httpOptions
+    );
   }
 
-  updatePage(key: string, page: Page): void {
-    this.authenticationService.getUser().subscribe(user => {
-      const body = {
-        id: page.id,
-        uid: page.uid,
-        title: page.title,
-        parent: page.parent,
-        content: page.content,
-        pageRank: page.pageRank,
-        link: page.link,
-        active: page.active,
-        updatedDate: new Date(),
-        updatedBy: user.id
-      };
-      this.http.put(`${this.apiUrl}/Page/UpdatePage`, body, this.httpOptions);
-    });
+  public updatePage(page: Page): Observable<boolean> {
+    const user: User = this.authenticationService.getUser();
+
+    const body = {
+      id: page.id,
+      uid: page.uid,
+      title: page.title,
+      parent: page.parent,
+      content: page.content,
+      pageRank: page.pageRank,
+      link: page.link,
+      active: page.active,
+      updatedDate: new Date(),
+      updatedBy: user.username
+    };
+    return this.http.put<boolean>(`${this.apiUrl}/V1/Page/UpdatePage`, body, this.httpOptions);
   }
 
-  deletePage(key: string): void {
-    // this.pages?.remove(key).catch(error => this.handleError(error));
+  public deletePage(pageId: number): Observable<boolean> {
+    return this.http.delete<boolean>(
+      `${this.apiUrl}/Page/DeletePage/${pageId}`,
+      this.httpOptions
+    );
   }
 
   // getPagesList(orderByChild: string = 'rank'): Observable<Page[]> {
@@ -82,11 +90,7 @@ export class PageService {
   //   );
   // }
 
-  deleteAll(): void {
-    // this.pages?.remove().catch(error => this.handleError(error));
-  }
-
-  getAdminPages(): Page[] {
+  public getAdminPages(): Page[] {
     const pages: Page[] = [];
 
     const pageDashboard: Page = this.createAdminPage('Dashboard', '1', '/admin/dashboard');

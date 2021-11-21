@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map, retry, tap } from 'rxjs/operators';
 import { AppEvent, AppEventType } from '../event-queue';
@@ -28,44 +29,61 @@ export class AuthenticationService {
 
   constructor(
     private http: HttpClient,
+    private router: Router,
     private eventQueueService: EventQueueService,
     @Inject('HUB_URL') private apiUrl: string
   ) { }
 
-  login(userName: string, passWord: string): Observable<boolean> {
+  public login(userName: string, passWord: string): Observable<boolean> {
     const body = {
       username: userName,
       password: passWord
     };
-    return this.http.post<string>(`${this.apiUrl}/login/authenticate`, body)
+    return this.http.post<string>(`${this.apiUrl}/V1/Login/Authenticate`, body)
       .pipe(
         map(response => {
-          this.isUserLoggedIn = true;
-          localStorage.setItem('apitoken', response);
           this.IsUserLoggedIn = true;
+          localStorage.setItem('apitoken', response);
+
+          this.loadUser().subscribe({
+            next: (user: User) => {
+              console.log('User loaded');
+            }
+          });
+
           this.eventQueueService.dispatch(new AppEvent(AppEventType.Login));
           return true;
         })
       );
   }
 
-  logout(): void {
+  public logout(): void {
     this.IsUserLoggedIn = false;
     localStorage.removeItem('isUserLoggedIn');
-    this.eventQueueService.dispatch(new AppEvent(AppEventType.Logout));
+    this.router.navigate(['/']).then(() => {
+      this.eventQueueService.dispatch(new AppEvent(AppEventType.Logout));
+    });
   }
 
-  getUser(): Observable<User> {
+  public getUser(): User {
+    const user: string = localStorage.getItem('user') || '';
+    return JSON.parse(user) as User;
+  }
+
+  public loadUser(): Observable<User> {
     const apiToken: string = localStorage.getItem('apitoken') || '';
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: apiToken
       })
     };
-    return this.http.get<User>(`${this.apiUrl}/login/getuser`, httpOptions)
+    return this.http.get<User>(`${this.apiUrl}/V1/User/GetUserByIdentity`, httpOptions)
       .pipe(
         retry(1),
-        map(user => user),
+        map((user: User) => {
+          localStorage.setItem('user', JSON.stringify(user));
+          return user;
+        }),
         catchError(this.handleError<User>('getUserByToken'))
       );
   }

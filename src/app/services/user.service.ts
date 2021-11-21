@@ -12,6 +12,6 @@ export class UserService {
     ) { }
 
     getAll(): Observable<any> {
-        return this.http.get<User[]>(`${this.apiUrl}/users`);
+        return this.http.get<User[]>(`${this.apiUrl}/V1/Users`);
     }
 }

@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { PageService } from 'src/app/services/page.service';
-// import * as uuid from 'uuid';
 import { Page } from '../../../interfaces/page';
 import { DataColumn } from '../../table/data-column';
 import { DataRow } from '../../table/data-row';
@@ -10,19 +11,12 @@ import { DataRow } from '../../table/data-row';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit, OnDestroy {
-  private _pages: Page[] = [];
+export class DashboardComponent implements OnInit {
+  @Input() public pageRows: DataRow[] = [];
+
   private _showAddPage = false;
   public newPage: Page | null = null;
   public guid = '';
-  public pageRows: DataRow[] = [];
-
-  public get pages(): Page[] {
-    return this._pages;
-  }
-  public set pages(p: Page[]) {
-    this._pages = p;
-  }
 
   public get showAddPage(): boolean {
     return this._showAddPage;
@@ -32,6 +26,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   constructor(
+    private router: Router,
     private pageService: PageService
   ) {
     console.log('Dashboard');
@@ -41,13 +36,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.loadPages();
   }
 
-  loadPages(): void {
+  private loadPages(): void {
     this.pageService.getPages().subscribe({
       next: (pages: Page[]) => {
-        this.pages = pages;
-        pages.forEach((dataPage: Page) => {
-          this.pageRows.push(
+        const _allowDelete = true;
+        const _showContextMenu = true;
+        const _pageRows: DataRow[] = [];
+        pages.forEach((dataPage: Page, index: number) => {
+          _pageRows.push(
             {
+              rowIndex: index,
+              rowIdentifier: dataPage.id.toString(),
+              showContextMenu: _showContextMenu,
+              allowDelete: _allowDelete,
               dataColumns: [
                 {
                   name: 'Navn',
@@ -56,37 +57,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 {
                   name: 'Link',
                   value: dataPage.link
+                } as DataColumn,
+                {
+                  name: 'Rank',
+                  value: dataPage.pageRank
+                } as DataColumn,
+                {
+                  name: 'Updated',
+                  value: dataPage.updatedDate
                 } as DataColumn
               ]
             } as DataRow
           );
         });
-        console.log('this.pageRows', this.pageRows);
+        this.pageRows = _pageRows;
       },
-      error: (err: any) => console.log(err)
+      error: (err: any) => console.log(err),
+      complete: () => {
+        console.log('getPages() complete', this.pageRows);
+      }
     });
   }
 
-  toggleAddNewPage(): void {
+  public toggleAddNewPage(): void {
     this.showAddPage = !this.showAddPage;
-    console.log('this.showAddPage', this.showAddPage);
   }
 
-  addPage(title: string, link: string, content: string, rank: string): void {
-    // if (this.authService.isAuthenticated()) {
-    //   this.newPage = {
-    //     uid: uuid.v4(),
-    //     rank,
-    //     parent: '',
-    //     title,
-    //     link,
-    //     content,
-    //     active: true
-    //   };
-    //   // this.af.list('/pages').push(this.newPage);
-    // }
+  public rowClicked(dataRow: DataRow): void {
+    this.router.navigate(['/admin/editpage/' + dataRow.rowIdentifier]);
+    console.log('Row clicked', dataRow);
   }
 
-  ngOnDestroy(): void {
+  public deleteRow(dataRow: DataRow): void {
+    const pageId: number = parseInt(dataRow.rowIdentifier, undefined);
+    this.pageService.deletePage(pageId).subscribe({
+      next: (result: boolean) => {
+        this.loadPages();
+      }
+    });
+    console.log('Delete row', dataRow);
+  }
+
+  public closeAddpage(closed: boolean): void {
+    if (closed) {
+      this.showAddPage = false;
+      this.loadPages();
+    }
   }
 }

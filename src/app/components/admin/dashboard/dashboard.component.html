@@ -1,33 +1,16 @@
-<h1>Sider</h1>
+<h1>{{ 'Pages' | i18n }}</h1>
 <div class="addnewpage" (click)="toggleAddNewPage()">
-  Add new
+  {{ 'Create page' | i18n }}
 </div>
-<div class="newpagefields" *ngIf=showAddPage>
-  <form (submit)="addPage(title.value, link.value, content.value, rank.value)">
-    <div>
-      <label for="title">Navn</label>
-      <input type="text" #title />
-    </div>
-    <div>
-        <label for="link">Link</label>
-        <input type="text" #link />
-      </div>
-    <div>
-      <label for="content">Tekst</label>
-      <input type="text" #content />
-    </div>
-    <div>
-        <label for="rank">Rank</label>
-        <input type="text" #rank />
-      </div>
-    <button type="submit">Opret side</button>
-  </form>
-</div>
-<!-- <div class="pages_content" *ngFor="let page of pages">
-  <div id="{{page.uid}}">
-    <h4>{{page.title}}</h4>
-    <h5><a [routerLink]="['/admin/editpage', page.uid]">Edit</a></h5>
-  </div>
-</div> -->
+<app-addpage 
+  *ngIf="showAddPage"
+  (closeChange)="closeAddpage($event)"
+></app-addpage>
 
-<!-- <app-table [data]="pageRows"></app-table> -->
+<div class="datatable">
+  <app-table 
+    [(dataRows)]="pageRows" 
+    (rowClicked)="rowClicked($event)"
+    (deleteRowChange)="deleteRow($event)"
+  ></app-table>
+</div>
