@@ -2,22 +2,20 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { ContacteditComponent } from './components/admin/contactedit/contactedit.component';
-import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
-import { PageeditComponent } from './components/admin/pageedit/pageedit.component';
+import { AdminLayoutComponent } from './admin-layout.component';
+import { ContacteditComponent } from '../../components/admin/contactedit/contactedit.component';
+import { DashboardComponent } from '../../components/admin/dashboard/dashboard.component';
+import { PageeditComponent } from '../../components/admin/pageedit/pageedit.component';
 import { AuthGuard } from 'src/app/helpers/auth.guard';
-import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { AddpageComponent } from './components/admin/addpage/addpage.component';
-import { LocalLocalizationModule } from './localization/local-localization.module';
-import { I18nPipe } from './localization/i18n.pipe';
+import { AddpageComponent } from '../../components/admin/addpage/addpage.component';
+import { LocalLocalizationModule } from '../../localization/local-localization.module';
+import { I18nPipe } from '../../localization/i18n.pipe';
 
 const routes: Routes = [
   {
-    path: 'admin',
+    path: '',
     component: AdminLayoutComponent,
-    pathMatch: 'prefix',
     canActivate: [AuthGuard],
     children: [
       { path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'} },
@@ -38,7 +36,6 @@ const routes: Routes = [
     ],
     imports: [
       FormsModule,
-      BrowserModule,
       SharedModule,
       CommonModule,
       RouterModule.forChild(routes),
@@ -52,7 +49,7 @@ const routes: Routes = [
     ]
 })
 
-export class AdminRoutingModule {
+export class AdminLayoutRoutingModule {
     constructor() {
         console.log('AdminRoutingModule');
     }

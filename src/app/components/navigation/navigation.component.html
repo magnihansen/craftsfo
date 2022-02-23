@@ -1,21 +1,30 @@
-<div class="topnav" id="myTopnav">
-  <a class="brand-icon" [routerLink]="'/'" routerLinkActive="router-link-active" >
-    <img title="{{ brandName }}" src="{{ logoUrl }}" />
-  </a>
-  <ng-container *ngFor="let page of pages">
-    <a
-      *ngIf="page.link !== '/logout'"
-      [routerLink]="page.link"
-      class="nav-link m-2 menu-item"
-    >{{page['title']}}</a>
-    <a
-      *ngIf="page.link === '/logout'"
-      class="nav-link m-2 menu-item"
-      (click)="onSignOut()"
-    >{{page['title']}}</a>
-  </ng-container>
-  
-  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-    <i class="fa fa-bars"></i>
-  </a>
-</div>
+<header class="navbar" [ngClass]="{'navbar-fixed': isFixedNavbar}">
+  <div class="container">
+     <div class="navbar-mobile-top">
+        <div class="navbar-logo">
+           <a routerLink="/">
+            <img title="{{ brandName }}" src="{{ logoUrl }}" />
+           </a>
+        </div>
+        <button mat-icon-button color="accent" class="navbar-toggle" (click)="toggleNavbar()">
+           <mat-icon>{{!navbarOpened ? 'menu': 'close'}}</mat-icon>
+        </button>
+     </div>
+     <div class="top-navbar">
+        <ng-container *ngFor="let page of pages">
+          <a
+            *ngIf="page.link !== '/logout'"
+            [routerLink]="[(isLoggedIn ? '/' : '/page/') + page.link]"
+            mat-button
+            class="navbartop-btn"
+          >{{page['title']}}</a>
+          <a
+            *ngIf="page.link === '/logout'"
+            (click)="onSignOut()"
+            mat-button
+            class="navbartop-btn"
+          >{{page['title']}}</a>
+        </ng-container>
+     </div>
+  </div>
+</header>

@@ -1,4 +1,6 @@
-@import './app/assets/variables.scss';
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
 
 /* You can add global styles to this file, and also import other style files */
 html, body {
@@ -7,7 +9,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: $font-family;
+    font-family: var(--font-family);
 }
 
 a:hover {
@@ -20,4 +22,26 @@ button {
     min-width: 100px;
     border: none;
     border-radius: 2px;
+}
+
+:root {
+    --font-family: 'Open Sans', sans-serif;
+    --font-color-primary: '#f4f7f9';
+    --font-color-secondary: '#eff3f6';
+    --font-color-light: '#ced7df';
+    --font-size-default: '14px';
+
+    --brown-dark: #403121;
+    --brown-middle: #a65e09;
+    --brown-light: #ed9728;
+    --brown-creme: #f4cc94;
+
+    /* Brand colors - http://brandcolors.net - Buffer */
+    --bg-black: #323b43;
+    --bg-gray: #59626a;
+    --bg-blue: #168eea;
+    --bg-red: #ee4f4f;
+
+    --transition-padding: padding 0.3s linear;
+    --box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
 }

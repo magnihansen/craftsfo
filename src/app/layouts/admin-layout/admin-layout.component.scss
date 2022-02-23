@@ -12,7 +12,7 @@
         flex: 0 0 60px;
         align-items: center;
         background-color: #fff;
-        box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+        box-shadow: var(--box-shadow);
 
         @include defaultTexts;
     }
@@ -44,8 +44,8 @@
     right: 20px;
     width: 30px;
     height: 30px;
-    background-color: $bg-gray;
-    color: $font-color-light;
+    background-color: var(--bg-gray);
+    color: var(--font-color-light);
     text-align: center;
     vertical-align: middle;
 }

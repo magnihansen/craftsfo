@@ -1,33 +1,32 @@
-@import '../../assets/variables.scss';
-
 :host {
     display: flex;
-    flex: 1;
+    flex-direction: row;
+    flex: 1 1 100%;
 }
 
 .footer {
     display: flex;
     flex-direction: row;
-    flex: 1;
+    flex: 1 1 100%;
     align-items: center;
     justify-content: space-between;
     align-items: center;
     height: 80px;
-    background-color: $brown-dark;
-    color: $brown-creme;
+    background-color: var(--brown-dark);
+    color: var(--brown-light);
 
     & a {
-        color: $brown-creme;
+        color: var(--brown-creme);
     }
 
-    & .footer-text {
+    .footer-text {
         display: flex;
         flex-direction: column;
         flex: 1;
         justify-content: flex-start;
     }
 
-    & .login {
+    .login {
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -39,8 +38,8 @@
         }
 
         &:hover {
-            background-color: #ddd;
-            color: black;
+            background-color: var(--brown-light);
+            color: var(--brown-dark);
             cursor: pointer;
         }
     }

@@ -50,7 +50,10 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/admin/dashboard']);
         }
       },
-      error: (err) => console.log(err)
+      error: (err) => {
+        console.log(err);
+        this.loading = false;
+      }
     });
   }
 

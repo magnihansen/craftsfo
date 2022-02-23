@@ -1,9 +1,7 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, HostBinding, HostListener, Inject, Input, OnInit } from '@angular/core';
 import { Page } from '../../interfaces/page';
 import { PageService } from 'src/app/services/page.service';
 import { PageHubService } from 'src/app/services/pagehub.service';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { EventQueueService } from 'src/app/event-queue/event.queue';
 import { AppEventType } from 'src/app/event-queue';
@@ -16,16 +14,17 @@ import { environment } from 'src/environments/environment';
 })
 export class NavigationComponent implements OnInit {
   @Input() pageType = 'pages';
+  @HostBinding('class.navbar-opened') navbarOpened = false;
 
   public pages: Page[] = [];
   public isLoggedIn = false;
   public brandName: string;
   public logoUrl: string;
+  public isFixedNavbar = false;
 
   constructor(
     private pageHubService: PageHubService,
     private pageService: PageService,
-    private http: HttpClient,
     private authenticationService: AuthenticationService,
     private eventQueueService: EventQueueService,
     @Inject('HUB_URL') private apiUrl: string
@@ -47,6 +46,20 @@ export class NavigationComponent implements OnInit {
     });
 
     this.loadPages();
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    const offset = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    if (offset > 10) {
+      this.isFixedNavbar = true;
+    } else {
+      this.isFixedNavbar = false;
+    }
+  }
+
+  public toggleNavbar(): void {
+    this.navbarOpened = !this.navbarOpened;
   }
 
   private loadPages(): void {

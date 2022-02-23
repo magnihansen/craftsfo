@@ -1,41 +1,41 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { RouterpagecontentComponent } from './components/routerpagecontent/routerpagecontent.component';
-import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { Routes, RouterModule, ExtraOptions } from '@angular/router';
+import { NotfoundComponent } from './components/notfound/notfound.component';
 import { SharedModule } from './shared/shared.module';
 
 const routes: Routes = [
   {
+    path: 'login',
+    loadChildren: () => import('./layouts/empty-layout/login-routing.module').then(m => m.LoginRoutingModule)
+  },
+  {
     path: 'page',
-    component: MainLayoutComponent,
-    pathMatch: 'prefix',
-    children: [
-      {
-        path: 'start',
-        pathMatch: 'full',
-        component: RouterpagecontentComponent
-      },
-      {
-        path: ':link',
-        pathMatch: 'full',
-        component: RouterpagecontentComponent
-      }
-    ]
-  }
+    loadChildren: () => import('./layouts/main-layout/main-layout-routing.module').then(m => m.MainLayoutRoutingModule)
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./layouts/admin-layout/admin-layout-routing.module').then(m => m.AdminLayoutRoutingModule)
+  },
+  { path: '', redirectTo: '/page/start' },
+  { path: '404', component: NotfoundComponent },
+  { path: '**', redirectTo: '/404' }
 ];
 
+const routerOptions: ExtraOptions = {
+  scrollPositionRestoration: 'enabled',
+  // anchorScrolling: 'enabled',
+  // scrollOffset: [0, 64],
+  enableTracing: false
+};
+
 @NgModule({
-    declarations: [
-      MainLayoutComponent,
-      RouterpagecontentComponent
-    ],
     imports: [
       SharedModule,
-      CommonModule,
-      RouterModule.forChild(routes)
+      RouterModule.forRoot(routes, routerOptions)
     ],
-    providers: []
+    exports: [
+      RouterModule
+    ]
 })
 
 export class AppRoutingModule {

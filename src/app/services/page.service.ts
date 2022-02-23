@@ -9,7 +9,8 @@ import { AuthenticationService } from './authentication.service';
   providedIn: 'root'
 })
 export class PageService {
-  httpOptions = {
+  private apiPath = '/V1/Page';
+  private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
     })
@@ -22,19 +23,19 @@ export class PageService {
   ) { }
 
   public getPage(pageId: number): Observable<Page> {
-    return this.http.get<Page>(`${this.apiUrl}/V1/Page/GetPage/${pageId}`, this.httpOptions);
+    return this.http.get<Page>(`${this.apiUrl}${this.apiPath}/GetPage/${pageId}`, this.httpOptions);
   }
 
   public getPages(): Observable<Page[]> {
-    return this.http.get<Page[]>(`${this.apiUrl}/V1/Page/GetPages`, this.httpOptions);
+    return this.http.get<Page[]>(`${this.apiUrl}${this.apiPath}/GetPages`, this.httpOptions);
   }
 
   public getPageByLink(pageLink: string | undefined): Observable<Page> {
     let pageUrl: string;
     if (pageLink === undefined || pageLink === '') {
-      pageUrl = `${this.apiUrl}/V1/Page/GetDefaultPage`;
+      pageUrl = `${this.apiUrl}${this.apiPath}/GetDefaultPage`;
     } else {
-      pageUrl = `${this.apiUrl}/V1/Page/GetPageByLink/${pageLink}`;
+      pageUrl = `${this.apiUrl}${this.apiPath}/GetPageByLink/${pageLink}`;
     }
     return this.http.get<Page>(pageUrl, this.httpOptions);
   }
@@ -42,16 +43,16 @@ export class PageService {
   public getPageByUid(pageUid: string | undefined): Observable<Page> {
     let pageUrl: string;
     if (pageUid === undefined || pageUid === '') {
-      pageUrl = `${this.apiUrl}/V1/Page/GetDefaultPage`;
+      pageUrl = `${this.apiUrl}${this.apiPath}/GetDefaultPage`;
     } else {
-      pageUrl = `${this.apiUrl}/V1/Page/GetPageByUid/${pageUid}`;
+      pageUrl = `${this.apiUrl}${this.apiPath}/GetPageByUid/${pageUid}`;
     }
     return this.http.get<Page>(pageUrl, this.httpOptions);
   }
 
   public addPage(page: Page): Observable<boolean> {
     return this.http.post<boolean>(
-      `${this.apiUrl}/V1/Page/AddPage`,
+      `${this.apiUrl}${this.apiPath}/AddPage`,
       page,
       this.httpOptions
     );
@@ -72,23 +73,15 @@ export class PageService {
       updatedDate: new Date(),
       updatedBy: user.username
     };
-    return this.http.put<boolean>(`${this.apiUrl}/V1/Page/UpdatePage`, body, this.httpOptions);
+    return this.http.put<boolean>(`${this.apiUrl}${this.apiPath}/UpdatePage`, body, this.httpOptions);
   }
 
   public deletePage(pageId: number): Observable<boolean> {
     return this.http.delete<boolean>(
-      `${this.apiUrl}/Page/DeletePage/${pageId}`,
+      `${this.apiUrl}${this.apiPath}/DeletePage/${pageId}`,
       this.httpOptions
     );
   }
-
-  // getPagesList(orderByChild: string = 'rank'): Observable<Page[]> {
-  //   return this.httpService.get<Page[]>(this.apiRoot + '/GetPages', this.httpOptions)
-  //   .pipe(
-  //     tap(data => data),
-  //     catchError(this.handleError)
-  //   );
-  // }
 
   public getAdminPages(): Page[] {
     const pages: Page[] = [];

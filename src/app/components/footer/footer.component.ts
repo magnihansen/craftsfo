@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 import { AppEventType } from 'src/app/event-queue';
 import { EventQueueService } from 'src/app/event-queue/event.queue';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -13,12 +12,12 @@ import { Developer } from '../../interfaces/developer';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
-  company: Company;
-  developer: Developer;
-  date: Date = new Date();
-  hasCompanyLoaded = false;
-  hasDeveloperLoaded = false;
-  isLoggedIn = false;
+  public company: Company;
+  public developer: Developer;
+  public date: Date = new Date();
+  public hasCompanyLoaded = false;
+  public hasDeveloperLoaded = false;
+  public isLoggedIn = false;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -32,7 +31,7 @@ export class FooterComponent implements OnInit {
     this.developer = { name: '', url: '', facebook: '' };
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.eventQueueService.on(AppEventType.Login).subscribe({
       next: () => {
         this.isLoggedIn = this.authenticationService.IsUserLoggedIn;
@@ -46,25 +45,25 @@ export class FooterComponent implements OnInit {
     this.isLoggedIn = this.authenticationService.IsUserLoggedIn;
   }
 
-  clearSearch(search: any): void {
+  public clearSearch(search: any): void {
     search.value = '';
   }
 
-  onSearch(value: string): void {
+  public onSearch(value: string): void {
     if (value.length > 0) {
       this.router.navigate(['/resultater', value]);
     }
   }
 
-  generateArray(obj: any): any {
+  public generateArray(obj: any): any {
     return Object.keys(obj).map((key) => obj[key]);
   }
 
-  gotoLogin(): void {
-    this.router.navigateByUrl('/login', { skipLocationChange: true });
+  public gotoLogin(): void {
+    this.router.navigate(['/login']);
   }
 
-  gotoLogout(): void {
+  public gotoLogout(): void {
     this.authenticationService.logout();
     this.router.navigate(['/']);
   }

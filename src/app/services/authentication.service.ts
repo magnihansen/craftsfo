@@ -1,8 +1,8 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, map, retry, tap } from 'rxjs/operators';
+import { catchError, map, retry } from 'rxjs/operators';
 import { AppEvent, AppEventType } from '../event-queue';
 import { EventQueueService } from '../event-queue/event.queue';
 import { User } from '../models/user';
@@ -39,7 +39,7 @@ export class AuthenticationService {
       username: userName,
       password: passWord
     };
-    return this.http.post<string>(`${this.apiUrl}/V1/Login/Authenticate`, body)
+    return this.http.post<string>(`${this.apiUrl}/V1/Auth/Login`, body)
       .pipe(
         map(response => {
           this.IsUserLoggedIn = true;
