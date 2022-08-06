@@ -7,9 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class JwtInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        // add authorization header with jwt token if available
         const token: string = localStorage.getItem('apitoken') || '';
-        if (token) {
+        if (token && this.addAuthorization(request)) {
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${token}`
@@ -17,5 +16,13 @@ export class JwtInterceptor implements HttpInterceptor {
             });
         }
         return next.handle(request);
+    }
+
+    private addAuthorization(request: HttpRequest<any>): boolean {
+        if (request.url.indexOf('V1/Auth/ValidateToken') > -1 || request.url.indexOf('V1/Auth/Login') > -1) {
+            return false;
+        }
+
+        return true;
     }
 }

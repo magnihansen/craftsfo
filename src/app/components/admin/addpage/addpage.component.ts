@@ -19,7 +19,6 @@ export class AddpageComponent {
   ) { }
 
   public addPage(title: string, link: string, content: string, rank: string): void {
-    console.log('add page');
     if (this.authService.IsUserLoggedIn) {
       const user: User = this.authService.getUser();
       const pageRank: string = rank || '';
@@ -35,7 +34,6 @@ export class AddpageComponent {
       } as unknown as Page;
 
       this.pageService.addPage(newPage).subscribe((result: boolean) => {
-        console.log('Page added', result);
         if (result) {
           this.closeCreateSection();
         }

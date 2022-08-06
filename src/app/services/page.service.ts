@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/operators';
 import { Page } from '../interfaces/page';
 import { User } from '../models/user';
 import { AuthenticationService } from './authentication.service';
@@ -77,24 +78,30 @@ export class PageService {
   }
 
   public deletePage(pageId: number): Observable<boolean> {
+    const deletePageUrl = `${this.apiUrl}${this.apiPath}/DeletePage`;
     return this.http.delete<boolean>(
-      `${this.apiUrl}${this.apiPath}/DeletePage/${pageId}`,
-      this.httpOptions
+      deletePageUrl,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        params: {
+          pageId: pageId.toString()
+        }
+      }
     );
   }
 
   public getAdminPages(): Page[] {
-    const pages: Page[] = [];
+    let pages: Page[] = [];
 
     const pageDashboard: Page = this.createAdminPage('Dashboard', '1', '/admin/dashboard');
     const pageContact: Page = this.createAdminPage('Contact', '2', '/admin/contact');
     const pageSlides: Page = this.createAdminPage('Slides', '3', '/admin/slides');
-    const pageLogout: Page = this.createAdminPage('Logout', '4', '/logout');
+    const pageUsers: Page = this.createAdminPage('Users', '4', '/admin/users');
+    const pageLogout: Page = this.createAdminPage('Logout', '5', '/logout');
 
-    pages.push(pageDashboard);
-    pages.push(pageContact);
-    pages.push(pageSlides);
-    pages.push(pageLogout);
+    pages = [...pages, pageDashboard, pageContact, pageSlides, pageUsers, pageLogout];
 
     return pages;
   }

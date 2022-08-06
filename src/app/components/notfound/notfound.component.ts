@@ -8,10 +8,5 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NotfoundComponent {
 
-  constructor(
-    private activatedRoute: ActivatedRoute
-  ) {
-    console.log('NotfoundComponent');
-    console.log('activatedRoute', activatedRoute.url);
-  }
+  constructor() {}
 }

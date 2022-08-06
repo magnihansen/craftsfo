@@ -44,7 +44,7 @@ $bg-red: '#ee4f4f';
             border: 2px solid #dedede;
             border-radius: 5px;
             outline: none;
-            width: calc(100% - 32px);
+            width: calc(100% - 24px);
 
             &[type="number"] {
                 width: 100px;
@@ -68,10 +68,15 @@ $bg-red: '#ee4f4f';
             &:active, &:focus {
                 border: none;
             }
-    
-            &:active {
-                margin-top: 1px;
+
+            &:hover {
+                cursor: pointer;
             }
+        }
+
+        & .invalid-feedback {
+            font-size: 14px;
+            color: red;
         }
     }
 }

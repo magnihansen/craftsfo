@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { PageService } from 'src/app/services/page.service';
 import { Page } from '../../../interfaces/page';
 import { DataColumn } from '../../table/data-column';
@@ -28,9 +27,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private router: Router,
     private pageService: PageService
-  ) {
-    console.log('Dashboard');
-  }
+  ) { }
 
   ngOnInit(): void {
     this.loadPages();
@@ -42,6 +39,7 @@ export class DashboardComponent implements OnInit {
         const _allowDelete = true;
         const _showContextMenu = true;
         const _pageRows: DataRow[] = [];
+
         pages.forEach((dataPage: Page, index: number) => {
           _pageRows.push(
             {
@@ -72,9 +70,8 @@ export class DashboardComponent implements OnInit {
         });
         this.pageRows = _pageRows;
       },
-      error: (err: any) => console.log(err),
-      complete: () => {
-        console.log('getPages() complete', this.pageRows);
+      error: (err: any) => {
+        console.log(err);
       }
     });
   }
@@ -85,17 +82,22 @@ export class DashboardComponent implements OnInit {
 
   public rowClicked(dataRow: DataRow): void {
     this.router.navigate(['/admin/editpage/' + dataRow.rowIdentifier]);
-    console.log('Row clicked', dataRow);
   }
 
   public deleteRow(dataRow: DataRow): void {
     const pageId: number = parseInt(dataRow.rowIdentifier, undefined);
     this.pageService.deletePage(pageId).subscribe({
-      next: (result: boolean) => {
-        this.loadPages();
+      next: (isDeleted: boolean) => {
+        if (isDeleted) {
+          this.loadPages();
+        } else {
+          console.log('Page not deleted!');
+        }
+      },
+      error: (err: any) => {
+        console.log('Page delete error', err);
       }
     });
-    console.log('Delete row', dataRow);
   }
 
   public closeAddpage(closed: boolean): void {

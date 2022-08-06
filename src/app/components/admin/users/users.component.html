@@ -1,0 +1,9 @@
+<h1>{{ 'Users' | i18n }}</h1>
+
+<div class="datatable">
+  <app-table 
+    [(dataRows)]="userRows" 
+    (rowClicked)="rowClicked($event)"
+    (deleteRowChange)="deleteRow($event)"
+  ></app-table>
+</div>

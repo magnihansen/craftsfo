@@ -10,10 +10,10 @@
     flex: 1 1 100%;
     align-items: center;
     justify-content: space-between;
-    align-items: center;
-    height: 80px;
+    height: 50px;
     background-color: var(--brown-dark);
     color: var(--brown-light);
+    padding: 0 15px;
 
     & a {
         color: var(--brown-creme);
@@ -33,8 +33,13 @@
 
         & .login-link {
             display: flex;
+            align-items: center;
             justify-content: flex-end;
             padding: 14px 16px;
+
+            i {
+                margin-right: 10px;
+            }
         }
 
         &:hover {

@@ -21,7 +21,5 @@ import { ContextMenuComponent } from './context-menu/context-menu.component';
 })
 
 export class TableModule {
-  constructor() {
-    console.log('TableModule');
-  }
+  constructor() { }
 }

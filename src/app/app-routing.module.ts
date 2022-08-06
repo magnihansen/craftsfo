@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { CanActivateGuard } from './helpers/can-activate.guard';
+import { CanLoadGuard } from './helpers/can-load.guard';
 import { SharedModule } from './shared/shared.module';
 
 const routes: Routes = [
@@ -14,6 +16,8 @@ const routes: Routes = [
   },
   {
     path: 'admin',
+    canLoad: [ CanLoadGuard ],
+    canActivate: [ CanActivateGuard ],
     loadChildren: () => import('./layouts/admin-layout/admin-layout-routing.module').then(m => m.AdminLayoutRoutingModule)
   },
   { path: '', redirectTo: '/page/start' },
@@ -39,7 +43,5 @@ const routerOptions: ExtraOptions = {
 })
 
 export class AppRoutingModule {
-  constructor() {
-    console.log('AppRoutingModule');
-  }
+  constructor() { }
 }

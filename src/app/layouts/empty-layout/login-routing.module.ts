@@ -36,7 +36,5 @@ const routes: Routes = [
 })
 
 export class LoginRoutingModule {
-    constructor() {
-        console.log('LoginRoutingModule');
-    }
+    constructor() { }
 }

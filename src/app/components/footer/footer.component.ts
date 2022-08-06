@@ -24,9 +24,6 @@ export class FooterComponent implements OnInit {
     private router: Router,
     private eventQueueService: EventQueueService
   ) {
-    console.log('FooterComponent');
-
-    // this.date = new Date();
     this.company = { name: '', address: '', zip: 0, city: '', phone: 0, email: '', cvr: 0 };
     this.developer = { name: '', url: '', facebook: '' };
   }

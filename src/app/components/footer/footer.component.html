@@ -1,6 +1,6 @@
 <div class="footer">
   <div class="footer-text">
-    Copyright @{{date | date:'yyyy' }} - {{company.name}}, tlf. {{company.phone}}, cvr: {{company.cvr}}<br />
+    Copyright @{{date | date:'yyyy' }}<br />
     <span *ngIf="developer.url">Design og layout by <a href="{{developer.url}}" target="_blank">{{developer.name}}</a></span>
   </div>
   <div class="login">
@@ -13,7 +13,10 @@
       class="login-link" 
       *ngIf="!isLoggedIn"
       (click)="gotoLogin()"
-    >Innrita</div>
+    >
+      <i class="fa fa-lock"></i>
+      Innrita
+    </div>
     <div 
       class="login-link" 
       *ngIf="isLoggedIn"

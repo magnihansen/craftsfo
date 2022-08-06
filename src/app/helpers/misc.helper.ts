@@ -9,13 +9,13 @@ export class MiscHelper {
     constructor() { }
 
     public handleError(err: HttpErrorResponse): Observable<never> {
-        let errorMessage = '';
-        if (err.error instanceof ErrorEvent) {
-            errorMessage = `An error occurred: ${err.error.message}`;
-        } else {
-            errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
-        }
-        console.error(errorMessage);
-        return throwError(errorMessage);
+        // let errorMessage = '';
+        // if (err.error instanceof ErrorEvent) {
+        //     const _errorMessage: string = err.error && err.error.message ? err.error.message : 'Error message not displayed';
+        //     errorMessage = `An error occurred: ${_errorMessage}`;
+        // } else {
+        //     errorMessage = `Server returned: ${err}`;
+        // }
+        return throwError(err);
       }
 }

@@ -11,10 +11,15 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class AuthenticationService {
+  static readonly API_TOKEN: string = 'apitoken';
+  static readonly USER: string = 'user';
+  static readonly IS_USER_LOGGED_IN: string = 'isUserLoggedIn';
+
+  private apiPath = '/V1/Auth';
   private isUserLoggedIn = false;
 
   public get IsUserLoggedIn(): boolean {
-    const lsUserLoggedIn: string = localStorage.getItem('isUserLoggedIn') || '';
+    const lsUserLoggedIn: string = localStorage.getItem(AuthenticationService.IS_USER_LOGGED_IN) || '';
     if (lsUserLoggedIn === 'true') {
       return true;
     }
@@ -22,7 +27,7 @@ export class AuthenticationService {
   }
   public set IsUserLoggedIn(value: boolean) {
     if (value === true) {
-      localStorage.setItem('isUserLoggedIn', 'true');
+      localStorage.setItem(AuthenticationService.IS_USER_LOGGED_IN, 'true');
     }
     this.isUserLoggedIn = value;
   }
@@ -39,59 +44,73 @@ export class AuthenticationService {
       username: userName,
       password: passWord
     };
-    return this.http.post<string>(`${this.apiUrl}/V1/Auth/Login`, body)
+    return this.http.post<string>(`${this.apiUrl}${this.apiPath}/Login`, body)
       .pipe(
         map(response => {
           this.IsUserLoggedIn = true;
-          localStorage.setItem('apitoken', response);
-
-          this.loadUser().subscribe({
-            next: (user: User) => {
-              console.log('User loaded');
-            }
-          });
-
+          localStorage.setItem(AuthenticationService.API_TOKEN, response);
+          localStorage.setItem(AuthenticationService.USER, JSON.stringify({
+            username: userName,
+            password: passWord,
+            token: response
+          } as User));
           this.eventQueueService.dispatch(new AppEvent(AppEventType.Login));
           return true;
-        })
+        }),
+        catchError(this.handleError<User>('getUserByToken'))
       );
   }
 
-  public logout(): void {
+  public logout(gotoLogin = false): void {
     this.IsUserLoggedIn = false;
-    localStorage.removeItem('isUserLoggedIn');
-    this.router.navigate(['/']).then(() => {
+    localStorage.removeItem(AuthenticationService.IS_USER_LOGGED_IN);
+    localStorage.removeItem(AuthenticationService.USER);
+    this.router.navigate(['/' + (gotoLogin ? 'login' : '')]).then(() => {
       this.eventQueueService.dispatch(new AppEvent(AppEventType.Logout));
     });
   }
 
   public getUser(): User {
-    const user: string = localStorage.getItem('user') || '';
+    const user: string = localStorage.getItem(AuthenticationService.USER) || '{}';
     return JSON.parse(user) as User;
   }
 
   public loadUser(): Observable<User> {
-    const apiToken: string = localStorage.getItem('apitoken') || '';
+    const apiToken: string = localStorage.getItem(AuthenticationService.API_TOKEN) || '{}';
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: apiToken
       })
     };
-    return this.http.get<User>(`${this.apiUrl}/V1/User/GetUserByIdentity`, httpOptions)
+    return this.http.get<User>(`${this.apiUrl}${this.apiPath}/GetUserByIdentity`, httpOptions)
       .pipe(
-        retry(1),
         map((user: User) => {
-          localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem(AuthenticationService.USER, JSON.stringify(user));
           return user;
         }),
         catchError(this.handleError<User>('getUserByToken'))
       );
   }
 
+  public validateToken(): Observable<boolean> {
+    const apiToken: string = localStorage.getItem(AuthenticationService.API_TOKEN) || '';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Accept: 'application/json'
+      }),
+      params: {
+        token: apiToken
+      }
+    };
+    return this.http.get<boolean>(`${this.apiUrl}/V1/Auth/ValidateToken`, httpOptions);
+  }
+
   private handleError<T>(operation = 'operation', result?: T): any {
     return (error: any): Observable<T> => {
-      console.error(error);
-      this.log(`${operation} failed: ${error.message}`);
+      // console.error(error);
+      // if (error && error.message) {
+      //   this.log(`${operation} failed: ${error.message}`);
+      // }
       return of(result as T);
     };
   }

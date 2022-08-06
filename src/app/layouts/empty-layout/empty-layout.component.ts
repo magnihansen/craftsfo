@@ -6,7 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./empty-layout.component.scss']
 })
 export class EmptyLayoutComponent {
-  constructor() {
-    console.log('EmptyLayoutComponent');
-  }
+  constructor() { }
 }

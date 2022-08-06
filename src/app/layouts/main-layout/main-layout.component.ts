@@ -12,7 +12,6 @@ export class MainLayoutComponent {
   constructor(
     @Inject(DOCUMENT) private document: Document
   ) {
-    console.log('MainLayoutComponent');
     this.showToTopButton = this.hasScrollBar(this.document.body);
   }
 

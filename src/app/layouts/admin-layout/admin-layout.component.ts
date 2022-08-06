@@ -6,7 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./admin-layout.component.scss']
 })
 export class AdminLayoutComponent {
-  constructor() {
-    console.log('AdminLayoutComponent');
-  }
+  constructor() { }
 }

@@ -24,6 +24,10 @@ button {
     border-radius: 2px;
 }
 
+*:active {
+    outline: none;
+}
+
 :root {
     --font-family: 'Open Sans', sans-serif;
     --font-color-primary: '#f4f7f9';

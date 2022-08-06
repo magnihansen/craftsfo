@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { AddpageComponent } from '../../components/admin/addpage/addpage.component';
 import { LocalLocalizationModule } from '../../localization/local-localization.module';
 import { I18nPipe } from '../../localization/i18n.pipe';
+import { UsersComponent } from 'src/app/components/admin/users/users.component';
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
       { path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'} },
       { path: 'editpage/:id', component: PageeditComponent, data: {title: 'Edit page'} },
       { path: 'contact', pathMatch: 'full', component: ContacteditComponent, data: {title: 'Contacts'} },
-      { path: 'slides', pathMatch: 'full', component: PageeditComponent, data: {title: 'Slides'} }
+      { path: 'slides', pathMatch: 'full', component: PageeditComponent, data: {title: 'Slides'} },
+      { path: 'users', pathMatch: 'full', component: UsersComponent, data: {title: 'Users'} }
     ]
   }
 ];
@@ -32,7 +34,8 @@ const routes: Routes = [
       PageeditComponent,
       ContacteditComponent,
       DashboardComponent,
-      AddpageComponent
+      AddpageComponent,
+      UsersComponent
     ],
     imports: [
       FormsModule,
@@ -50,7 +53,5 @@ const routes: Routes = [
 })
 
 export class AdminLayoutRoutingModule {
-    constructor() {
-        console.log('AdminRoutingModule');
-    }
+    constructor() { }
 }

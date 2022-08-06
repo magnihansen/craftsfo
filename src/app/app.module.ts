@@ -34,10 +34,6 @@ enableProdMode();
   providers: [
     MySqlService,
     PageHubService,
-    // {
-    //   provide: APP_BASE_HREF,
-    //   useValue: '/' + (window.location.pathname.split('/')[1] || '')
-    // },
     { provide: 'HUB_URL', useValue: environment.hubSettings.url },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }

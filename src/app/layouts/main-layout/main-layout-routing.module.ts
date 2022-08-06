@@ -37,7 +37,5 @@ const routes: Routes = [
 })
 
 export class MainLayoutRoutingModule {
-  constructor() {
-    console.log('AppRoutingModule');
-  }
+  constructor() { }
 }

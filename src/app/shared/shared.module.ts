@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { PageService } from '../services/page.service';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { TableModule } from '../components/table/table.module';
 import { I18nPipe } from '../localization/i18n.pipe';
@@ -9,11 +8,15 @@ import { NavigationComponent } from '../components/navigation/navigation.compone
 import { FooterComponent } from '../components/footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AutoFocusDirective } from './directives/auto-focus.directive';
+import { ModalComponent } from '../components/modal/modal.component';
 
 @NgModule({
   declarations: [
     NavigationComponent,
-    FooterComponent
+    FooterComponent,
+    AutoFocusDirective,
+    ModalComponent
   ],
   imports: [
     CommonModule,
@@ -32,16 +35,15 @@ import { CommonModule } from '@angular/common';
     TableModule,
     MatIconModule,
     NavigationComponent,
-    FooterComponent
+    FooterComponent,
+    AutoFocusDirective,
+    ModalComponent
   ],
   providers: [
-    I18nPipe,
-    PageService
+    I18nPipe
   ]
 })
 
 export class SharedModule {
-  constructor() {
-    console.log('SharedModule');
-  }
+  constructor() { }
 }

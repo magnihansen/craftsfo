@@ -9,12 +9,5 @@ import { Contact } from '../../../interfaces/contact';
 export class ContacteditComponent {
   contacts: Contact[] = [];
 
-  constructor(
-  ) {
-    console.log('ContacteditComponent');
-    // this.af.list('/contacts', ref => ref.orderByChild('timestamp')).valueChanges().subscribe(snapshots => {
-    //   console.log('contacts', snapshots);
-    //   this.contacts = snapshots as Contact[];
-    // });
-  }
+  constructor() { }
 }

@@ -22,6 +22,17 @@
 
         @include defaultFormInputs;
 
+        .form-group {
+            display: flex;
+            flex-direction: row;
+            flex: 1 1 100%;
+            flex-wrap: wrap;
+
+            &.space-between {
+                justify-content: space-between;
+            }
+        }
+
         & .form-buttons {
             display: flex;
             flex-direction: row;
