@@ -71,7 +71,8 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "rxjs-compat",
-              "rxjs/internal/observable/throwError"
+              "rxjs/internal/observable/throwError",
+              "@ckeditor/ckeditor5-angular"
             ]
           },
           "configurations": {

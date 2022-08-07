@@ -1,8 +1,22 @@
-<!-- <div class="modal-wrapper">
-    <div class="modal {{widthClass}}">
-        <div class="content">
-            <ng-content></ng-content>
+<div 
+    *ngIf="renderModal"
+    class="modal-wrapper"
+    >
+    <div class="modal-backdrop"></div>
+    <div 
+        class="modal-content-wrapper"
+        [ngClass]="{ 'open': renderModal }"
+    >
+        <div 
+            class="modal {{widthClass}}"
+        >
+            <div class="content">
+                <ng-content></ng-content>
+            </div>
+            <div class="footer">
+                <button (click)="submitModal()">{{ 'Submit' | i18n }}</button>
+                <button (click)="closeModal()">{{ 'Close' | i18n }}</button>
+            </div>
         </div>
-        <div class="footer">Footer</div>
     </div>
-</div> -->
+</div>

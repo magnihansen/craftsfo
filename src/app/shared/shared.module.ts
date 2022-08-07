@@ -10,6 +10,8 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AutoFocusDirective } from './directives/auto-focus.directive';
 import { ModalComponent } from '../components/modal/modal.component';
+import { LocalLocalizationModule } from '../localization/local-localization.module';
+import { PageAddModule } from '../features/page-add/page-add.module';
 
 @NgModule({
   declarations: [
@@ -23,16 +25,19 @@ import { ModalComponent } from '../components/modal/modal.component';
     RouterModule,
     CKEditorModule,
     TableModule,
+    PageAddModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',
       preventDuplicates: true
     }),
-    MatIconModule
+    MatIconModule,
+    LocalLocalizationModule
   ],
   exports: [
     CKEditorModule,
     TableModule,
+    PageAddModule,
     MatIconModule,
     NavigationComponent,
     FooterComponent,

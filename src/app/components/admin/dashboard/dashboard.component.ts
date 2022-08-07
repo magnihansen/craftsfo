@@ -1,22 +1,29 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormControlStatus, FormGroup } from '@angular/forms';
+
+import { User } from 'src/app/models/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { PageService } from 'src/app/services/page.service';
 import { Page } from '../../../interfaces/page';
 import { DataColumn } from '../../table/data-column';
 import { DataRow } from '../../table/data-row';
+import * as uuid from 'uuid';
+import { FormPageAddService } from 'src/app/services/form-page-add.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public pageRows: DataRow[] = [];
 
-  private _showAddPage = false;
-  public newPage: Page | null = null;
+  public newPage?: Page;
+  public formPageAdd: FormGroup = new FormGroup({});
+  public formPageAddState?: Subscription;
   public guid = '';
-
   public get showAddPage(): boolean {
     return this._showAddPage;
   }
@@ -24,13 +31,32 @@ export class DashboardComponent implements OnInit {
     this._showAddPage = value;
   }
 
+  private _showAddPage = false;
+
   constructor(
     private router: Router,
-    private pageService: PageService
-  ) { }
+    private pageService: PageService,
+    private authService: AuthenticationService,
+    private formPageAddService: FormPageAddService
+  ) {
+    console.log('addPageForm', this.formPageAddService.addPageForm);
+    console.log('addPage', this.formPageAddService.addPageForm.controls.addPage);
+    this.formPageAdd = this.formPageAddService.addPageForm;
+    console.log('formPageAdd', this.formPageAdd);
+  }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadPages();
+  }
+
+  public ngAfterViewInit(): void {
+    // this.formPageAdd = this.formPageAddService.addPageForm.controls.addPage as FormGroup;
+    // this.formPageAddState = this.formPageAdd.statusChanges
+    //   .subscribe({
+    //     next: (state: FormControlStatus) => {
+    //       this.formPageAddService.isFormValid = (state === 'INVALID' ? false : true);
+    //     }
+    //   });
   }
 
   private loadPages(): void {
@@ -105,5 +131,39 @@ export class DashboardComponent implements OnInit {
       this.showAddPage = false;
       this.loadPages();
     }
+  }
+
+  public addPage(form: any): void {
+    if (this.authService.IsUserLoggedIn) {
+      const user: User = this.authService.getUser();
+
+      // const ap: FormGroup = (this.formPageAddService.addPageForm.controls.addPage as FormGroup);
+
+      // const rank: string = ap.controls.rank.value as string;
+      // const title: string = ap.controls.title.value as string;
+      // const link: string = ap.controls.link.value as string;
+      // const content: string = ap.controls.content.value as string;
+
+      // const newPage: Page = {
+      //   uid: uuid.v4(),
+      //   rank,
+      //   parent: '',
+      //   title,
+      //   link,
+      //   content,
+      //   active: true,
+      //   createdBy: user.username
+      // } as Page;
+
+      // this.pageService.addPage(newPage).subscribe((result: boolean) => {
+      //   if (result) {
+      //     this.closeAddpage(true);
+      //   }
+      // });
+    }
+  }
+
+  public ngOnDestroy(): void {
+    this.formPageAddState?.unsubscribe();
   }
 }

@@ -13,6 +13,8 @@ import * as uuid from 'uuid';
 export class AddpageComponent {
   @Output() closeChange: EventEmitter<boolean> = new EventEmitter();
 
+  public showModal = false;
+
   constructor(
     private pageService: PageService,
     private authService: AuthenticationService

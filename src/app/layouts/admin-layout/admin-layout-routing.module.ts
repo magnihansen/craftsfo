@@ -7,8 +7,7 @@ import { ContacteditComponent } from '../../components/admin/contactedit/contact
 import { DashboardComponent } from '../../components/admin/dashboard/dashboard.component';
 import { PageeditComponent } from '../../components/admin/pageedit/pageedit.component';
 import { AuthGuard } from 'src/app/helpers/auth.guard';
-import { FormsModule } from '@angular/forms';
-import { AddpageComponent } from '../../components/admin/addpage/addpage.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LocalLocalizationModule } from '../../localization/local-localization.module';
 import { I18nPipe } from '../../localization/i18n.pipe';
 import { UsersComponent } from 'src/app/components/admin/users/users.component';
@@ -34,11 +33,11 @@ const routes: Routes = [
       PageeditComponent,
       ContacteditComponent,
       DashboardComponent,
-      AddpageComponent,
       UsersComponent
     ],
     imports: [
       FormsModule,
+      ReactiveFormsModule,
       SharedModule,
       CommonModule,
       RouterModule.forChild(routes),
