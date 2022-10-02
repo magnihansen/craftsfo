@@ -40,11 +40,10 @@ export class TableComponent implements OnChanges {
     this.columns = [];
     if (this._data.length > 0) {
       const dataRow: DataRow = this._data[0];
-      const dataColumns: DataColumn[] = dataRow.dataColumns;
       this.showContextMenu = dataRow.showContextMenu;
       this.allowDelete = dataRow.allowDelete;
 
-      dataColumns.forEach((dataColumn: DataColumn) => {
+      dataRow.dataColumns.forEach((dataColumn: DataColumn) => {
         this.columns.push(dataColumn);
       });
     }

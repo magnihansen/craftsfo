@@ -3,14 +3,14 @@ export class User {
         this.id = 0;
         this.username = '';
         this.password = '';
-        this.firstName = '';
-        this.lastName = '';
+        this.firstname = '';
+        this.lastname = '';
     }
 
     id: number;
     username: string;
     password: string;
-    firstName: string;
-    lastName: string;
+    firstname: string;
+    lastname: string;
     token?: string;
 }

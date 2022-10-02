@@ -27,29 +27,25 @@ export class UsersComponent implements OnInit {
             next: (users: User[]) => {
                 const _allowDelete = true;
                 const _showContextMenu = true;
-                const _pageRows: DataRow[] = [];
 
-                users.forEach((dataUser: User, index: number) => {
-                _pageRows.push(
-                    {
-                    rowIndex: index,
-                    rowIdentifier: dataUser.id.toString(),
-                    showContextMenu: _showContextMenu,
-                    allowDelete: _allowDelete,
-                    dataColumns: [
-                        {
-                        name: 'Navn',
-                        value: dataUser.firstName + ' ' + dataUser.lastName
-                        } as DataColumn,
-                        {
-                        name: 'Brugernavn',
-                        value: dataUser.username
-                        } as DataColumn
-                    ]
+                this.userRows = users.map((dataUser: User, index: number) => {
+                    return {
+                        rowIndex: index,
+                        rowIdentifier: dataUser.id.toString(),
+                        showContextMenu: _showContextMenu,
+                        allowDelete: _allowDelete,
+                        dataColumns: [
+                            {
+                            name: 'Navn',
+                            value: dataUser.firstname + ' ' + dataUser.lastname
+                            } as DataColumn,
+                            {
+                            name: 'Brugernavn',
+                            value: dataUser.username
+                            } as DataColumn
+                        ]
                     } as DataRow
-                );
                 });
-                this.userRows = _pageRows;
             },
             error: (err: any) => {
                 console.log(err);
