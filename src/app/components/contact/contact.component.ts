@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Page } from '../../interfaces/page';
-import { Contact } from '../../interfaces/contact';
+import { Page } from '../../models/page.model';
+import { Contact } from '../../models/contact.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({

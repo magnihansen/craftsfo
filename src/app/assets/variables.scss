@@ -12,7 +12,7 @@ $bg-red: '#ee4f4f';
 
     & .brand-text-h1 {
         font-size: 30px !important;
-        color: --var(brown-middle) !important;
+        color: var(--color-middle) !important;
 
         &:hover {
             text-decoration: none !important;
@@ -21,7 +21,7 @@ $bg-red: '#ee4f4f';
 
     & .brand-text-h2 {
         font-size: 16px !important;
-        color: var(--brown-middle) !important;
+        color: var(--color-middle) !important;
 
         &:hover {
             text-decoration: none !important;
@@ -45,10 +45,6 @@ $bg-red: '#ee4f4f';
             border-radius: 5px;
             outline: none;
             width: calc(100% - 24px);
-
-            &[type="number"] {
-                width: 100px;
-            }
     
             &:active, &:focus, &:hover {
                 border-color: steelblue;

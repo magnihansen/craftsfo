@@ -9,7 +9,7 @@
   flex-direction: row;
   flex: 1 1 100%;
   align-items: center;
-  color: var(--brown-light);
+  color: var(--color-light);
   transition: var(--transition-padding);
 
   &:not(.navbar-fixed) .navbartop-btn .mat-button-ripple {
@@ -41,8 +41,8 @@
         right: 5px;
         top: 5px;
         padding: 10px;
-        background-color: var(--brown-light);
-        color: var(--brown-dark);
+        background-color: var(--color-light);
+        color: var(--color-dark);
         min-width: none;
     }
 
@@ -63,15 +63,15 @@
       .navbartop-btn {
         display: flex;
         flex-direction: column;
-        color: var(--brown-light);
+        color: var(--color-light);
         text-decoration: none;
         padding: 20px;
         justify-content: center;
         align-content: space-around;
 
         &:hover {
-          background-color: var(--brown-light);
-          color: var(--brown-dark);
+          background-color: var(--color-light);
+          color: var(--color-dark);
         }
       }
     }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PageService } from '../../../services/page.service';
-import { Page } from '../../../interfaces/page';
+import { Page } from '../../../models/page.model';
 // import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';

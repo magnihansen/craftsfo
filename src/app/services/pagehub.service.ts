@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, HttpTransportType } from '@microsoft/signalr';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Page } from '../interfaces/page';
+import { Page } from '../models/page.model';
 
 @Injectable({
     providedIn: 'root'

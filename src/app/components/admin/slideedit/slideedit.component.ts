@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Imageslide } from '../../../interfaces/imageslide';
+import { Imageslide } from '../../../models/imageslide.model';
 import { NgForm } from '@angular/forms';
 import * as uuid from 'uuid';
 import { AuthenticationService } from 'src/app/services/authentication.service';

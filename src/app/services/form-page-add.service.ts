@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
@@ -9,14 +9,14 @@ export class FormPageAddService {
     public isFormValid = false;
 
     constructor(
-        private fb: FormBuilder
+        private fb: NonNullableFormBuilder
     ) {
         this.addPageForm = this.fb.group({
             addpage: this.fb.group({
-                title: this.fb.control({ value: '', nonNullable: true }, { updateOn: 'blur', validators: [Validators.required] }),
-                link: this.fb.control({ value: '', nonNullable: true }, { updateOn: 'blur', validators: [Validators.required] }),
-                content: this.fb.control({ value: '', nonNullable: true }, { updateOn: 'blur', validators: [Validators.required] }),
-                rank: this.fb.control({ value: '', nonNullable: true }, {  updateOn: 'blur', validators: [Validators.required] })
+                title: this.fb.control('', { updateOn: 'blur', validators: [Validators.required] }),
+                link: this.fb.control('', { updateOn: 'blur', validators: [Validators.required] }),
+                content: this.fb.control('', { updateOn: 'blur', validators: [Validators.required] }),
+                pageRank: this.fb.control('', {  updateOn: 'blur', validators: [Validators.required] })
             })
         });
 

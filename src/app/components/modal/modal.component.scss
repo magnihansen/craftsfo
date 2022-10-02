@@ -25,29 +25,33 @@
 
         &.open {
             .modal {
-                display: flex;
-                flex-direction: column;
                 justify-content: center;
                 align-items: center;
                 background-color: #fff;
                 border-radius: 15px;
                 padding: 15px;
-                width: 300px;
-                height: 300px;
                 transition: all 1s ease;
 
+                .header {
+                    justify-content: flex-start;
+                    font-size: var(--font-size-h2);
+                    font-weight: bold;
+                }
+
                 .content {
-                    display: flex;
                     flex-direction: row;
                     justify-content: flex-start;
                     gap: 15px;
                 }
 
                 .footer {
-                    display: flex;
                     flex-direction: row;
                     justify-content: space-around;
-                    gap: 15px;
+                    align-items: flex-end;
+                    
+                    button {
+                        margin: 10px;
+                    }
                 }
 
                 &.w400 {

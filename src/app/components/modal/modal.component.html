@@ -8,14 +8,29 @@
         [ngClass]="{ 'open': renderModal }"
     >
         <div 
+            tabindex="1"
             class="modal {{widthClass}}"
         >
-            <div class="content">
+            <div
+                tabindex="2" 
+                class="header">{{modalTitle}}</div>
+            <div
+                tabindex="3" 
+                class="content">
                 <ng-content></ng-content>
             </div>
-            <div class="footer">
-                <button (click)="submitModal()">{{ 'Submit' | i18n }}</button>
-                <button (click)="closeModal()">{{ 'Close' | i18n }}</button>
+            <div
+                tabindex="4" 
+                class="footer"
+            >
+                <button
+                    tabindex="5" 
+                    (click)="submitModal()"
+                >{{ 'Submit' | i18n }}</button>
+                <button
+                    tabindex="6" 
+                    (click)="closeModal()"
+                >{{ 'Close' | i18n }}</button>
             </div>
         </div>
     </div>

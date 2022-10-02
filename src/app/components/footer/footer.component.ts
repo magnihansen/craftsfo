@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { AppEventType } from 'src/app/event-queue';
 import { EventQueueService } from 'src/app/event-queue/event.queue';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { Company } from '../../interfaces/company';
-import { Developer } from '../../interfaces/developer';
+import { Company } from '../../models/company.model';
+import { Developer } from '../../models/developer.model';
 
 @Component({
   selector: 'app-footer',

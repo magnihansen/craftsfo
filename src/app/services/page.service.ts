@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/operators';
-import { Page } from '../interfaces/page';
+import { Page } from '../models/page.model';
 import { User } from '../models/user';
 import { AuthenticationService } from './authentication.service';
 
@@ -112,7 +111,6 @@ export class PageService {
       uid: '',
       title: titleStr,
       parent: '',
-      rank: rankStr,
       content: '',
       pageRank: rankStr,
       link: linkStr,

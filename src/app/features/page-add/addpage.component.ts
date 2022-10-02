@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { Page } from 'src/app/interfaces/page';
+import { Page } from 'src/app/models/page.model';
 import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { PageService } from 'src/app/services/page.service';

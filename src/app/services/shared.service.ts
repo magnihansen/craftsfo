@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { Company } from '../interfaces/company';
-import { Page } from '../interfaces/page';
+import { Company } from '../models/company.model';
+import { Page } from '../models/page.model';
 import { PageService } from './page.service';
 
 @Injectable({

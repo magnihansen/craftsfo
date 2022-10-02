@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Contact } from '../../../interfaces/contact';
+import { Contact } from '../../../models/contact.model';
 
 @Component({
   selector: 'app-contactedit',

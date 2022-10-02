@@ -1,5 +1,5 @@
 import { Component, HostBinding, HostListener, Inject, Input, OnInit } from '@angular/core';
-import { Page } from '../../interfaces/page';
+import { Page } from '../../models/page.model';
 import { PageService } from 'src/app/services/page.service';
 import { PageHubService } from 'src/app/services/pagehub.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';

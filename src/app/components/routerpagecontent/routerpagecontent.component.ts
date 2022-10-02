@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Page } from '../../interfaces/page';
+import { ActivatedRoute } from '@angular/router';
+import { Page } from '../../models/page.model';
 import { PageService } from 'src/app/services/page.service';
 import { MiscHelper } from 'src/app/helpers/misc.helper';
 import { HttpErrorResponse } from '@angular/common/http';
