@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Page } from '../../models/page.model';
 import { PageService } from 'src/app/services/page.service';
@@ -8,7 +8,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-routerpagecontent',
   templateUrl: './routerpagecontent.component.html',
-  styleUrls: ['./routerpagecontent.component.scss']
+  styleUrls: ['./routerpagecontent.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RouterpagecontentComponent {
   content = '';
@@ -27,7 +28,8 @@ export class RouterpagecontentComponent {
   private loadPageByLink(pageLink: string | undefined): void {
     this.pageService.getPageByLink(pageLink).subscribe({
       next: (result: Page) => {
-        this.content = result.content.replace('\n', '<br />');
+        this.content = result.content.replace(/\n/gi, '<br />').replace(/<p>&nbsp;<\/p>/gi, '<p class="empty">&nbsp;</p>');
+        console.log('content', this.content);
       },
       error: (err: HttpErrorResponse) => {
         this.miscHelper.handleError(err);

@@ -1,6 +1,33 @@
-.aligncenter {
+@import '../../assets/variables.scss';
+
+p.aligncenter {
     display: flex;
     flex-direction: column;
     flex: 1 1 100%;
     justify-content: center;
+
+    & > p:not(.empty), ul {
+        background-color: #fff !important;
+        width: fit-content;
+        padding: 10px 5px;
+
+        & > strong {
+            font-weight: 700s;
+        }
+
+        a {
+            color: var(--color-light);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    & > ul {
+        list-style-position: inside;
+        margin-left: 20px;
+        margin-top: 0;
+    }
 }
