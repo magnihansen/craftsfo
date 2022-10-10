@@ -22,7 +22,10 @@
         display: flex;
         flex-direction: row;
         flex-grow: 1;
-        padding: 15px;
+        background-image: url('../../assets/images/crafts_hus_og_heim.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
 
         & .container {
             display: flex;
@@ -32,11 +35,18 @@
             min-height: 200px;
             margin-left: auto;
             margin-right: auto;
+            padding: 15px;
 
             & .row {
                 display: flex;
                 flex-direction: row;
-                flex: 1;
+                flex: 1 1 100%;
+
+                & .full-content-width {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1 1 100%;
+                }
             }
         }
     }
