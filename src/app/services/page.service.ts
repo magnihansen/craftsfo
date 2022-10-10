@@ -23,7 +23,7 @@ export class PageService {
   ) { }
 
   public getPage(pageId: number): Observable<Page> {
-    return this.http.get<Page>(`${this.apiUrl}${this.apiPath}/GetPage/${pageId}`, this.httpOptions);
+    return this.http.get<Page>(`${this.apiUrl}${this.apiPath}/GetPage?pageId=${pageId}`, this.httpOptions);
   }
 
   public getPages(): Observable<Page[]> {
