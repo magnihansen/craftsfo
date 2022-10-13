@@ -8,6 +8,7 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { I18nService } from 'src/app/localization/i18n.service';
 import { User } from 'src/app/models/user';
 import { ToastrService } from 'ngx-toastr';
+import { UploadAdapter } from 'src/app/shared/upload-adapter.class';
 
 @Component({
   selector: 'app-pageedit',
@@ -16,62 +17,16 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class PageeditComponent {
   public classicEditor = ClassicEditor;
-  pages: Page[] = [];
-  title = '';
-  content = '';
-  rank = '';
-  pageuid = '';
-  page: Page | null = null;
+  public pages: Page[] = [];
+  public title = '';
+  public content = '';
+  public rank = '';
+  public pageuid = '';
+  public page: Page | null = null;
 
   public model = {
     editorData: '<p>Hello, world!</p>'
   };
-
-  // editorConfig: AngularEditorConfig = {
-  //   editable: true,
-  //     spellcheck: true,
-  //     height: 'auto',
-  //     minHeight: '0',
-  //     maxHeight: 'auto',
-  //     width: 'auto',
-  //     minWidth: '0',
-  //     translate: 'yes',
-  //     enableToolbar: true,
-  //     showToolbar: true,
-  //     placeholder: 'Enter text here...',
-  //     defaultParagraphSeparator: '',
-  //     defaultFontName: '',
-  //     defaultFontSize: '',
-  //     fonts: [
-  //       {class: 'arial', name: 'Arial'},
-  //       {class: 'times-new-roman', name: 'Times New Roman'},
-  //       {class: 'calibri', name: 'Calibri'},
-  //       {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-  //     ],
-  //     customClasses: [
-  //     {
-  //       name: 'quote',
-  //       class: 'quote',
-  //     },
-  //     {
-  //       name: 'redText',
-  //       class: 'redText'
-  //     },
-  //     {
-  //       name: 'titleText',
-  //       class: 'titleText',
-  //       tag: 'h1',
-  //     },
-  //   ],
-  //   uploadUrl: 'v1/image',
-  //   uploadWithCredentials: false,
-  //   sanitize: true,
-  //   toolbarPosition: 'top',
-  //   toolbarHiddenButtons: [
-  //     ['bold', 'italic'],
-  //     ['fontSize']
-  //   ]
-  // };
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -82,6 +37,14 @@ export class PageeditComponent {
     private toastr: ToastrService
   ) {
     this.route.params.subscribe(params => this.loadPage(params.id));
+  }
+
+  public onReady(eventData: any) {
+    console.log('Editor ready..');
+    eventData.plugins.get('FileRepository').createUploadAdapter = function (loader: any) {
+      console.log(btoa(loader.file));
+      return new UploadAdapter(loader);
+    };
   }
 
   private loadPage(pageId: number): void {

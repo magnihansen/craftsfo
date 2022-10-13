@@ -6,7 +6,7 @@ p.aligncenter {
     flex: 1 1 100%;
     justify-content: center;
 
-    & > p:not(.empty), ul {
+    & > p:not(.empty), ul, figure {
         background-color: #fff !important;
         width: fit-content;
         padding: 10px 5px;

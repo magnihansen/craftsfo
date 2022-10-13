@@ -10,7 +10,11 @@
       </div>
       <div class="field">
         <label for="content">Tekst:</label><br />
-        <ckeditor [editor]="classicEditor" [(ngModel)]="content"></ckeditor>
+        <ckeditor 
+          [editor]="classicEditor"
+          [(ngModel)]="content"
+          (ready)="onReady($event)"
+        ></ckeditor>
       </div>
       <button type="submit">Gem</button>
       <button type="button" (click)="gotoDashboard()">Dashboard</button>

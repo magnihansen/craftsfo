@@ -14,6 +14,7 @@ import { FormPageAddService } from 'src/app/services/form-page-add.service';
 import { Subscription } from 'rxjs';
 import { ModalComponent } from '../../modal/modal.component';
 import { DOCUMENT } from '@angular/common';
+import { UploadAdapter } from 'src/app/shared/upload-adapter.class';
 
 @Component({
   selector: 'app-dashboard',
@@ -53,6 +54,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
           this.formPageAddService.isFormValid = (state === 'INVALID' ? false : true);
         }
       });
+  }
+
+  public onReady(eventData: any) {
+    console.log('Editor ready..');
+    eventData.plugins.get('FileRepository').createUploadAdapter = function (loader: any) {
+      console.log(btoa(loader.file));
+      return new UploadAdapter(loader);
+    };
   }
 
   private loadPages(): void {

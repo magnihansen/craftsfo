@@ -29,7 +29,12 @@
         </div>
         <div class="formline">
             <label for="pageContent">{{ 'Content' | i18n }}</label>
-            <ckeditor id="pageContent" [editor]="classicEditor" formControlName="content"></ckeditor>
+            <ckeditor 
+                id="pageContent" 
+                [editor]="classicEditor" 
+                formControlName="content"
+                (ready)="onReady($event)"
+            ></ckeditor>
         </div>
         <div class="formline">
             <label for="pageRank">{{ 'Rank' | i18n }}</label>

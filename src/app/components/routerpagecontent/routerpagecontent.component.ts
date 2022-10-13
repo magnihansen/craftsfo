@@ -29,7 +29,6 @@ export class RouterpagecontentComponent {
     this.pageService.getPageByLink(pageLink).subscribe({
       next: (result: Page) => {
         this.content = result.content.replace(/\n/gi, '<br />').replace(/<p>&nbsp;<\/p>/gi, '<p class="empty">&nbsp;</p>');
-        console.log('content', this.content);
       },
       error: (err: HttpErrorResponse) => {
         this.miscHelper.handleError(err);
