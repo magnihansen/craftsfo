@@ -1,15 +1,38 @@
-/* Image editor - https://pixlr.com */
-/* Brand colors - http://brandcolors.net - Buffer */
-$bg-black: '#323b43';
-$bg-gray: '#59626a';
-$bg-blue: '#168eea';
-$bg-red: '#ee4f4f';
+:root {
+    --font-family: 'Open Sans', sans-serif;
+    --font-color-primary: #f4f7f9;
+    --font-color-secondary: #eff3f6;
+    --font-color-light: #ced7df;
+    --font-size-sm: 12px;
+    --font-size-default: 14px;
+    --font-size-h1: 22px;
+    --font-size-h2: 18px;
+    --font-size-h3: 16px;
+
+    --color-dark: #403121;
+    --color-middle: #a65e09;
+    --color-light: #ed9728;
+    --color-creme: #f4cc94;
+
+    /* Brand colors - http://brandcolors.net - Buffer */
+    --color-black: #323b43;
+    --color-gray: #59626a;
+    --color-blue: #168eea;
+    --color-red: #ee4f4f;
+    --color-white: #fefefe;
+
+    --default-ui-padding: 10px 20px;
+    --border-base-color: #ccced1;
+    --border-radius: 3px;
+    --transition-padding: padding 0.3s linear;
+    --box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+}
 
 @mixin defaultTexts {
     font-family: var(--font-family);
 
-    & .brand-text-h1 {
-        font-size: 30px !important;
+    .brand-text-h1 {
+        font-size: var(--font-size-h1) !important;
         color: var(--color-middle) !important;
 
         &:hover {
@@ -17,60 +40,12 @@ $bg-red: '#ee4f4f';
         }
     }
 
-    & .brand-text-h2 {
-        font-size: 16px !important;
+    .brand-text-h2 {
+        font-size: var(--font-size-h2) !important;
         color: var(--color-middle) !important;
 
         &:hover {
             text-decoration: none !important;
-        }
-    }
-}
-
-@mixin defaultFormInputs {
-    form {
-        width: 100%;
-
-        & label {
-            margin-bottom: 0 !important;
-            font-size: 12px;
-        }
-    
-        & input {
-            font-size: 16px;
-            padding: 5px 10px;
-            border: 2px solid #dedede;
-            border-radius: 5px;
-            outline: none;
-            width: calc(100% - 24px);
-    
-            &:active, &:focus, &:hover {
-                border-color: steelblue;
-            }
-        }
-    
-        & button {
-            margin-top: 10px;
-            font-size: 16px;
-            padding: 5px 15px;
-            min-width: 100px;
-            color: #fff;
-            background-color: steelblue;
-            border: none;
-            border-radius: 2px;
-    
-            &:active, &:focus {
-                border: none;
-            }
-
-            &:hover {
-                cursor: pointer;
-            }
-        }
-
-        & .invalid-feedback {
-            font-size: 14px;
-            color: red;
         }
     }
 }

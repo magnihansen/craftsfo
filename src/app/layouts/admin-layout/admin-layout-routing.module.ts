@@ -11,6 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LocalLocalizationModule } from '../../localization/local-localization.module';
 import { I18nPipe } from '../../localization/i18n.pipe';
 import { UsersComponent } from 'src/app/components/admin/users/users.component';
+import { ImageGalleryComponent } from 'src/app/components/modules/image-gallery/image-gallery.component';
+import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
 
 const routes: Routes = [
   {
@@ -21,7 +23,6 @@ const routes: Routes = [
       { path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'} },
       { path: 'editpage/:id', component: PageeditComponent, data: {title: 'Edit page'} },
       { path: 'contact', pathMatch: 'full', component: ContacteditComponent, data: {title: 'Contacts'} },
-      { path: 'slides', pathMatch: 'full', component: PageeditComponent, data: {title: 'Slides'} },
       { path: 'users', pathMatch: 'full', component: UsersComponent, data: {title: 'Users'} }
     ]
   }
@@ -30,9 +31,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
       AdminLayoutComponent,
-      PageeditComponent,
       ContacteditComponent,
-      DashboardComponent,
       UsersComponent
     ],
     imports: [
@@ -41,7 +40,9 @@ const routes: Routes = [
       SharedModule,
       CommonModule,
       RouterModule.forChild(routes),
-      LocalLocalizationModule
+      LocalLocalizationModule,
+      ImageGalleryComponent,
+      NavigationComponent
     ],
     exports: [
       RouterModule

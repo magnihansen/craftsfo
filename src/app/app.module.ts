@@ -15,6 +15,8 @@ import { PageHubService } from './services/pagehub.service';
 import { I18nService } from './localization/i18n.service';
 import languageDK from './localization/languages/da.json';
 import { SharedModule } from './shared/shared.module';
+import { ImageGalleryComponent } from './components/modules/image-gallery/image-gallery.component';
+import { ImageGalleryService } from './components/modules/image-gallery/ui/services/image-gallery.service';
 
 enableProdMode();
 
@@ -29,14 +31,16 @@ enableProdMode();
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    ImageGalleryComponent
   ],
   providers: [
     MySqlService,
     PageHubService,
     { provide: 'HUB_URL', useValue: environment.hubSettings.url },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    ImageGalleryService
   ],
   bootstrap: [AppComponent]
 })

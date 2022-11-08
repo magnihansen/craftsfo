@@ -1,4 +1,7 @@
 import { Component, HostBinding, HostListener, Inject, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
 import { Page } from '../../models/page.model';
 import { PageService } from 'src/app/services/page.service';
 import { PageHubService } from 'src/app/services/pagehub.service';
@@ -6,12 +9,16 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { EventQueueService } from 'src/app/event-queue/event.queue';
 import { AppEventType } from 'src/app/event-queue';
 import { environment } from 'src/environments/environment';
+import { MatIconModule } from '@angular/material/icon';
+import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 
 @Component({
+  standalone: true,
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.scss']
-})
+  styleUrls: ['./navigation.component.scss'],
+  imports: [CommonModule, RouterModule, MatIconModule, LocalLocalizationModule]
+}) 
 export class NavigationComponent implements OnInit {
   @Input() pageType = 'pages';
   @HostBinding('class.navbar-opened') navbarOpened = false;
@@ -65,8 +72,11 @@ export class NavigationComponent implements OnInit {
   private loadPages(): void {
     this.isLoggedIn = this.authenticationService.IsUserLoggedIn;
     if (this.isLoggedIn) {
-      const adminPages: Page[] = this.pageService.getAdminPages();
-      this.pages = adminPages;
+      this.pageService.getAdminPages().subscribe({
+        next: (adminPages: Page[]) => {
+          this.pages = adminPages;
+        }
+      });
     } else {
       this.setupSignalr();
     }
@@ -93,7 +103,7 @@ export class NavigationComponent implements OnInit {
   }
 
   private setAndSortPages(pages: Page[]): void {
-    this.pages = pages.sort((a: Page, b: Page) => a.pageRank > b.pageRank ? 1 : -1);
+    this.pages = pages.sort((a: Page, b: Page) => a.sort > b.sort ? 1 : -1);
   }
 
   public onSignOut(): void {

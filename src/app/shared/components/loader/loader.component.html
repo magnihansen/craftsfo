@@ -1,0 +1,15 @@
+<div 
+    class="loader-wrapper"
+>
+    <div 
+        class="loader"
+        [ngClass]="{
+            'small': size === 'small',
+            'medium': size === 'medium',
+            'large': size === 'large'
+        }"
+    ></div>
+    <div class="loading-text">
+        {{ 'common.loading' | i18n }}
+    </div>
+</div>

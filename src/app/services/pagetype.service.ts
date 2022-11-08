@@ -3,12 +3,11 @@ import { Inject, Injectable } from "@angular/core";
 
 import { Observable } from "rxjs/internal/Observable";
 import { PageType } from "../models/page-type.model";
-import { AuthenticationService } from "./authentication.service";
 
 @Injectable({
     providedIn: 'root'
   })
-  export class PageService {
+  export class PageTypeService {
     private apiPath = '/V1/PageType';
     private httpOptions = {
       headers: new HttpHeaders({
@@ -18,7 +17,6 @@ import { AuthenticationService } from "./authentication.service";
   
     constructor(
       private http: HttpClient,
-      private authenticationService: AuthenticationService,
       @Inject('HUB_URL') private apiUrl: string
     ) { 
 
@@ -28,7 +26,7 @@ import { AuthenticationService } from "./authentication.service";
         return this.http.get<PageType>(`${this.apiUrl}${this.apiPath}/GetPageType?pageTypeId=${pageTypeId}`, this.httpOptions);
       }
     
-      public getPages(): Observable<PageType[]> {
+      public getPageTypes(): Observable<PageType[]> {
         return this.http.get<PageType[]>(`${this.apiUrl}${this.apiPath}/GetPageTypes`, this.httpOptions);
       }
   }

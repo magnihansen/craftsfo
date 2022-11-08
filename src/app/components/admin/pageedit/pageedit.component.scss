@@ -12,4 +12,10 @@
     }
 }
 
-@include defaultFormInputs;
+.editpage {
+    form {
+        .field {
+            margin-bottom: 10px;
+        }
+    }
+}

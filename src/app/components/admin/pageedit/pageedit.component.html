@@ -1,22 +1,44 @@
-<div class="editpage">
+<app-content-wrapper>
+  <div class="editpage">
     <form (ngSubmit)="onSubmit()">
       <div class="field">
-        <label for="title">Navn:</label><br />
+        <label for="title">{{ 'common.type' | i18n }}:</label><br />
+        <select name="pagetype" [(ngModel)]="pageTypeId">
+          <option *ngFor="let pt of pageTypes" [value]="pt.id">{{pt.name}}</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="title">{{ 'common.name' | i18n }}:</label><br />
         <input type="text" name="title" [(ngModel)]="title" />
       </div>
       <div class="field">
-        <label for="title">Rank:</label><br />
-        <input type="number" name="rank" [(ngModel)]="rank" />
+        <label for="title">{{ 'common.sort' | i18n }}:</label><br />
+        <input type="number" name="sort" [(ngModel)]="sort" />
       </div>
-      <div class="field">
-        <label for="content">Tekst:</label><br />
-        <ckeditor 
+      <div *ngIf="page && page.pageTypeId === 47" class="field">
+        <app-image-gallery 
+          *ngIf="page && page.pageTypeId === 47" 
+          [isBackend]="true" 
+          [page]="page"
+        ></app-image-gallery>
+      </div>
+      <div *ngIf="page && page.pageTypeId !== 47" class="field">
+        <label for="content">{{ 'common.text' | i18n }}:</label><br />
+        <ckeditor
+          *ngIf="page && page.pageTypeId !== 47" 
           [editor]="classicEditor"
           [(ngModel)]="content"
           (ready)="onReady($event)"
         ></ckeditor>
       </div>
-      <button type="submit">Gem</button>
-      <button type="button" (click)="gotoDashboard()">Dashboard</button>
+      <button 
+        type="submit"
+      >{{ 'common.save' | i18n }}</button>
+      <button
+        class="add-spacer" 
+        type="button" 
+        (click)="gotoDashboard()"
+      >{{ 'common.dashboard' | i18n }}</button>
     </form>
   </div>
+</app-content-wrapper>

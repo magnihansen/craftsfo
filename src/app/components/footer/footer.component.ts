@@ -1,5 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { AppEventType } from 'src/app/event-queue';
 import { EventQueueService } from 'src/app/event-queue/event.queue';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -7,9 +10,11 @@ import { Company } from '../../models/company.model';
 import { Developer } from '../../models/developer.model';
 
 @Component({
+  standalone: true,
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss']
+  styleUrls: ['./footer.component.scss'],
+  imports: [ FormsModule, CommonModule]
 })
 export class FooterComponent implements OnInit {
   public company: Company;

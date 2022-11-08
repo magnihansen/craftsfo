@@ -88,7 +88,23 @@ export class AuthenticationService {
           localStorage.setItem(AuthenticationService.USER, JSON.stringify(user));
           return user;
         }),
-        catchError(this.handleError<User>('getUserByToken'))
+        catchError(this.handleError<User>('GetUserByIdentity'))
+      );
+  }
+
+  public getClaimValue(claimType: string): Observable<object> {
+    const apiToken: string = localStorage.getItem(AuthenticationService.API_TOKEN) || '{}';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: apiToken
+      })
+    };
+    return this.http.get<object>(`${this.apiUrl}${this.apiPath}/GetClaimValue?claimType=${claimType}`, httpOptions)
+      .pipe(
+        map((value: object) => {
+          return value;
+        }),
+        catchError(this.handleError<object>('GetClaimValue'))
       );
   }
 

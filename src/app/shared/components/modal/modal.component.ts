@@ -1,20 +1,22 @@
-import { DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { Component, ContentChild, EventEmitter, HostListener, Inject, Input, OnChanges, OnDestroy, Output, SimpleChanges, TemplateRef, ViewChildren } from '@angular/core';
-import { Form } from '@angular/forms';
+import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 
 @Component({
+  standalone: true,
   selector: 'app-modal',
   templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss']
+  styleUrls: ['./modal.component.scss'],
+  imports: [CommonModule, LocalLocalizationModule]
 })
 export class ModalComponent implements OnDestroy, OnChanges {
-  @ViewChildren('input') private viewInput!: any;
-  @ContentChild('input') private contentInput!: any;
-
   @Input() modalContent!: TemplateRef<any>;
   @Input() widthClass: 'w400' | 'w600' | 'w800' | 'fit-content' = 'fit-content';
   @Input() renderModal = false;
   @Input() modalTitle = '';
+  @Input() isRootModalWithoutNestedModal = false;
+  @Input() isNestedModal = false;
+  @Input() modalId = '';
 
   @Output() submitChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() closeChanged: EventEmitter<boolean> = new EventEmitter();
@@ -23,15 +25,15 @@ export class ModalComponent implements OnDestroy, OnChanges {
     document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
   }
 
-  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent): void {
-    if (this.renderModal) {
-      this.closeModal();
+  @HostListener('document:keydown.escape', ['$event']) 
+  public onKeydownHandler(event: KeyboardEvent): void {
+    if (this.isNestedModal || this.isRootModalWithoutNestedModal) {
+      if (this.renderModal) {
+        this.closeModal();
+        this.isNestedModal = false;
+      }
     }
   }
-
-  constructor(
-    @Inject(DOCUMENT) private modalDocument: Document
-  ) {}
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes.renderModal) {
@@ -49,14 +51,6 @@ export class ModalComponent implements OnDestroy, OnChanges {
     const body = document.body;
     body.style.position = 'fixed';
     body.style.top = `-${scrollY}`;
-
-    // const inputs: HTMLCollectionOf<HTMLInputElement> = this.modalDocument.getElementsByTagName('input');
-    // console.log('On modal', document);
-
-    console.log(this.modalDocument);
-    console.log('viewInput', this.viewInput);
-    console.log('contentInput', this.contentInput);
-    console.log('modalContent', this.modalContent);
   }
 
   public closeModal(): void {
@@ -78,6 +72,8 @@ export class ModalComponent implements OnDestroy, OnChanges {
   }
 
   public ngOnDestroy(): void {
-    this.closeModal();
+    if (this.renderModal) {
+      this.closeModal();
+    }
   }
 }

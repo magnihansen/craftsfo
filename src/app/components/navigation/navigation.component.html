@@ -17,13 +17,13 @@
             [routerLink]="[(isLoggedIn ? '/' : '/page/') + page.link]"
             mat-button
             class="navbartop-btn"
-          >{{page['title']}}</a>
+          >{{ page['title'] | i18n }}</a>
           <a
             *ngIf="page.link === '/logout'"
             (click)="onSignOut()"
             mat-button
             class="navbartop-btn"
-          >{{page['title']}}</a>
+          >{{ page['title'] | i18n }}</a>
         </ng-container>
      </div>
   </div>

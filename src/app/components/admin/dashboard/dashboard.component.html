@@ -1,6 +1,6 @@
-<h1>{{ 'Pages' | i18n }}</h1>
+<h1>{{ 'common.pages' | i18n }}</h1>
 <div class="addnewpage" (click)="toggleAddNewPage()">
-  {{ 'Create page' | i18n }}
+  {{ 'common.page-create' | i18n }}
 </div>
 
 <div class="datatable">
@@ -11,40 +11,9 @@
   ></app-table>
 </div>
 
-<app-modal
-    #addPageModalContent
-    modalTitle="{{ 'Create page' | i18n }}"
+<app-addpage 
+    *ngIf="showAddPageModal"
     [renderModal]="showAddPageModal"
-    (submitChanged)="addPage($event)"
-    (closeChanged)="closeModal($event)"
->
-    <form [formGroup]="formPageAdd">
-        <div class="formline">
-            <label for="pageTitle">{{ 'Title' | i18n }}</label>
-            <input id="pageTitle" type="text" formControlName="title" value="title.value" placeholder="{{ 'Write title' | i18n }}" />
-        </div>
-        <div class="formline">
-            <label for="pageLink">{{ 'Link' | i18n }}</label>
-            <input id="pageLink" type="text" formControlName="link" placeholder="{{ 'Write link' | i18n }}" />
-        </div>
-        <div class="formline">
-            <label for="pageContent">{{ 'Content' | i18n }}</label>
-            <ckeditor 
-                id="pageContent" 
-                [editor]="classicEditor" 
-                formControlName="content"
-                (ready)="onReady($event)"
-            ></ckeditor>
-        </div>
-        <div class="formline">
-            <label for="pageRank">{{ 'Rank' | i18n }}</label>
-            <input 
-                id="pageRank" 
-                type="number" 
-                min="1" 
-                max="10000"
-                formControlName="pageRank" 
-                placeholder="{{ 'Write rank' | i18n }}" />
-        </div>
-    </form>
-</app-modal>
+    [currentPageCount]="pageRows.length"
+    (closeChange)="closeAddPage($event)"
+></app-addpage>

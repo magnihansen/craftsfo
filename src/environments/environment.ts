@@ -6,9 +6,12 @@
 export const environment = {
   production: false,
   language: 'da',
-  logo: '../../assets/img/logo_house_small_transparent.png',
+  logo: './assets/img/craftsfo/logo_house_small_transparent.png',
+  bg_image_url: './assets/img/craftsfo/crafts_hus_og_heim.jpg',
   brandName: 'Crafts.fo',
   hubSettings: {
     url: 'https://localhost:5001'
   }
 };
+
+

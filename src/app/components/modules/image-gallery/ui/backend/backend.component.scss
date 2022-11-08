@@ -1,0 +1,13 @@
+:host {
+    ::ng-deep {
+        .ck-editor__editable_inline {
+            min-height: 150px;
+        }
+    }
+}
+
+.create-imagegallery {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 100%;
+}

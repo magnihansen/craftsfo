@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/internal/operators/map';
 import { Page } from '../models/page.model';
 import { User } from '../models/user';
 import { AuthenticationService } from './authentication.service';
@@ -32,7 +33,8 @@ export class PageService {
 
   public getPageByLink(pageLink: string | undefined): Observable<Page> {
     let pageUrl: string;
-    if (pageLink === undefined || pageLink === '') {
+    console.log();
+    if (pageLink === undefined || pageLink === '' || pageLink === 'start') {
       pageUrl = `${this.apiUrl}${this.apiPath}/GetDefaultPage`;
     } else {
       pageUrl = `${this.apiUrl}${this.apiPath}/GetPageByLink/${pageLink}`;
@@ -50,8 +52,8 @@ export class PageService {
     return this.http.get<Page>(pageUrl, this.httpOptions);
   }
 
-  public addPage(page: Page): Observable<boolean> {
-    return this.http.post<boolean>(
+  public addPage(page: Page): Observable<Page> {
+    return this.http.post<Page>(
       `${this.apiUrl}${this.apiPath}/AddPage`,
       page,
       this.httpOptions
@@ -64,11 +66,13 @@ export class PageService {
     const body = {
       id: page.id,
       uid: page.uid,
+      parentId: page.parentId,
+      pageTypeId: page.pageTypeId,
       title: page.title,
-      parent: page.parent,
       content: page.content,
-      pageRank: page.pageRank,
+      sort: page.sort,
       link: page.link,
+      isRouterLink: page.isRouterLink,
       active: page.active,
       updatedDate: new Date(),
       updatedBy: user.username
@@ -91,35 +95,41 @@ export class PageService {
     );
   }
 
-  public getAdminPages(): Page[] {
-    let pages: Page[] = [];
+  public getAdminPages(): Observable<Page[]> {
+    return this.authenticationService.getClaimValue("IsAdmin")
+    .pipe(
+      map((res: object) => {
+        const isAdmin: boolean = !!res;
 
-    const pageDashboard: Page = this.createAdminPage('Dashboard', '1', '/admin/dashboard');
-    const pageContact: Page = this.createAdminPage('Contact', '2', '/admin/contact');
-    const pageSlides: Page = this.createAdminPage('Slides', '3', '/admin/slides');
-    const pageUsers: Page = this.createAdminPage('Users', '4', '/admin/users');
-    const pageLogout: Page = this.createAdminPage('Logout', '5', '/logout');
+        let pages: Page[] = [];
+        pages = [...pages, this.createAdminPage('common.dashboard', 1, '/admin/dashboard', true)];
+        pages = [...pages, this.createAdminPage('common.messages', 2, '/admin/contact', true)];
+        if (isAdmin) {
+          pages = [...pages, this.createAdminPage('common.users', 4, '/admin/users', true)];
+        }
+        pages = [...pages, this.createAdminPage('common.logout', 5, '/logout', true)];
 
-    pages = [...pages, pageDashboard, pageContact, pageSlides, pageUsers, pageLogout];
-
-    return pages;
+        return pages;
+      })
+    );
   }
 
-  private createAdminPage(titleStr: string, rankStr: string, linkStr: string): Page {
+  private createAdminPage(title: string, sort: number, link: string, isRouterLink: boolean): Page {
     const page: Page = {
       id: 1,
       uid: '',
-      title: titleStr,
-      parent: '',
+      parentId: null,
+      pageTypeId: 0,
+      title,
       content: '',
-      pageRank: rankStr,
-      link: linkStr,
+      sort,
+      link,
+      isRouterLink,
       active: true,
       createdDate: new Date(),
       createdBy: 'System',
       updatedDate: null,
-      updatedBy: null,
-      isRouterLink: false
+      updatedBy: null
     };
     return page;
   }

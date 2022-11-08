@@ -24,13 +24,9 @@
 
     .navbar-mobile-top {
       .navbar-logo {
+        padding-left: 15px;
         & a {
           justify-content: center;
-          
-          & img {
-            width: 50%;
-            height: 50%;
-          }
         }
       }
     }

@@ -1,27 +1,4 @@
-:root {
-    --font-family: 'Open Sans', sans-serif;
-    --font-color-primary: '#f4f7f9';
-    --font-color-secondary: '#eff3f6';
-    --font-color-light: '#ced7df';
-    --font-size-default: '14px';
-    --font-size-h1: '22px';
-    --font-size-h2: '18px';
-    --font-size-h3: '16px';
-
-    --color-dark: #403121;
-    --color-middle: #a65e09;
-    --color-light: #ed9728;
-    --color-creme: #f4cc94;
-
-    /* Brand colors - http://brandcolors.net - Buffer */
-    --bg-black: #323b43;
-    --bg-gray: #59626a;
-    --bg-blue: #168eea;
-    --bg-red: #ee4f4f;
-
-    --transition-padding: padding 0.3s linear;
-    --box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
-}
+@import url(./app/assets/variables.scss);
 
 /* You can add global styles to this file, and also import other style files */
 html, body {
@@ -37,22 +14,89 @@ a:hover {
     cursor: pointer;
 }
 
+form {
+    width: 100%;
+
+    .formline {
+        display: flex;
+        flex-direction: row;
+        flex: 1 1 100%;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+
+        label {
+            display: flex;
+            flex-direction: row;
+            flex: 1 1 100%;
+            font-size: var(--font-size-sm);
+        }
+    }
+
+    .invalid-feedback {
+        font-size: var(--font-size-default);
+        color: var(--color-red);
+    }
+}
+
+input {
+    font-size: var(--font-size-default);
+    padding: var(--default-ui-padding);
+    min-width: 100px;
+    border: 2px solid var(--border-base-color);
+    border-radius: var(--border-radius);
+}
+
 button {
     font-size: var(--font-size-default);
-    padding: 10px 20px;
+    padding: var(--default-ui-padding);
     min-width: 100px;
     border: none;
-    border-radius: 3px;
+    border-radius: var(--border-radius);
     background-color: var(--color-light);
     color: var(--font-color-secondary);
 
-    &:hover {
+    &:hover:not([disabled]) {
         cursor: pointer;
         background-color: var(--color-middle);
-        color: var(--font-color-light);    
+        color: var(--color-white);    
     }
+
+    &[disabled] {
+        background-color: var(--color-gray);
+        color: var(--color-white); 
+    }
+
+    &.add-spacer {
+        margin-left: 10px;
+    }
+}
+
+select {
+    font-size: var(--font-size-default);
+    padding: 7px 20px;
+    min-width: 100px;
+    border: 2px solid var(--border-base-color);
+    border-radius: var(--border-radius);
 }
 
 *:active {
     outline: none;
+}
+
+.ck.ck-editor {
+    min-width: 400px;
+    max-width: 100%;
+    border: 2px solid var(--border-base-color) !important;
+    border-radius: var(--border-radius) !important;
+
+    .ck-toolbar {
+        border-left: none !important;
+        border-top: none !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-base-color) !important;
+    }
+
+    .ck-editor__editable:not(.ck-focused) {
+        border: none !important;
+    }
 }

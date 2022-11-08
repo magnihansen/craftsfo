@@ -8,11 +8,6 @@ import { languages } from './languages.model';
 export class I18nService {
   public data: {[keys: string]: string}[] = [];
   public currentLanguage = '';
-  defaultLocale = 'da';
-
-  constructor(
-  ) {
-  }
 
   private getKeyValuePairs(obj: object): KeyValuePair<string, any>[] {
     return Object.keys(obj).map(k => ({key: k, value: (obj as any)[k]}));
@@ -73,5 +68,11 @@ export class I18nService {
     }
     returnString += ' ' + this.getTranslation('and') + ' ' + strings[strings.length - 1];
     return returnString;
+  }
+
+  public removeTranslations(obj: {[keys: string]: string}): void {
+    if (this.data.includes(obj)) {
+      this.data = this.data.filter(t => t !== obj);
+    }
   }
 }

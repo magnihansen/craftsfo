@@ -1,7 +1,38 @@
-<div class="addpage">
-    
-</div>
+<app-modal
+    #addPageModalContent
+    modalTitle="{{ 'common.page-create' | i18n }}"
+    [renderModal]="renderModal"
+    (submitChanged)="addPage($event)"
+    (closeChanged)="closeModal($event)"
+>
+    <form [formGroup]="formPageAdd">
+        <div class="formline">
+            <label for="pageTitle">{{ 'common.title' | i18n }}</label>
+            <input id="pageTitle" type="text" formControlName="title" value="title.value" placeholder="{{ 'input.fill-out-title' | i18n }}" />
+        </div>
+        <div class="formline">
+            <label for="pageLink">{{ 'common.link' | i18n }}</label>
+            <input id="pageLink" type="text" formControlName="link" placeholder="{{ 'input.fill-out-link' | i18n }}" />
+        </div>
+        <div class="formline">
+            <label for="pageContent">{{ 'common.content' | i18n }}</label>
+            <ckeditor 
+                id="pageContent" 
+                [editor]="classicEditor" 
+                formControlName="content"
+                (ready)="onReady($event)"
+            ></ckeditor>
+        </div>
+        <div class="formline">
+            <label for="sort">{{ 'common.sort' | i18n }}</label>
+            <input 
+                id="sort" 
+                type="number" 
+                min="1" 
+                max="10000"
+                formControlName="sort" 
+                placeholder="{{ 'input.fill-out-sort' | i18n }}" />
+        </div>
+    </form>
+</app-modal>
 
-<button (click)="showModal = true">Vis modal</button>
-
-NOT USED

@@ -27,7 +27,7 @@ export class ContextMenuComponent {
   ) { }
 
   public deleteRow(dataRow: DataRow): void {
-    const sureMessage: string = this.i18nService.getTranslation('Are you sure you want to delete?');
+    const sureMessage: string = this.i18nService.getTranslation('warning.page-delete');
     if (window.confirm(sureMessage)) {
       this.deleteRowChange.emit(dataRow);
     }

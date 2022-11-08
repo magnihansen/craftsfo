@@ -20,16 +20,23 @@
         border: solid 1px #efefef;
         border-radius: 5px;
 
-        @include defaultFormInputs;
-
         .form-group {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             flex: 1 1 100%;
             flex-wrap: wrap;
 
+            &:not(:first-child) {
+                margin-top: 10px;
+            }
+
             &.space-between {
+                flex-direction: row;
                 justify-content: space-between;
+            }
+
+            label {
+                font-size: var(--font-size-sm);
             }
         }
 

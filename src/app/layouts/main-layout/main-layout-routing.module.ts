@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RouterpagecontentComponent } from 'src/app/components/routerpagecontent/routerpagecontent.component';
+import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MainLayoutComponent } from './main-layout.component';
 
@@ -23,12 +24,10 @@ const routes: Routes = [
   ];
 
 @NgModule({
-    declarations: [
-      MainLayoutComponent,
-      RouterpagecontentComponent
-    ],
     imports: [
+      CommonModule,
       SharedModule,
+      LocalLocalizationModule,
       RouterModule.forChild(routes)
     ],
     exports: [
@@ -36,6 +35,4 @@ const routes: Routes = [
     ]
 })
 
-export class MainLayoutRoutingModule {
-  constructor() { }
-}
+export class MainLayoutRoutingModule { }

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { I18nService } from 'src/app/localization/i18n.service';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { DataColumn } from '../../table/data-column';
@@ -15,7 +16,8 @@ export class UsersComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private userService: UserService
+        private userService: UserService,
+        private i18nService: I18nService
     ) {}
 
     ngOnInit(): void {
@@ -36,11 +38,11 @@ export class UsersComponent implements OnInit {
                         allowDelete: _allowDelete,
                         dataColumns: [
                             {
-                            name: 'Navn',
+                            name: this.i18nService.getTranslation('common.name'),
                             value: dataUser.firstname + ' ' + dataUser.lastname
                             } as DataColumn,
                             {
-                            name: 'Brugernavn',
+                            name: this.i18nService.getTranslation('common.username'),
                             value: dataUser.username
                             } as DataColumn
                         ]
