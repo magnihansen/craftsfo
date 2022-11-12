@@ -1,4 +1,6 @@
-export interface Page {
+import { BaseDates } from "./base-dates.model";
+
+export interface Page extends BaseDates {
     id: number;
     uid: string;
     parentId: number | null;
@@ -9,8 +11,4 @@ export interface Page {
     link: string;
     active: boolean;
     isRouterLink: boolean;
-    createdDate: Date | null;
-    createdBy: string;
-    updatedDate: Date | null;
-    updatedBy: string | null;
 }

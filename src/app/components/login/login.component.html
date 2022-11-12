@@ -2,27 +2,27 @@
   <div class="login">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-          <label for="username">Brúkaranavn</label>
+          <label for="username">{{ 'common.username' | i18n }}</label>
           <input type="text" formControlName="username" class="form-control" autofocus [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
           <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-              <div *ngIf="f.username.errors.required">Brúkaranavn er kravt</div>
+              <div *ngIf="f.username.errors.required">{{ 'validation.username-required' | i18n }}</div>
           </div>
       </div>
       <div class="form-group">
-          <label for="password">Loyniorð</label>
+          <label for="password">{{ 'common.password' | i18n }}</label>
           <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
           <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-              <div *ngIf="f.password.errors.required">Loyniorð er kravt</div>
+              <div *ngIf="f.password.errors.required">{{ 'validation.password-required' | i18n }}</div>
           </div>
       </div>
       <div class="form-group space-between">
           <button type="submit" [disabled]="submitted && loading" class="btn btn-primary">
               <span *ngIf="submitted && loading" class="spinner-border spinner-border-sm mr-1"></span>
-              Innrita
+              {{ 'common.login' | i18n }}
           </button>
           <button type="button" class="btn btn-primary p-l-10" (click)="onReset()">
             <span class="spinner-border spinner-border-sm mr-1"></span>
-            Avslutta
+            {{ 'common.cancel' | i18n }}
         </button>
       </div>
     </form>

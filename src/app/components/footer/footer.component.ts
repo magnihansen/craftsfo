@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { AppEventType } from 'src/app/event-queue';
 import { EventQueueService } from 'src/app/event-queue/event.queue';
+import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Company } from '../../models/company.model';
 import { Developer } from '../../models/developer.model';
@@ -14,7 +15,7 @@ import { Developer } from '../../models/developer.model';
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
-  imports: [ FormsModule, CommonModule]
+  imports: [ FormsModule, CommonModule, LocalLocalizationModule ]
 })
 export class FooterComponent implements OnInit {
   public company: Company;

@@ -1,11 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
+import { ContextMenuComponent } from './context-menu/context-menu.component';
 import { DataColumn } from './data-column';
 import { DataRow } from './data-row';
 
 @Component({
+  standalone: true,
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  styleUrls: ['./table.component.scss'],
+  imports: [ CommonModule, LocalLocalizationModule, ContextMenuComponent ]
 })
 export class TableComponent implements OnChanges {
   @Input()

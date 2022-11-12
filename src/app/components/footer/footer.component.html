@@ -15,17 +15,17 @@
       (click)="gotoLogin()"
     >
       <i class="fa fa-lock"></i>
-      Innrita
+      {{ 'common.login' | i18n }}
     </div>
     <div 
       class="login-link" 
       *ngIf="isLoggedIn"
       (click)="gotoLogout()"
-    >Útrita</div>
+    >{{ 'common.logout' | i18n }}</div>
 </div>
 <div id="sb-search" class="sb-search" style="display:none;">
     <form (submit)="onSearch(search.value)" >
-        <input class="sb-search-input" placeholder="Søg på siden" type="text" value="" name="search" id="search" #search />
+        <input class="sb-search-input" placeholder="{{ 'common.search' | i18n }}" type="text" value="" name="search" id="search" #search />
         <input class="sb-search-submit" type="submit" value="" />
         <span class="sb-icon-search" title="Søg" (click)="clearSearch(search)"></span>
     </form>

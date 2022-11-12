@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, ContentChild, Inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ContentChild, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { PageService } from 'src/app/services/page.service';
@@ -11,8 +11,8 @@ import { DataRow } from '../../table/data-row';
 import { FormPageAddService } from 'src/app/services/form-page-add.service';
 import { I18nService } from 'src/app/localization/i18n.service';
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
-import { TableModule } from '../../table/table.module';
 import { AddpageComponent } from 'src/app/features/page-add/addpage.component';
+import { TableComponent } from '../../table/table.component';
 
 @Component({
   standalone: true,
@@ -25,8 +25,8 @@ import { AddpageComponent } from 'src/app/features/page-add/addpage.component';
     CommonModule, 
     LocalLocalizationModule, 
     CKEditorModule,
-    TableModule,
-    AddpageComponent
+    AddpageComponent,
+    TableComponent
   ],
   providers: [FormPageAddService]
 })
@@ -90,8 +90,8 @@ export class DashboardComponent implements OnInit {
           value: dataPage.sort
         } as DataColumn,
         {
-          name: this.i18nService.getTranslation('common.updated'),
-          value: dataPage.updatedDate
+          name: this.i18nService.getTranslation('common.created'),
+          value: dataPage.createdDate
         } as DataColumn
       ]
     } as DataRow

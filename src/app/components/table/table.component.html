@@ -35,5 +35,8 @@
                 ></app-table-context-menu>
             </td>
         </tr>
+        <tr *ngIf="dataRows.length == 0">
+            {{ 'warning.no-results' | i18n }}
+        </tr>
     </tbody>
 </table>

@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ToastrModule } from 'ngx-toastr';
 
-import { TableModule } from '../components/table/table.module';
 import { I18nPipe } from '../localization/i18n.pipe';
 import { AutoFocusDirective } from './directives/auto-focus.directive';
 import { LocalLocalizationModule } from '../localization/local-localization.module';
@@ -21,7 +20,6 @@ import { ImageGalleryComponent } from '../components/modules/image-gallery/image
     CommonModule,
     RouterModule,
     CKEditorModule,
-    TableModule,
     PageAddModule,
     ToastrModule.forRoot({
       timeOut: 3000,
@@ -34,7 +32,6 @@ import { ImageGalleryComponent } from '../components/modules/image-gallery/image
   ],
   exports: [
     CKEditorModule,
-    TableModule,
     PageAddModule,
     MatIconModule,
     AutoFocusDirective,

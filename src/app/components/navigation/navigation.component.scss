@@ -25,6 +25,8 @@
     .navbar-mobile-top {
       .navbar-logo {
         padding-left: 15px;
+        padding-right: 15px;
+
         & a {
           justify-content: center;
         }
@@ -37,6 +39,8 @@
         right: 5px;
         top: 5px;
         padding: 10px;
+        width: 48px;
+        height: 48px;
         background-color: var(--color-light);
         color: var(--color-dark);
         min-width: none;
@@ -54,7 +58,6 @@
     .top-navbar {
       display: flex;
       flex-wrap: nowrap;
-      padding-left: 20px;
 
       .navbartop-btn {
         display: flex;
@@ -140,6 +143,6 @@
   .navbar-opened:host .top-navbar a {
     display: block;
     width: 100%;
-    line-height: 56px !important;
+    line-height: 40px !important;
   }
 }

@@ -10,9 +10,10 @@ import { AuthGuard } from 'src/app/helpers/auth.guard';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LocalLocalizationModule } from '../../localization/local-localization.module';
 import { I18nPipe } from '../../localization/i18n.pipe';
-import { UsersComponent } from 'src/app/components/admin/users/users.component';
 import { ImageGalleryComponent } from 'src/app/components/modules/image-gallery/image-gallery.component';
 import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
+import { SettingsComponent } from 'src/app/components/admin/settings/settings.component';
+import { UsersComponent } from 'src/app/components/admin/users/users.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,8 @@ const routes: Routes = [
       { path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'} },
       { path: 'editpage/:id', component: PageeditComponent, data: {title: 'Edit page'} },
       { path: 'contact', pathMatch: 'full', component: ContacteditComponent, data: {title: 'Contacts'} },
-      { path: 'users', pathMatch: 'full', component: UsersComponent, data: {title: 'Users'} }
+      { path: 'users', pathMatch: 'full', component: UsersComponent, data: {title: 'Users'} },
+      { path: 'settings', pathMatch: 'full', component: SettingsComponent, data: {title: 'Settings'} }
     ]
   }
 ];
@@ -31,8 +33,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
       AdminLayoutComponent,
-      ContacteditComponent,
-      UsersComponent
+      ContacteditComponent
     ],
     imports: [
       FormsModule,

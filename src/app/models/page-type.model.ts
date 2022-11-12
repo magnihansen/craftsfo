@@ -1,9 +1,7 @@
-export interface PageType {
+import { BaseDates } from "./base-dates.model";
+
+export interface PageType extends BaseDates {
     id: number;
     name: string;
     active: boolean;
-    createdDate: Date;
-    createdBy: string;
-    updatedDate: Date | null;
-    updatedBy: string | null;
 }

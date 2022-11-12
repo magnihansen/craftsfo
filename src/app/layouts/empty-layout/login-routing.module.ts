@@ -21,8 +21,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        EmptyLayoutComponent,
-        LoginComponent
+        EmptyLayoutComponent
     ],
     imports: [
         ReactiveFormsModule,

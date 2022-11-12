@@ -6,8 +6,8 @@
 <div class="datatable">
   <app-table 
     [(dataRows)]="pageRows" 
-    (rowClicked)="rowClicked($event)"
-    (deleteRowChange)="deleteRow($event)"
+    (rowClicked)="rowClicked($any($event))"
+    (deleteRowChange)="deleteRow($any($event))"
   ></app-table>
 </div>
 
@@ -15,5 +15,5 @@
     *ngIf="showAddPageModal"
     [renderModal]="showAddPageModal"
     [currentPageCount]="pageRows.length"
-    (closeChange)="closeAddPage($event)"
+    (closeChange)="closeAddPage($any($event))"
 ></app-addpage>

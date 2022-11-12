@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { CommonModule } from '@angular/common';
+import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 
 @Component({
+  standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  imports: [ CommonModule, FormsModule, ReactiveFormsModule, LocalLocalizationModule ]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;

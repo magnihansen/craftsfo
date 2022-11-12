@@ -33,8 +33,7 @@ export class PageService {
 
   public getPageByLink(pageLink: string | undefined): Observable<Page> {
     let pageUrl: string;
-    console.log();
-    if (pageLink === undefined || pageLink === '' || pageLink === 'start') {
+    if (pageLink === undefined || pageLink === '') {
       pageUrl = `${this.apiUrl}${this.apiPath}/GetDefaultPage`;
     } else {
       pageUrl = `${this.apiUrl}${this.apiPath}/GetPageByLink/${pageLink}`;
@@ -106,6 +105,7 @@ export class PageService {
         pages = [...pages, this.createAdminPage('common.messages', 2, '/admin/contact', true)];
         if (isAdmin) {
           pages = [...pages, this.createAdminPage('common.users', 4, '/admin/users', true)];
+          pages = [...pages, this.createAdminPage('common.settings', 4, '/admin/settings', true)];
         }
         pages = [...pages, this.createAdminPage('common.logout', 5, '/logout', true)];
 

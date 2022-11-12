@@ -1,11 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { I18nService } from 'src/app/localization/i18n.service';
+import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 import { DataRow } from '../data-row';
 
 @Component({
+  standalone: true,
   selector: 'app-table-context-menu',
   templateUrl: './context-menu.component.html',
-  styleUrls: ['./context-menu.component.scss']
+  styleUrls: ['./context-menu.component.scss'],
+  imports: [ CommonModule, LocalLocalizationModule ]
 })
 export class ContextMenuComponent {
   @Input() public dataRow!: DataRow;

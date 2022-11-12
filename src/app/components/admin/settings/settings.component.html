@@ -1,0 +1,7 @@
+<div class="datatable">
+    <app-table 
+      [(dataRows)]="rows" 
+      (rowClicked)="rowClicked($any($event))"
+      (deleteRowChange)="deleteRow($any($event))"
+    ></app-table>
+  </div>

@@ -40,7 +40,7 @@ form {
 
 input {
     font-size: var(--font-size-default);
-    padding: var(--default-ui-padding);
+    padding: var(--default-ui-input-padding);
     min-width: 100px;
     border: 2px solid var(--border-base-color);
     border-radius: var(--border-radius);
@@ -48,8 +48,7 @@ input {
 
 button {
     font-size: var(--font-size-default);
-    padding: var(--default-ui-padding);
-    min-width: 100px;
+    padding: var(--default-ui-button-padding);
     border: none;
     border-radius: var(--border-radius);
     background-color: var(--color-light);

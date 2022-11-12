@@ -15,6 +15,7 @@
           <a
             *ngIf="page.link !== '/logout'"
             [routerLink]="[(isLoggedIn ? '/' : '/page/') + page.link]"
+            (click)="navbarOpened = false"
             mat-button
             class="navbartop-btn"
           >{{ page['title'] | i18n }}</a>
