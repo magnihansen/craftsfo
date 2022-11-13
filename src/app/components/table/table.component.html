@@ -36,7 +36,9 @@
             </td>
         </tr>
         <tr *ngIf="dataRows.length == 0">
-            {{ 'warning.no-results' | i18n }}
+            <td [attr.colspan]="showContextMenu ? columns.length + 1 : columns.length">
+                {{ 'warning.no-results' | i18n }}
+            </td>
         </tr>
     </tbody>
 </table>
