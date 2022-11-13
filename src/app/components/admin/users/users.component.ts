@@ -8,13 +8,14 @@ import { UserService } from 'src/app/services/user.service';
 import { DataColumn } from '../../table/data-column';
 import { DataRow } from '../../table/data-row';
 import { TableComponent } from '../../table/table.component';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
     standalone: true,
     selector: 'app-users',
     templateUrl: './users.component.html',
     styleUrls: ['./users.component.scss'],
-    imports: [ CommonModule, LocalLocalizationModule, TableComponent ]
+    imports: [ CommonModule, LocalLocalizationModule, TableComponent, HeaderComponent ]
 })
 export class UsersComponent implements OnInit {
     @Input() public userRows: DataRow[] = [];

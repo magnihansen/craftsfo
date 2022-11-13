@@ -9,13 +9,14 @@ import { SettingService } from "src/app/services/setting.service";
 import { DataColumn } from "../../table/data-column";
 import { DataRow } from "../../table/data-row";
 import { TableComponent } from "../../table/table.component";
+import { HeaderComponent } from "../header/header.component";
 
 @Component({
     standalone: true,
     selector: 'app-setting',
     templateUrl: './settings.component.html',
     styleUrls: ['./settings.component.scss'],
-    imports: [ CommonModule, LocalLocalizationModule, TableComponent ]
+    imports: [ CommonModule, LocalLocalizationModule, TableComponent, HeaderComponent ]
   }) 
   export class SettingsComponent implements OnInit {
     @Input() public rows: DataRow[] = [];

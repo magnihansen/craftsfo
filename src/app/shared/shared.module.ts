@@ -9,7 +9,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { I18nPipe } from '../localization/i18n.pipe';
 import { AutoFocusDirective } from './directives/auto-focus.directive';
 import { LocalLocalizationModule } from '../localization/local-localization.module';
-import { PageAddModule } from '../features/page-add/page-add.module';
 import { ImageGalleryComponent } from '../components/modules/image-gallery/image-gallery.component';
 
 @NgModule({
@@ -20,7 +19,6 @@ import { ImageGalleryComponent } from '../components/modules/image-gallery/image
     CommonModule,
     RouterModule,
     CKEditorModule,
-    PageAddModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',
@@ -32,7 +30,6 @@ import { ImageGalleryComponent } from '../components/modules/image-gallery/image
   ],
   exports: [
     CKEditorModule,
-    PageAddModule,
     MatIconModule,
     AutoFocusDirective,
     ImageGalleryComponent

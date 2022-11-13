@@ -1,19 +1,20 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Page } from '../../models/page.model';
-import { Contact } from '../../models/contact.model';
+import { ActivatedRoute } from '@angular/router';
+
+import { Page } from '../../../models/page.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { Message } from 'src/app/models/message.model';
 
 @Component({
-  selector: 'app-contact',
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.scss']
+  selector: 'app-add-message',
+  templateUrl: './add-message.component.html',
+  styleUrls: ['./add-message.component.scss']
 })
 export class ContactComponent {
   dbPath = '/contacts';
   page: Page | null = null;
   content = '';
-  contact: Contact | null = null;
+  contact: Message | null = null;
   name = '';
   phone = '';
   email = '';
@@ -37,7 +38,7 @@ export class ContactComponent {
   onSubmit(): void {
     const now = new Date();
     this.contact = {
-      uid: '',
+      id: 0,
       name: this.name,
       phone: this.phone,
       email: this.email,
@@ -56,7 +57,7 @@ export class ContactComponent {
     }
   }
 
-  update(key: string, contact: Contact): void {
+  update(key: string, message: Message): void {
     // this.db.object<Contact>(this.dbPath + '/' + contact.uid).update({
     //   uid: contact.uid
     // })
@@ -70,5 +71,9 @@ export class ContactComponent {
 
   handleError(error: any): void {
     console.log(error);
+  }
+
+  deleteRow() {
+
   }
 }

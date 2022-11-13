@@ -1,9 +1,9 @@
 <app-header 
-  pageNameKey="common.settings"
+  pageNameKey="common.messages"
 ></app-header>
 
 <app-table 
-  [(dataRows)]="rows" 
+  [(dataRows)]="messages" 
   (rowClicked)="rowClicked($any($event))"
   (deleteRowChange)="deleteRow($any($event))"
 ></app-table>

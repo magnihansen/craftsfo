@@ -15,10 +15,10 @@ import { UploadAdapter } from 'src/app/shared/upload-adapter.class';
 import * as uuid from 'uuid';
 
 @Component({
+  selector: 'app-add-page',
   standalone: true,
-  selector: 'app-addpage',
-  templateUrl: './addpage.component.html',
-  styleUrls: ['./addpage.component.scss'],
+  templateUrl: './add-page.component.html',
+  styleUrls: ['./add-page.component.scss'],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, CKEditorModule, LocalLocalizationModule],
   providers: [FormPageAddService]
 })
@@ -98,6 +98,7 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
   public closeModal(modalClosed: boolean): void {
     if (modalClosed) {
       this.formPageAddService.addPageForm.reset();
+      this.closeChange.emit(undefined);
     }
   }
 

@@ -1,9 +1,9 @@
-<h1>{{ 'common.users' | i18n }}</h1>
+<app-header 
+  pageNameKey="common.users"
+></app-header>
 
-<div class="datatable">
-  <app-table 
-    [(dataRows)]="userRows" 
-    (rowClicked)="rowClicked($event)"
-    (deleteRowChange)="deleteRow($event)"
-  ></app-table>
-</div>
+<app-table 
+  [(dataRows)]="userRows" 
+  (rowClicked)="rowClicked($event)"
+  (deleteRowChange)="deleteRow($event)"
+></app-table>

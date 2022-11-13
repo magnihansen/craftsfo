@@ -1,3 +1,6 @@
+:host {
+    width: 100%;
+}
 .table {
     display: flex;
     flex-direction: column;
@@ -51,6 +54,10 @@
                 flex: 1;
                 justify-content: center;
                 padding: 5px 15px;
+
+                &.no-rows {
+                    align-items: center;
+                }
             }
 
             &:hover {

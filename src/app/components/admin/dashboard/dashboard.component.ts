@@ -11,8 +11,9 @@ import { DataRow } from '../../table/data-row';
 import { FormPageAddService } from 'src/app/services/form-page-add.service';
 import { I18nService } from 'src/app/localization/i18n.service';
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
-import { AddpageComponent } from 'src/app/features/page-add/addpage.component';
+import { AddpageComponent } from 'src/app/features/add/add-page/add-page.component';
 import { TableComponent } from '../../table/table.component';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   standalone: true,
@@ -26,7 +27,8 @@ import { TableComponent } from '../../table/table.component';
     LocalLocalizationModule, 
     CKEditorModule,
     AddpageComponent,
-    TableComponent
+    TableComponent,
+    HeaderComponent
   ],
   providers: [FormPageAddService]
 })
@@ -61,7 +63,6 @@ export class DashboardComponent implements OnInit {
         });
 
         this.pageRows = _pageRows;
-        console.log('this.pageRows', this.pageRows);
         this.cdr.detectChanges();
       },
       error: (err: any) => {
@@ -97,8 +98,8 @@ export class DashboardComponent implements OnInit {
     } as DataRow
   }
 
-  public toggleAddNewPage(): void {
-    this.showAddPageModal = !this.showAddPageModal;
+  public openAddNewPage(): void {
+    this.showAddPageModal = true;
   }
 
   public rowClicked(dataRow: DataRow): void {
@@ -123,8 +124,9 @@ export class DashboardComponent implements OnInit {
   }
 
   public closeAddPage(newPage: Page): void {
-    this.pageRows = [...this.pageRows, this.createDataRow(newPage, this.pageRows.length)];
-    this.cdr.detectChanges();
+    if (newPage) {
+      this.pageRows = [...this.pageRows, this.createDataRow(newPage, this.pageRows.length)];
+    }
     this.showAddPageModal = false;
   }
 }

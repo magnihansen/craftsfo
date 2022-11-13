@@ -1,19 +1,18 @@
-<h1>{{ 'common.pages' | i18n }}</h1>
-<div class="addnewpage" (click)="toggleAddNewPage()">
-  {{ 'common.page-create' | i18n }}
-</div>
+<app-header 
+  pageNameKey="common.pages"
+  addItemKey="common.page-create"
+  (addClicked)="openAddNewPage()"
+></app-header>
 
-<div class="datatable">
-  <app-table 
-    [(dataRows)]="pageRows" 
-    (rowClicked)="rowClicked($any($event))"
-    (deleteRowChange)="deleteRow($any($event))"
-  ></app-table>
-</div>
+<app-table 
+  [(dataRows)]="pageRows" 
+  (rowClicked)="rowClicked($any($event))"
+  (deleteRowChange)="deleteRow($any($event))"
+></app-table>
 
-<app-addpage 
+<app-add-page 
     *ngIf="showAddPageModal"
     [renderModal]="showAddPageModal"
     [currentPageCount]="pageRows.length"
     (closeChange)="closeAddPage($any($event))"
-></app-addpage>
+></app-add-page>

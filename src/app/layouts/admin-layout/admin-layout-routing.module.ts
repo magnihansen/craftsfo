@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AdminLayoutComponent } from './admin-layout.component';
-import { ContacteditComponent } from '../../components/admin/contactedit/contactedit.component';
+import { MessagesComponent } from '../../components/admin/messages/messages.component';
 import { DashboardComponent } from '../../components/admin/dashboard/dashboard.component';
 import { PageeditComponent } from '../../components/admin/pageedit/pageedit.component';
 import { AuthGuard } from 'src/app/helpers/auth.guard';
@@ -14,6 +14,7 @@ import { ImageGalleryComponent } from 'src/app/components/modules/image-gallery/
 import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
 import { SettingsComponent } from 'src/app/components/admin/settings/settings.component';
 import { UsersComponent } from 'src/app/components/admin/users/users.component';
+import { ContentWrapperComponent } from 'src/app/shared/components/content-wrapper/content-wrapper.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,7 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'} },
       { path: 'editpage/:id', component: PageeditComponent, data: {title: 'Edit page'} },
-      { path: 'contact', pathMatch: 'full', component: ContacteditComponent, data: {title: 'Contacts'} },
+      { path: 'contact', pathMatch: 'full', component: MessagesComponent, data: {title: 'Messages'} },
       { path: 'users', pathMatch: 'full', component: UsersComponent, data: {title: 'Users'} },
       { path: 'settings', pathMatch: 'full', component: SettingsComponent, data: {title: 'Settings'} }
     ]
@@ -32,8 +33,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-      AdminLayoutComponent,
-      ContacteditComponent
+      AdminLayoutComponent
     ],
     imports: [
       FormsModule,
@@ -43,7 +43,8 @@ const routes: Routes = [
       RouterModule.forChild(routes),
       LocalLocalizationModule,
       ImageGalleryComponent,
-      NavigationComponent
+      NavigationComponent,
+      ContentWrapperComponent
     ],
     exports: [
       RouterModule

@@ -1,5 +1,5 @@
-export interface Contact {
-    uid: string;
+export interface Message {
+    id: number;
     timestamp: string;
     done: boolean;
     email: string;

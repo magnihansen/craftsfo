@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
+import { EmptyStateComponent } from 'src/app/shared/components/empty-state/empty-state.component';
 import { ContextMenuComponent } from './context-menu/context-menu.component';
 import { DataColumn } from './data-column';
 import { DataRow } from './data-row';
@@ -10,7 +11,7 @@ import { DataRow } from './data-row';
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
-  imports: [ CommonModule, LocalLocalizationModule, ContextMenuComponent ]
+  imports: [ CommonModule, LocalLocalizationModule, ContextMenuComponent, EmptyStateComponent ]
 })
 export class TableComponent implements OnChanges {
   @Input()

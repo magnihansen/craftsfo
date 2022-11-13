@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table" *ngIf="dataRows.length > 0">
     <thead class="thead">
         <th 
             *ngFor="let column of columns; let i = index"
@@ -35,10 +35,9 @@
                 ></app-table-context-menu>
             </td>
         </tr>
-        <tr *ngIf="dataRows.length == 0">
-            <td [attr.colspan]="showContextMenu ? columns.length + 1 : columns.length">
-                {{ 'warning.no-results' | i18n }}
-            </td>
-        </tr>
     </tbody>
 </table>
+<app-empty-state
+    *ngIf="dataRows.length == 0"
+    emptyStateKey="warning.no-results"
+></app-empty-state>
