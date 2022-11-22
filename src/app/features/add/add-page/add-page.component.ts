@@ -1,18 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, Output, EventEmitter, AfterViewInit, OnDestroy, Input, OnInit } from '@angular/core';
 import { FormControlStatus, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Subscription } from 'rxjs/internal/Subscription';
+import * as uuid from 'uuid';
+
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
+import { PageType } from 'src/app/models/page-type.model';
 import { Page } from 'src/app/models/page.model';
 import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { FormPageAddService } from 'src/app/services/form-page-add.service';
+import { FormsService } from 'src/app/services/forms.service';
 import { PageService } from 'src/app/services/page.service';
+import { PageTypeService } from 'src/app/services/pagetype.service';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { UploadAdapter } from 'src/app/shared/upload-adapter.class';
-import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-add-page',
@@ -20,7 +24,7 @@ import * as uuid from 'uuid';
   templateUrl: './add-page.component.html',
   styleUrls: ['./add-page.component.scss'],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, CKEditorModule, LocalLocalizationModule],
-  providers: [FormPageAddService]
+  providers: [FormsService]
 })
 export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public renderModal = false;
@@ -31,15 +35,19 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
   public classicEditor = ClassicEditor;
   public formPageAdd: FormGroup = new FormGroup({});
   public formPageAddState?: Subscription;
+  public pageTypes: PageType[] = [];
 
   constructor(
     private pageService: PageService,
     private authService: AuthenticationService,
-    private formPageAddService: FormPageAddService
-  ) { }
+    private formsService: FormsService,
+    private pageTypeService: PageTypeService
+  ) { 
+    this.loadPageTypes();
+  }
 
   public ngOnInit(): void {
-    this.formPageAdd = this.formPageAddService.addPageForm.controls['addpage'] as FormGroup;
+    this.formPageAdd = this.formsService.formGroups.controls['addpage'] as FormGroup;
     this.formPageAdd.controls.sort.setValue((this.currentPageCount + 1));
   }
 
@@ -47,9 +55,20 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.formPageAddState = this.formPageAdd.statusChanges
       .subscribe({
         next: (state: FormControlStatus) => {
-          this.formPageAddService.isFormValid = (state === 'INVALID' ? false : true);
+          this.formsService.isFormValid = (state === 'INVALID' ? false : true);
         }
       });
+  }
+
+  private loadPageTypes(): void {
+    this.pageTypeService.getPageTypes().subscribe({
+      next: (pageTypes: PageType[]) => {
+        this.pageTypes = pageTypes;
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
   }
 
   public onReady(eventData: any) {
@@ -63,6 +82,7 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.authService.IsUserLoggedIn) {
       const user: User = this.authService.getUser();
 
+      const pageTypeId: number = this.formPageAdd.controls.pageTypeId.value as number;
       const sort: number = this.formPageAdd.controls.sort.value as number;
       const title: string = this.formPageAdd.controls.title.value as string;
       const link: string = this.formPageAdd.controls.link.value as string;
@@ -71,7 +91,7 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
       const newPage: Page = {
         uid: uuid.v4(),
         parentId: null,
-        pageTypeId: 1,
+        pageTypeId: pageTypeId,
         title,
         content,
         sort,
@@ -84,7 +104,7 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
       this.pageService.addPage(newPage).subscribe({
         next: (insertedPage: Page) => {
           if (insertedPage) {
-            this.formPageAddService.addPageForm.reset();
+            this.formsService.formGroups.reset();
             this.closeChange.emit(insertedPage);
           }
         },
@@ -97,7 +117,7 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public closeModal(modalClosed: boolean): void {
     if (modalClosed) {
-      this.formPageAddService.addPageForm.reset();
+      this.formsService.formGroups.reset();
       this.closeChange.emit(undefined);
     }
   }

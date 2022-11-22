@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { MiscHelper } from '../helpers/misc.helper';
+import { MiscHelper } from '../core/misc.helper';
 
 @Injectable({
   providedIn: 'root'

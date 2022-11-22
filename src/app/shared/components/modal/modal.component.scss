@@ -1,4 +1,4 @@
-@import url(../../../assets/variables.scss);
+@import '../../../assets/variables.scss';
 
 .modal-wrapper {
     position: absolute;
@@ -33,6 +33,8 @@
                 border-radius: 15px;
                 padding: 15px;
                 transition: all 1s ease;
+                max-height: 100vw;
+                overflow: auto;
 
                 .header {
                     justify-content: flex-start;

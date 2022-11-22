@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ContentChild, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -8,12 +8,13 @@ import { PageService } from 'src/app/services/page.service';
 import { Page } from '../../../models/page.model';
 import { DataColumn } from '../../table/data-column';
 import { DataRow } from '../../table/data-row';
-import { FormPageAddService } from 'src/app/services/form-page-add.service';
+import { FormsService } from 'src/app/services/forms.service';
 import { I18nService } from 'src/app/localization/i18n.service';
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 import { AddpageComponent } from 'src/app/features/add/add-page/add-page.component';
 import { TableComponent } from '../../table/table.component';
 import { HeaderComponent } from '../header/header.component';
+import { EditPageComponent } from 'src/app/features/edit/edit-page/edit-page.component';
 
 @Component({
   standalone: true,
@@ -21,16 +22,18 @@ import { HeaderComponent } from '../header/header.component';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   imports: [
+    RouterModule,
     FormsModule, 
     ReactiveFormsModule, 
     CommonModule, 
     LocalLocalizationModule, 
     CKEditorModule,
     AddpageComponent,
+    EditPageComponent,
     TableComponent,
     HeaderComponent
   ],
-  providers: [FormPageAddService]
+  providers: [FormsService]
 })
 export class DashboardComponent implements OnInit {
   @ContentChild('addPageModalContent', { static: false }) private modalContent!: any;
@@ -38,6 +41,9 @@ export class DashboardComponent implements OnInit {
   @Input() public pageRows: DataRow[] = [];
 
   public showAddPageModal = false;
+  public showEditPageModal = false;
+  public selectedPageId = 0;
+
   private allowDelete = true;
   private showContextMenu = true;
 
@@ -103,8 +109,9 @@ export class DashboardComponent implements OnInit {
   }
 
   public rowClicked(dataRow: DataRow): void {
-    console.log('dataRow', dataRow);
-    this.router.navigate(['/admin/editpage/' + dataRow.rowIdentifier]);
+    const pageId: number = parseInt(dataRow.rowIdentifier, undefined);
+    this.selectedPageId = pageId;
+    this.showEditPageModal = true;
   }
 
   public deleteRow(dataRow: DataRow): void {

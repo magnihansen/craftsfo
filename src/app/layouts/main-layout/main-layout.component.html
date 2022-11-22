@@ -3,7 +3,10 @@
         <app-navigation></app-navigation>
     </header>
 
-    <section class="main-layout-container" style="background-image: url({{bg_image_url}});">
+    <section 
+        class="main-layout-container"
+        [ngStyle]="{'background-image': 'url(' + bg_image_url + ')'}"
+    >
         <div class="container">
             <div class="row">
                 <div class="full-content-width">

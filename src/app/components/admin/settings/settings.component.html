@@ -1,9 +1,33 @@
 <app-header 
   pageNameKey="common.settings"
-></app-header>
+>
+  <button
+    (click)="openAddNewSetting()"
+  >
+    {{ 'common.create-x' | i18n : { x: 'common.setting' | i18n | lowercase } }}
+  </button>
+  <button
+    (click)="openAddNewSettingKey()"
+  >
+    {{ 'common.create-x' | i18n : { x: 'common.setting-key' | i18n | lowercase } }}
+  </button>
+</app-header>
 
 <app-table 
   [(dataRows)]="rows" 
   (rowClicked)="rowClicked($any($event))"
   (deleteRowChange)="deleteRow($any($event))"
 ></app-table>
+
+<app-add-setting 
+    *ngIf="showAddSettingModal"
+    [renderModal]="showAddSettingModal"
+    [currentSettingCount]="rows.length"
+    (closeChange)="closeAddSetting($any($event))"
+></app-add-setting>
+
+<app-add-setting-key
+    *ngIf="showAddSettingKeyModal"
+    [renderModal]="showAddSettingKeyModal"
+    (closeChange)="closeAddSettingKey($any($event))"
+></app-add-setting-key>

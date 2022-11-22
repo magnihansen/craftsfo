@@ -9,6 +9,7 @@ import { Page } from '../models/page.model';
 export class PageHubService {
     public data: BehaviorSubject<Page[]> = new BehaviorSubject<Page[]>([]);
     private hubConnection!: HubConnection;
+    private doTrace = false;
 
     public startConnection = () => {
         this.hubConnection = new HubConnectionBuilder()
@@ -21,8 +22,10 @@ export class PageHubService {
 
         this.hubConnection
             .start()
-            .then(() => console.log('connection started'))
-            .catch((err) => console.log('error while establishing signalr connection: ' + err));
+            .then(() => {
+                if (this.doTrace) console.log('connection started');
+            })
+            .catch((err) => console.log('Error while establishing signalr connection: ' + err));
     }
 
     constructor(

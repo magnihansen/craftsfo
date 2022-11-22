@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Page } from '../../models/page.model';
 import { PageService } from 'src/app/services/page.service';
-import { MiscHelper } from 'src/app/helpers/misc.helper';
+import { MiscHelper } from 'src/app/core/misc.helper';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ModuleType } from '../modules/module-type.enum';
 import { ContentWrapperComponent } from 'src/app/shared/components/content-wrapper/content-wrapper.component';

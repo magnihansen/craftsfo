@@ -1,10 +1,13 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { PageService } from '../../../services/page.service';
 import { CommonModule } from '@angular/common';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ToastrService } from 'ngx-toastr';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 import { Page } from '../../../models/page.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -15,27 +18,44 @@ import { PageType } from 'src/app/models/page-type.model';
 import { PageTypeService } from 'src/app/services/pagetype.service';
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 import { ContentWrapperComponent } from 'src/app/shared/components/content-wrapper/content-wrapper.component';
-import { ImageGalleryComponent } from '../../modules/image-gallery/image-gallery.component';
-import { FormsModule } from '@angular/forms';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ImageGalleryComponent } from '../../../components/modules/image-gallery/image-gallery.component';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
+import { FormsService } from 'src/app/services/forms.service';
 
 @Component({
   standalone: true,
-  selector: 'app-pageedit',
-  templateUrl: './pageedit.component.html',
-  styleUrls: ['./pageedit.component.scss'],
-  imports: [FormsModule, CommonModule, LocalLocalizationModule, CKEditorModule, ContentWrapperComponent, ImageGalleryComponent]
+  selector: 'app-edit-page',
+  templateUrl: './edit-page.component.html',
+  styleUrls: ['./edit-page.component.scss'],
+  imports: [
+    RouterModule,
+    FormsModule, 
+    ReactiveFormsModule, 
+    CommonModule, 
+    LocalLocalizationModule, 
+    ModalComponent, 
+    CKEditorModule, 
+    ContentWrapperComponent, 
+    ImageGalleryComponent]
 })
-export class PageeditComponent implements OnChanges {
+export class EditPageComponent implements OnInit {
+  @Input() public pageId?: number;
+  @Input() public renderModal = false;
+
+  @Output() private closeChange: EventEmitter<Page> = new EventEmitter();
+  
   public classicEditor = ClassicEditor;
   public pages: Page[] = [];
-  public title = '';
-  public content = '';
-  public sort = 0;
-  public pageuid = '';
+  // public title = '';
+  // public content = '';
+  // public sort = 0;
+  // public pageuid = '';
   public page: Page | null = null;
   public pageTypeId = 0;
   public pageTypes: PageType[] = [];
+
+  public formPageEdit: FormGroup = new FormGroup({});
+  public formPageEditState?: Subscription;
 
   public model = {
     editorData: '<p>Hello, world!</p>'
@@ -45,17 +65,17 @@ export class PageeditComponent implements OnChanges {
     private authenticationService: AuthenticationService,
     private pageService: PageService,
     private router: Router,
-    private route: ActivatedRoute,
     private i18nService: I18nService,
     private toastr: ToastrService,
-    private pageTypeService: PageTypeService
+    private pageTypeService: PageTypeService,
+    private formsService: FormsService
   ) {
-    this.route.params.subscribe(params => this.loadPage(params.id));
+    this.formPageEdit = this.formsService.formGroups.controls['editpage'] as FormGroup;
     this.loadPageTypes();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes', changes);
+  ngOnInit(): void {
+    this.loadPage(this.pageId || 0);
   }
 
   public onReady(eventData: any) {
@@ -81,10 +101,12 @@ export class PageeditComponent implements OnChanges {
       next: (page: Page) => {
         this.page = page;
         
-        this.title = page.title;
-        this.sort = page.sort;
-        this.content = page.content.replace('\n', '<br />');
-        this.pageTypeId = page.pageTypeId;
+        this.formPageEdit.controls.id.setValue(page.id);
+        this.formPageEdit.controls.title.setValue(page.title);
+        this.formPageEdit.controls.sort.setValue(page.sort);
+        this.formPageEdit.controls.link.setValue(page.link);
+        this.formPageEdit.controls.content.setValue(page.content.replace('\n', '<br />'));
+        this.formPageEdit.controls.pageTypeId.setValue(page.pageTypeId);
       },
       error: (err: any) => {
         console.log(err);
@@ -96,14 +118,15 @@ export class PageeditComponent implements OnChanges {
     this.router.navigate(['/admin/dashboard']);
   }
 
-  public onSubmit(): void {
+  public editPage(form: any): void {
     if (this.authenticationService.IsUserLoggedIn) {
       if (this.page) {
         const user: User = this.authenticationService.getUser();
 
-        this.page.content = this.content;
-        this.page.title = this.title;
-        this.page.sort = this.sort;
+        this.page.content = this.formPageEdit.controls.content.value as string;
+        this.page.title = this.formPageEdit.controls.title.value as string;
+        this.page.link = this.formPageEdit.controls.link.value as string;
+        this.page.sort = this.formPageEdit.controls.sort.value as number;
         this.page.updatedBy = user.username;
         this.page.pageTypeId = this.pageTypeId;
 
@@ -111,7 +134,7 @@ export class PageeditComponent implements OnChanges {
           next: (result: boolean) => {
             if (result) {
               this.toastr.success(
-                this.i18nService.getTranslation('common.page-saved')
+                this.i18nService.getTranslation('common.x-saved', { x: 'common.page' })
               );
             } else {
               this.toastr.warning(
@@ -135,6 +158,13 @@ export class PageeditComponent implements OnChanges {
       this.toastr.warning(
         this.i18nService.getTranslation('User not authorized')
       );
+    }
+  }
+
+  public closeModal(modalClosed: boolean): void {
+    if (modalClosed) {
+      this.formsService.formGroups.reset();
+      this.closeChange.emit(undefined);
     }
   }
 }

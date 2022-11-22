@@ -1,8 +1,14 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
+import cssVars, { CSSVarsPonyfillOptions } from 'css-vars-ponyfill';
+
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
+import { DomainSetting } from 'src/app/models/domain-setting.model';
+import { SettingService } from 'src/app/services/setting.service';
+import { SettingValuePipe } from 'src/app/shared/pipes/settingvalue.pipe';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -10,25 +16,43 @@ import { environment } from 'src/environments/environment';
   selector: 'app-main-layout',
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss'],
-  imports: [CommonModule, NavigationComponent, FooterComponent, RouterModule]
+  imports: [CommonModule, SettingValuePipe, NavigationComponent, FooterComponent, RouterModule]
 })
-export class MainLayoutComponent implements OnInit {
+export class MainLayoutComponent implements AfterViewInit {
   public environment = environment;
   public showToTopButton = false;
-  public bg_image_url: string = '';
+  public bg_image_url?: string = '';
+  public settings: DomainSetting[] = [];
+  public option_variables: { [key: string]: string; } = {};
 
   constructor(
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    readonly settingService: SettingService
   ) {
     this.showToTopButton = this.hasScrollBar(this.document.body);
   }
 
-  public ngOnInit(): void{
-    this.bg_image_url = environment.bg_image_url;
-    console.log("Hashed Filename:", this.bg_image_url)
+  public ngAfterViewInit(): void {
+    this.settingService.getDomainSettings().subscribe({
+      next: (_settings: DomainSetting[]) => {
+        this.settings = _settings;
+        this.bg_image_url = _settings.find(s => s.key === 'background-image')?.value;
+        _settings.filter(s => s.key.startsWith('--')).forEach((s: DomainSetting) => {
+          this.option_variables[s.key] = s.value;
+        });
+
+        const options: CSSVarsPonyfillOptions = {
+          watch: true,
+          preserveStatic: false,
+          preserveVars: false,
+          variables: this.option_variables
+        };
+        cssVars(options);
+      }
+    });
   }
 
-  hasScrollBar = (element: any) => {
+  private hasScrollBar = (element: any) => {
     const {scrollTop} = element;
     if (scrollTop > 0) {
       return true;
@@ -41,4 +65,8 @@ export class MainLayoutComponent implements OnInit {
     element.scrollTop = scrollTop;
     return true;
   }
+}
+
+interface IKey {
+  key: string;
 }

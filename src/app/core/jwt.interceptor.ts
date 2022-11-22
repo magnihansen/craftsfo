@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 export class JwtInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token: string = localStorage.getItem('apitoken') || '';
-        if (token && this.addAuthorization(request)) {
+        if (token && !this.isAuthorization(request) && !this.isDomainSettings(request)) {
+            // console.log(token, !this.isAuthorization(request), !this.isDomainSettings);
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${token}`
@@ -18,11 +19,19 @@ export class JwtInterceptor implements HttpInterceptor {
         return next.handle(request);
     }
 
-    private addAuthorization(request: HttpRequest<any>): boolean {
+    private isAuthorization(request: HttpRequest<any>): boolean {
         if (request.url.indexOf('V1/Auth/ValidateToken') > -1 || request.url.indexOf('V1/Auth/Login') > -1) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
+    }
+
+    private isDomainSettings(request: HttpRequest<any>): boolean {
+        if (request.url.indexOf('V1/Setting/GetDomainSettings') > -1) {
+            return true;
+        }
+
+        return false;
     }
 }

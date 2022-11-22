@@ -11,12 +11,4 @@ import { LocalLocalizationModule } from 'src/app/localization/local-localization
 })
 export class HeaderComponent {
   @Input() public pageNameKey: string = '';
-  @Input() public addItemKey: string = '';
-
-  @Output() public addClicked = new EventEmitter<void>(); 
-
-  public add() {
-    this.addClicked.emit();
-  }
-
 }

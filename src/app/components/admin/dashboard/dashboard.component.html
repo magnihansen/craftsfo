@@ -1,8 +1,12 @@
 <app-header 
   pageNameKey="common.pages"
-  addItemKey="common.page-create"
-  (addClicked)="openAddNewPage()"
-></app-header>
+>
+<button
+  (click)="openAddNewPage()"
+>
+  {{ 'common.create-x' | i18n : { x: 'common.page' | i18n | lowercase } }}
+</button>
+</app-header>
 
 <app-table 
   [(dataRows)]="pageRows" 
@@ -16,3 +20,10 @@
     [currentPageCount]="pageRows.length"
     (closeChange)="closeAddPage($any($event))"
 ></app-add-page>
+
+<app-edit-page 
+    *ngIf="showEditPageModal"
+    [renderModal]="showEditPageModal"
+    [pageId]="selectedPageId"
+    (closeChange)="showEditPageModal = false"
+></app-edit-page>

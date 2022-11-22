@@ -17,6 +17,7 @@ export class ModalComponent implements OnDestroy, OnChanges {
   @Input() isRootModalWithoutNestedModal = false;
   @Input() isNestedModal = false;
   @Input() modalId = '';
+  @Input() submitKey = 'common.submit';
 
   @Output() submitChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() closeChanged: EventEmitter<boolean> = new EventEmitter();
@@ -68,7 +69,6 @@ export class ModalComponent implements OnDestroy, OnChanges {
 
   public submitModal(): void {
     this.submitChanged.emit(true);
-    this.closeModal();
   }
 
   public ngOnDestroy(): void {

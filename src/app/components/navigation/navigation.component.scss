@@ -62,7 +62,7 @@
       .navbartop-btn {
         display: flex;
         flex-direction: column;
-        color: var(--color-light);
+        color: var(--font-color-light);
         text-decoration: none;
         padding: 20px;
         justify-content: center;
@@ -70,7 +70,7 @@
 
         &:hover {
           background-color: var(--color-light);
-          color: var(--color-dark);
+          color: var(--font-color-primary);
         }
       }
     }

@@ -1,4 +1,4 @@
-@import url(./app/assets/variables.scss);
+@import './app/assets/variables.scss';
 
 /* You can add global styles to this file, and also import other style files */
 html, body {
@@ -38,12 +38,19 @@ form {
     }
 }
 
-input {
+input:not([type="checkbox"]) {
     font-size: var(--font-size-default);
     padding: var(--default-ui-input-padding);
-    min-width: 100px;
+    min-width: 130px;
     border: 2px solid var(--border-base-color);
     border-radius: var(--border-radius);
+}
+
+input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    accent-color: var(--color-light);
+    color: #fff;
 }
 
 button {
@@ -51,7 +58,7 @@ button {
     padding: var(--default-ui-button-padding);
     border: none;
     border-radius: var(--border-radius);
-    background-color: var(--color-light);
+    background-color: var(--color-dark);
     color: var(--font-color-secondary);
 
     &:hover:not([disabled]) {
@@ -72,8 +79,8 @@ button {
 
 select {
     font-size: var(--font-size-default);
-    padding: 7px 20px;
-    min-width: 100px;
+    padding: 7px 5px;
+    min-width: 130px;
     border: 2px solid var(--border-base-color);
     border-radius: var(--border-radius);
 }

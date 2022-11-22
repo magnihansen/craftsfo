@@ -1,0 +1,48 @@
+<app-modal
+  #addSettingModalContent
+  modalTitle="{{ 'common.edit-x' | i18n : { x: 'common.page' | i18n | lowercase } }}"
+  [renderModal]="renderModal"
+  (submitChanged)="editPage($event)"
+  (closeChanged)="closeModal($event)"
+>
+  <form [formGroup]="formPageEdit">
+    <div class="formline">
+      <label for="id">{{ 'common.id' | i18n }}:</label><br />
+      <input type="text" name="id" formControlName="id" />
+    </div>
+    <div class="formline">
+      <label for="title">{{ 'common.page-type' | i18n }}:</label><br />
+      <select name="pagetype" formControlName="pageTypeId">
+        <option *ngFor="let pt of pageTypes" [value]="pt.id">{{pt.name}}</option>
+      </select>
+    </div>
+    <div class="formline">
+      <label for="title">{{ 'common.name' | i18n }}:</label><br />
+      <input type="text" name="title" formControlName="title" />
+    </div>
+    <div class="formline">
+      <label for="pageLink">{{ 'common.link' | i18n }}</label>
+      <input id="pageLink" type="text" formControlName="link" placeholder="{{ 'input.fill-out-x' | i18n : { x: 'common.link' | i18n | lowercase } }}" />
+    </div>
+    <div class="formline">
+        <label for="pageContent">{{ 'common.content' | i18n }}</label>
+        <ckeditor 
+            id="pageContent" 
+            [editor]="classicEditor" 
+            formControlName="content"
+            (ready)="onReady($event)"
+        ></ckeditor>
+    </div>
+    <div class="formline">
+      <label for="title">{{ 'common.sort' | i18n }}:</label><br />
+      <input type="number" name="sort" formControlName="sort" />
+    </div>
+    <div *ngIf="page && page.pageTypeId === 47" class="field">
+      <app-image-gallery 
+        *ngIf="page && page.pageTypeId === 47" 
+        [isBackend]="true" 
+        [page]="page"
+      ></app-image-gallery>
+    </div>
+  </form>
+</app-modal>
