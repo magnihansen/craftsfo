@@ -1,6 +1,7 @@
 import { Component, HostBinding, HostListener, Inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 import { Page } from '../../models/page.model';
 import { PageService } from 'src/app/services/page.service';
@@ -9,7 +10,6 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { EventQueueService } from 'src/app/event-queue/event.queue';
 import { AppEventType } from 'src/app/event-queue';
 import { environment } from 'src/environments/environment';
-import { MatIconModule } from '@angular/material/icon';
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 
 @Component({

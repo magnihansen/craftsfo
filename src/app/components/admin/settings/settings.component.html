@@ -26,6 +26,13 @@
     (closeChange)="closeAddSetting($any($event))"
 ></app-add-setting>
 
+<app-edit-setting 
+    *ngIf="showEditSettingModal"
+    [settingId]="selectedSettingId"
+    [renderModal]="showEditSettingModal"
+    (closeChange)="closeEditSetting($any($event))"
+></app-edit-setting>
+
 <app-add-setting-key
     *ngIf="showAddSettingKeyModal"
     [renderModal]="showAddSettingKeyModal"

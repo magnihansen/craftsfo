@@ -1,5 +1,5 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { AfterViewInit, Component, Inject } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import cssVars, { CSSVarsPonyfillOptions } from 'css-vars-ponyfill';
@@ -7,6 +7,7 @@ import cssVars, { CSSVarsPonyfillOptions } from 'css-vars-ponyfill';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
 import { DomainSetting } from 'src/app/models/domain-setting.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SettingService } from 'src/app/services/setting.service';
 import { SettingValuePipe } from 'src/app/shared/pipes/settingvalue.pipe';
 import { environment } from 'src/environments/environment';
@@ -18,7 +19,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./main-layout.component.scss'],
   imports: [CommonModule, SettingValuePipe, NavigationComponent, FooterComponent, RouterModule]
 })
-export class MainLayoutComponent implements AfterViewInit {
+export class MainLayoutComponent implements OnInit {
   public environment = environment;
   public showToTopButton = false;
   public bg_image_url?: string = '';
@@ -27,29 +28,30 @@ export class MainLayoutComponent implements AfterViewInit {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    readonly settingService: SettingService
+    readonly settingService: SettingService,
+    readonly authService: AuthenticationService
   ) {
     this.showToTopButton = this.hasScrollBar(this.document.body);
   }
+  ngOnInit(): void {
+    const domainSettingKey: string = 'domainSettings';
+    const domainSettings: DomainSetting[] = this.authService.getWithExpiry(domainSettingKey) || [];
+    if (domainSettings) {
+      this.setDomainSettingValues(domainSettings);
+    } else {
+      this.settingService.getDomainSettings().subscribe({
+        next: (_domainSettings: DomainSetting[]) => {
+          this.setDomainSettingValues(_domainSettings);
+          this.settingService.setCssVariables(_domainSettings);
+          this.authService.setWithExpiry(domainSettingKey, _domainSettings, 3600000 * 8);
+        }
+      });
+    }
+  }
 
-  public ngAfterViewInit(): void {
-    this.settingService.getDomainSettings().subscribe({
-      next: (_settings: DomainSetting[]) => {
-        this.settings = _settings;
-        this.bg_image_url = _settings.find(s => s.key === 'background-image')?.value;
-        _settings.filter(s => s.key.startsWith('--')).forEach((s: DomainSetting) => {
-          this.option_variables[s.key] = s.value;
-        });
-
-        const options: CSSVarsPonyfillOptions = {
-          watch: true,
-          preserveStatic: false,
-          preserveVars: false,
-          variables: this.option_variables
-        };
-        cssVars(options);
-      }
-    });
+  private setDomainSettingValues(domainSettings: DomainSetting[]): void {
+    this.settings = domainSettings;
+    this.bg_image_url = domainSettings.find(s => s.key === 'background-image')?.value;
   }
 
   private hasScrollBar = (element: any) => {

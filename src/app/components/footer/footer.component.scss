@@ -24,6 +24,7 @@
         flex-direction: column;
         flex: 1;
         justify-content: flex-start;
+        color: var(--font-color-light);
     }
 
     .login {
@@ -36,16 +37,16 @@
             align-items: center;
             justify-content: flex-end;
             padding: 14px 16px;
+            color: var(--font-color-light);
 
             i {
                 margin-right: 10px;
             }
-        }
 
-        &:hover {
-            background-color: var(--color-light);
-            color: var(--color-dark);
-            cursor: pointer;
+            &:hover {
+                color: var(--font-color-primary);
+                cursor: pointer;
+            }
         }
     }
 }

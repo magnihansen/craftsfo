@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { AddSettingKeyComponent } from "src/app/features/add/add-setting-key/add-setting-key.component";
 import { AddSettingComponent } from "src/app/features/add/add-setting/add-setting.component";
+import { EditSettingComponent } from "src/app/features/edit/edit-setting/edit-setting.component";
 
 import { I18nService } from "src/app/localization/i18n.service";
 import { LocalLocalizationModule } from "src/app/localization/local-localization.module";
@@ -20,12 +21,22 @@ import { HeaderComponent } from "../header/header.component";
     selector: 'app-setting',
     templateUrl: './settings.component.html',
     styleUrls: ['./settings.component.scss'],
-    imports: [ CommonModule, LocalLocalizationModule, TableComponent, HeaderComponent, AddSettingComponent, AddSettingKeyComponent ]
+    imports: [ 
+      CommonModule, 
+      LocalLocalizationModule, 
+      TableComponent, 
+      HeaderComponent, 
+      AddSettingComponent, 
+      AddSettingKeyComponent, 
+      EditSettingComponent 
+    ]
   }) 
   export class SettingsComponent implements OnInit {
     @Input() public rows: DataRow[] = [];
 
     public showAddSettingModal = false;
+    public showEditSettingModal = false;
+    public selectedSettingId = 0;
     public showAddSettingKeyModal = false;
 
     private allowDelete = true;
@@ -79,8 +90,8 @@ import { HeaderComponent } from "../header/header.component";
     }
 
     public rowClicked(data: DataRow): void {
-        // should be edited in a modal
-        throw new Error("Not implemented yet!");
+        this.selectedSettingId = +data.rowIdentifier;
+        this.showEditSettingModal = true;
     }
 
     public deleteRow(dataRow: DataRow): void {
@@ -113,7 +124,6 @@ import { HeaderComponent } from "../header/header.component";
     }
 
     public closeAddSetting(newSetting: Setting): void {
-      console.log('closeAddSetting', newSetting);
       if (newSetting) {
         this.rows = [...this.rows, this.createDataRow(newSetting, this.rows.length)];
         this.toastr.success(
@@ -121,6 +131,16 @@ import { HeaderComponent } from "../header/header.component";
         );
       }
       this.showAddSettingModal = false;
+    }
+
+    public closeEditSetting(updated: boolean): void {
+      if (updated) {
+        this.loadSettings();
+        this.toastr.success(
+          this.i18nService.getTranslation('common.x-updated', { x: this.i18nService.getTranslation('common.setting') })
+        );
+      }
+      this.showEditSettingModal = false;
     }
 
     public closeAddSettingKey(newSettingKey: SettingKey): void {

@@ -29,6 +29,11 @@ export class FormsService {
                 settingKeyId: this.fb.control<number>(-1, { updateOn: 'blur', validators: [Validators.required] }),
                 value: this.fb.control<string>('', { updateOn: 'blur', validators: [Validators.required,Validators.minLength(3)] })
             }),
+            editsetting: this.fb.group({
+                id: this.fb.control<number>(0, { updateOn: 'blur', validators: [Validators.required] }),
+                settingKeyId: this.fb.control<number>(-1, { updateOn: 'blur', validators: [Validators.required] }),
+                value: this.fb.control<string>('', { updateOn: 'blur', validators: [Validators.required,Validators.minLength(3)] })
+            }),
             addsettingkey: this.fb.group({
                 settingTypeId: this.fb.control<number>(-1, { updateOn: 'blur', validators: [Validators.required] }),
                 key: this.fb.control<string>('', { updateOn: 'blur', validators: [Validators.required,Validators.minLength(3)] }),

@@ -1,8 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { Observable, of } from 'rxjs';
-import { catchError, map, retry } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+
 import { AppEvent, AppEventType } from '../event-queue';
 import { EventQueueService } from '../event-queue/event.queue';
 import { User } from '../models/user';
@@ -14,20 +16,22 @@ export class AuthenticationService {
   static readonly API_TOKEN: string = 'apitoken';
   static readonly USER: string = 'user';
   static readonly IS_USER_LOGGED_IN: string = 'isUserLoggedIn';
+  static readonly ONE_HOUR_IN_MS: number = 3600000;
 
   private apiPath = '/V1/Auth';
   private isUserLoggedIn = false;
 
   public get IsUserLoggedIn(): boolean {
-    const lsUserLoggedIn: string = localStorage.getItem(AuthenticationService.IS_USER_LOGGED_IN) || '';
+    const lsUserLoggedIn: string = this.getWithExpiry(AuthenticationService.IS_USER_LOGGED_IN);
     if (lsUserLoggedIn === 'true') {
       return true;
     }
     return this.isUserLoggedIn;
   }
+
   public set IsUserLoggedIn(value: boolean) {
     if (value === true) {
-      localStorage.setItem(AuthenticationService.IS_USER_LOGGED_IN, 'true');
+      this.setWithExpiry(AuthenticationService.IS_USER_LOGGED_IN, 'true', AuthenticationService.ONE_HOUR_IN_MS * 8);
     }
     this.isUserLoggedIn = value;
   }
@@ -51,7 +55,6 @@ export class AuthenticationService {
           localStorage.setItem(AuthenticationService.API_TOKEN, response);
           localStorage.setItem(AuthenticationService.USER, JSON.stringify({
             username: userName,
-            password: passWord,
             token: response
           } as User));
           this.eventQueueService.dispatch(new AppEvent(AppEventType.Login));
@@ -65,6 +68,7 @@ export class AuthenticationService {
     this.IsUserLoggedIn = false;
     localStorage.removeItem(AuthenticationService.IS_USER_LOGGED_IN);
     localStorage.removeItem(AuthenticationService.USER);
+
     this.router.navigate(['/' + (gotoLogin ? 'login' : '')]).then(() => {
       this.eventQueueService.dispatch(new AppEvent(AppEventType.Logout));
     });
@@ -131,7 +135,26 @@ export class AuthenticationService {
     };
   }
 
-  private log(message: string): void {
-    console.log(message);
+  public getWithExpiry(key: string): any {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) {
+      return null;
+    }
+    const item = JSON.parse(itemStr);
+    const now = new Date();
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return item.value;
+  }
+
+  public setWithExpiry(key: string, value: any, ttl_ms: number) {
+    const now = new Date();
+    const item = {
+      value: value,
+      expiry: now.getTime() + ttl_ms,
+    };
+    localStorage.setItem(key, JSON.stringify(item))
   }
 }

@@ -16,22 +16,22 @@ import { SettingService } from 'src/app/services/setting.service';
 import { SettingKey } from 'src/app/models/setting-key.model';
 
 @Component({
-  selector: 'app-add-setting',
+  selector: 'app-edit-setting',
   standalone: true,
-  templateUrl: './add-setting.component.html',
-  styleUrls: ['./add-setting.component.scss'],
+  templateUrl: './edit-setting.component.html',
+  styleUrls: ['./edit-setting.component.scss'],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, CKEditorModule, LocalLocalizationModule],
   providers: [FormsService]
 })
-export class AddSettingComponent implements OnInit, AfterViewInit, OnDestroy {
+export class EditSettingComponent implements OnInit, AfterViewInit, OnDestroy {
+  @Input() settingId: number = 0;
   @Input() public renderModal = false;
-  @Input() public currentSettingCount = 999;
 
-  @Output() private closeChange: EventEmitter<Setting> = new EventEmitter();
+  @Output() private closeChange: EventEmitter<boolean> = new EventEmitter();
 
   public classicEditor = ClassicEditor;
-  public formSettingAdd: FormGroup = new FormGroup({});
-  public formSettingAddState?: Subscription;
+  public formSettingEdit: FormGroup = new FormGroup({});
+  public formSettingEditState?: Subscription;
   public settingKeys: SettingKey[] = [];
 
   constructor(
@@ -43,16 +43,28 @@ export class AddSettingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.formSettingAdd = this.formsService.formGroups.controls['addsetting'] as FormGroup;
+    this.formSettingEdit = this.formsService.formGroups.controls['editsetting'] as FormGroup;
+    this.loadSetting(this.settingId);
   }
 
   public ngAfterViewInit(): void {
-    this.formSettingAddState = this.formSettingAdd.statusChanges
+    this.formSettingEditState = this.formSettingEdit.statusChanges
       .subscribe({
         next: (state: FormControlStatus) => {
           this.formsService.isFormValid = (state === 'INVALID' ? false : true);
         }
       });
+  }
+
+  private loadSetting(settingId: number): void {
+    this.settingService.getSetting(settingId).subscribe({
+      next: (setting: Setting) => {
+        console.log('loaded setting', setting);
+        this.formSettingEdit.controls.id.setValue(setting.id);
+        this.formSettingEdit.controls.settingKeyId.setValue(setting.settingKeyId);
+        this.formSettingEdit.controls.value.setValue(setting.value);
+      }
+    });
   }
 
   private loadSettingKeys(): void {
@@ -63,25 +75,26 @@ export class AddSettingComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  public addSetting(form: any): void {
+  public editSetting(form: any): void {
     if (this.authService.IsUserLoggedIn) {
       const user: User = this.authService.getUser();
 
-      const _settingKeyId: number = this.formSettingAdd.controls.settingKeyId.value as number;
-      const _value: string = this.formSettingAdd.controls.value.value as string;
+      const _id: number = this.formSettingEdit.controls.id.value as number;
+      const _settingKeyId: number = this.formSettingEdit.controls.settingKeyId.value as number;
+      const _value: string = this.formSettingEdit.controls.value.value as string;
 
       const newSetting: Setting = {
+        id: _id,
         settingKeyId: _settingKeyId,
         value: _value,
         createdBy: user.username
       } as unknown as Setting;
 
-      this.settingService.insertSetting(newSetting).subscribe({
-        next: (insertedSetting: Setting) => {
-          if (insertedSetting) {
+      this.settingService.UpdateSetting(newSetting).subscribe({
+        next: (updated: boolean) => {
+          if (updated) {
             this.formsService.formGroups.reset();
-            console.log('insertSetting', insertedSetting);
-            this.closeChange.emit(insertedSetting);
+            this.closeChange.emit(updated);
           }
         },
         error: (err: any) => {
@@ -99,6 +112,6 @@ export class AddSettingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.formSettingAddState?.unsubscribe();
+    this.formSettingEditState?.unsubscribe();
   }
 }
