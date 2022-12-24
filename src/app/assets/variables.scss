@@ -8,6 +8,7 @@
     --font-size-h1: 22px;
     --font-size-h2: 18px;
     --font-size-h3: 16px;
+    --default-padding: 10px;
 
     --color-dark: transparent;
     --color-middle: transparent;
@@ -21,9 +22,9 @@
     --color-red: #ee4f4f;
     --color-white: #fefefe;
 
-    --default-ui-button-padding: 10px 20px;
-    --default-ui-input-padding: 10px;
-    --border-base-color: #ccced1;
+    --default-ui-button-padding: var(--default-padding) calc(var(--default-padding) * 2);
+    --default-ui-input-padding: var(--default-padding);
+    --border-base-color: var(--color-dark);
     --border-radius: 3px;
     --transition-padding: padding 0.3s linear;
     --box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);

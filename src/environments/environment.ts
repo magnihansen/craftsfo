@@ -9,8 +9,9 @@ export const environment = {
   logo: './assets/img/craftsfo/logo_house_small_transparent.png',
   bg_image_url: './assets/img/craftsfo/crafts_hus_og_heim.jpg',
   brandName: 'Crafts.fo',
-  hubSettings: {
-    url: 'https://localhost:5001'
+  apiSettings: {
+    api: 'https://localhost:5123',
+    cdn: 'https://localhost:5125'
   }
 };
 

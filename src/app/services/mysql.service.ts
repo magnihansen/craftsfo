@@ -10,7 +10,7 @@ import { Page } from '../models/page.model';
 export class MySqlService {
     constructor(
         private http: HttpClient,
-        @Inject('HUB_URL') private apiUrl: string
+        @Inject('API_URL') private apiUrl: string
     ) {
     }
 

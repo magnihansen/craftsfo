@@ -80,7 +80,6 @@ export class AddSettingComponent implements OnInit, AfterViewInit, OnDestroy {
         next: (insertedSetting: Setting) => {
           if (insertedSetting) {
             this.formsService.formGroups.reset();
-            console.log('insertSetting', insertedSetting);
             this.closeChange.emit(insertedSetting);
           }
         },

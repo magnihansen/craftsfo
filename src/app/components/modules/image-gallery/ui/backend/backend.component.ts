@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControlStatus, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Form, FormBuilder, FormControlStatus, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 import { Page } from 'src/app/models/page.model';
@@ -37,6 +37,7 @@ import { ImageGalleryTypeService } from '../services/image-gallery-type.service'
 })
 export class BackendComponent implements OnInit {
   @Input() public data: any;
+  @Input() public formGroup: FormGroup = new FormGroup({});
 
   public classicEditor = ClassicEditor;
   public imageGalleries: ImageGallery[] = [];

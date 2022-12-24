@@ -17,13 +17,14 @@ import { PageService } from 'src/app/services/page.service';
 import { PageTypeService } from 'src/app/services/pagetype.service';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { UploadAdapter } from 'src/app/shared/upload-adapter.class';
+import { ImageGalleryComponent } from 'src/app/components/modules/image-gallery/image-gallery.component';
 
 @Component({
   selector: 'app-add-page',
   standalone: true,
   templateUrl: './add-page.component.html',
   styleUrls: ['./add-page.component.scss'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, CKEditorModule, LocalLocalizationModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, CKEditorModule, LocalLocalizationModule, ImageGalleryComponent],
   providers: [FormsService]
 })
 export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -36,6 +37,7 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
   public formPageAdd: FormGroup = new FormGroup({});
   public formPageAddState?: Subscription;
   public pageTypes: PageType[] = [];
+  public isImageGallery = false;
 
   constructor(
     private pageService: PageService,
@@ -76,6 +78,12 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log(btoa(loader.file));
       return new UploadAdapter(loader);
     };
+  }
+
+  public onPageTypeChange(pageType: any): void {
+    if (pageType) {
+      this.isImageGallery = +pageType.value === 47;
+    }
   }
 
   public addPage(form: any): void {

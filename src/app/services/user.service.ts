@@ -14,7 +14,7 @@ export class UserService {
 
     constructor(
         private http: HttpClient,
-        @Inject('HUB_URL') private apiUrl: string
+        @Inject('API_URL') private apiUrl: string
     ) { }
 
     getUsers(): Observable<User[]> {

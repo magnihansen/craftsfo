@@ -16,7 +16,7 @@ export class ImageGalleryService {
     constructor(
         private http: HttpClient,
         private authenticationService: AuthenticationService,
-        @Inject('HUB_URL') private apiUrl: string
+        @Inject('API_URL') private apiUrl: string
     ) { }
 
     public getImageGalleries(): Observable<ImageGallery[]> {

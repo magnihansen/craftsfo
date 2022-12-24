@@ -29,7 +29,7 @@ export class PageHubService {
     }
 
     constructor(
-        @Inject('HUB_URL') private hubUrl: string
+        @Inject('API_URL') private hubUrl: string
     ) { }
 
     public addTransferDataListener = () => {

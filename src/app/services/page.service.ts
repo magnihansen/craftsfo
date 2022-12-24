@@ -20,7 +20,7 @@ export class PageService {
   constructor(
     private http: HttpClient,
     private authenticationService: AuthenticationService,
-    @Inject('HUB_URL') private apiUrl: string
+    @Inject('API_URL') private apiUrl: string
   ) { }
 
   public getPage(pageId: number): Observable<Page> {

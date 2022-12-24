@@ -43,7 +43,7 @@ input:not([type="checkbox"]) {
     font-size: var(--font-size-default);
     padding: var(--default-ui-input-padding);
     min-width: 130px;
-    border: 2px solid var(--border-base-color);
+    border: 2px solid var(--color-dark);
     border-radius: var(--border-radius);
 }
 

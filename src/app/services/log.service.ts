@@ -15,7 +15,7 @@ export class LogService {
   constructor(
     private httpService: HttpClient,
     private miscHelper: MiscHelper,
-    @Inject('HUB_URL') private apiUrl: string
+    @Inject('API_URL') private apiUrl: string
   ) { }
 
   saveError(messageStr: string): void {

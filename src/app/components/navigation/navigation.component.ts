@@ -34,7 +34,7 @@ export class NavigationComponent implements OnInit {
     private pageService: PageService,
     private authenticationService: AuthenticationService,
     private eventQueueService: EventQueueService,
-    @Inject('HUB_URL') private apiUrl: string
+    @Inject('API_URL') private apiUrl: string
   ) {
     this.brandName = environment.brandName;
     this.logoUrl = environment.logo;

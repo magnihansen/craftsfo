@@ -13,6 +13,8 @@ import { AuthenticationService } from "./authentication.service";
   providedIn: 'root'
 })
 export class SettingService {
+  public readonly domainSettingKey = 'domainSettings';
+
   private apiPath = '/V1/Setting';
   private httpOptions = {
     headers: new HttpHeaders({
@@ -23,7 +25,7 @@ export class SettingService {
   constructor(
     private http: HttpClient,
     private authenticationService: AuthenticationService,
-    @Inject('HUB_URL') private apiUrl: string
+    @Inject('API_URL') private apiUrl: string
   ) { }
 
   public getSetting(settingId: number): Observable<Setting> {

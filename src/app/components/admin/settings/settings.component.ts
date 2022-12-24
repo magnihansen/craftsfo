@@ -8,8 +8,10 @@ import { EditSettingComponent } from "src/app/features/edit/edit-setting/edit-se
 
 import { I18nService } from "src/app/localization/i18n.service";
 import { LocalLocalizationModule } from "src/app/localization/local-localization.module";
+import { DomainSetting } from "src/app/models/domain-setting.model";
 import { SettingKey } from "src/app/models/setting-key.model";
 import { Setting } from "src/app/models/setting.model";
+import { AuthenticationService } from "src/app/services/authentication.service";
 import { SettingService } from "src/app/services/setting.service";
 import { DataColumn } from "../../table/data-column";
 import { DataRow } from "../../table/data-row";
@@ -46,6 +48,7 @@ import { HeaderComponent } from "../header/header.component";
         private router: Router,
         private i18nService: I18nService,
         private settingService: SettingService,
+        private authService: AuthenticationService,
         private toastr: ToastrService,
         private cdr: ChangeDetectorRef
     ) { }
@@ -125,20 +128,34 @@ import { HeaderComponent } from "../header/header.component";
 
     public closeAddSetting(newSetting: Setting): void {
       if (newSetting) {
-        this.rows = [...this.rows, this.createDataRow(newSetting, this.rows.length)];
-        this.toastr.success(
-          this.i18nService.getTranslation('common.x-saved', { x: this.i18nService.getTranslation('common.setting') })
-        );
+        this.settingService.getDomainSettings().subscribe({
+          next: (_settings: DomainSetting[]) => {
+            this.settingService.setCssVariables(_settings);
+            this.authService.setWithExpiry(this.settingService.domainSettingKey, _settings, 3600000 * 8);
+            
+            this.rows = [...this.rows, this.createDataRow(newSetting, this.rows.length)];
+            this.toastr.success(
+              this.i18nService.getTranslation('common.x-saved', { x: this.i18nService.getTranslation('common.setting') })
+            );
+          }
+        });
       }
       this.showAddSettingModal = false;
     }
 
     public closeEditSetting(updated: boolean): void {
       if (updated) {
-        this.loadSettings();
-        this.toastr.success(
-          this.i18nService.getTranslation('common.x-updated', { x: this.i18nService.getTranslation('common.setting') })
-        );
+        this.settingService.getDomainSettings().subscribe({
+          next: (_settings: DomainSetting[]) => {
+            this.settingService.setCssVariables(_settings);
+            this.authService.setWithExpiry(this.settingService.domainSettingKey, _settings, 3600000 * 8);
+            
+            this.loadSettings();
+            this.toastr.success(
+              this.i18nService.getTranslation('common.x-updated', { x: this.i18nService.getTranslation('common.setting') })
+            );
+          }
+        });
       }
       this.showEditSettingModal = false;
     }

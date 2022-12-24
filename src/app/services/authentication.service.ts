@@ -40,7 +40,7 @@ export class AuthenticationService {
     private http: HttpClient,
     private router: Router,
     private eventQueueService: EventQueueService,
-    @Inject('HUB_URL') private apiUrl: string
+    @Inject('API_URL') private apiUrl: string
   ) { }
 
   public login(userName: string, passWord: string): Observable<boolean> {
