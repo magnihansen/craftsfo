@@ -123,6 +123,12 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  public createdChange(created: boolean): void {
+    if (created) {
+      // add to list
+    }
+  }
+
   public closeModal(modalClosed: boolean): void {
     if (modalClosed) {
       this.formsService.formGroups.reset();

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 
 import { I18nService } from 'src/app/localization/i18n.service';
 import { Page } from 'src/app/models/page.model';
@@ -27,6 +27,8 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
   @Input() public isBackend = false;
   @Input() public page!: Page;
 
+  @Output() public createdChange: EventEmitter<boolean> = new EventEmitter();
+
   constructor(
     private i18nService: I18nService
   ) {
@@ -48,6 +50,10 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     if (this.isBackend) {
       const componentRef = viewContainerRef.createComponent<BackendComponent>(BackendComponent);
       componentRef.instance.data = this.page;
+      componentRef.instance.galleryCreated.subscribe((created: boolean) => {
+        console.log('galleryCreated', created);
+        this.createdChange.emit(created);
+      });
     } else {
       const componentRef = viewContainerRef.createComponent<FrontendComponent>(FrontendComponent);
       componentRef.instance.data = this.page;

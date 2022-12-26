@@ -1,5 +1,6 @@
 {
     "imagegallery": "Billede galleri",
+    "imagegallery.imagegallerytype": "Billede galleri type",
     "imagegallery.choose": "Vælg billede gallery",
     "imagegallery.no-imagegalleries-found": "Ingen billede gallerier fundet",
     "imagegallery.create-{x}": "Opret {x}",

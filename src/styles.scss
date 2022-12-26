@@ -31,6 +31,19 @@ form {
             flex: 1 1 100%;
             font-size: var(--font-size-sm);
         }
+
+        input {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .warning {
+            display: flex;
+            flex-direction: row;
+            flex: 1 1 100%;
+            font-size: var(--font-size-sm);
+            color: var(--color-red);
+        }
     }
 
     .invalid-feedback {

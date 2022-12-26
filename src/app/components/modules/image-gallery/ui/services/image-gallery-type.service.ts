@@ -27,11 +27,11 @@ export class ImageGalleryTypeService {
         );
     }
 
-    public addImageGalleryType(ig: ImageGalleryType): Observable<boolean> {
+    public insertImageGalleryType(ig: ImageGalleryType): Observable<boolean> {
         return this.http.post<boolean>(
           `${this.apiUrl}${this.apiPath}/InsertImageGalleryType`,
           ig,
           this.httpOptions
         );
-      }
+    }
 }

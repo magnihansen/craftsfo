@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { Form, FormBuilder, FormControlStatus, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControlStatus, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 import { Page } from 'src/app/models/page.model';
@@ -14,6 +14,11 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { I18nPipe } from 'src/app/localization/i18n.pipe';
 import { ImageGalleryTypeService } from '../services/image-gallery-type.service';
+import { ToastrService } from 'ngx-toastr';
+import { I18nService } from 'src/app/localization/i18n.service';
+import { User } from 'src/app/models/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { DisableControlDirective } from 'src/app/shared/directives/disable-control.directive';
 
 @Component({
   standalone: true,
@@ -27,7 +32,8 @@ import { ImageGalleryTypeService } from '../services/image-gallery-type.service'
     ContentWrapperComponent, 
     LocalLocalizationModule,
     ModalComponent,
-    CKEditorModule
+    CKEditorModule,
+    DisableControlDirective
   ],
   providers: [
     I18nPipe,
@@ -38,6 +44,8 @@ import { ImageGalleryTypeService } from '../services/image-gallery-type.service'
 export class BackendComponent implements OnInit {
   @Input() public data: any;
   @Input() public formGroup: FormGroup = new FormGroup({});
+
+  @Output() public galleryCreated: EventEmitter<boolean> = new EventEmitter();
 
   public classicEditor = ClassicEditor;
   public imageGalleries: ImageGallery[] = [];
@@ -54,7 +62,10 @@ export class BackendComponent implements OnInit {
   constructor(
     readonly imageGalleryService: ImageGalleryService,
     readonly imageGalleryTypeService: ImageGalleryTypeService,
-    readonly fb: FormBuilder
+    readonly fb: FormBuilder,
+    readonly toastr: ToastrService,
+    readonly i18nService: I18nService,
+    readonly authService: AuthenticationService
   ) {
     this.buildForms();
   }
@@ -81,9 +92,10 @@ export class BackendComponent implements OnInit {
 
   private buildForms(): void {
     this.formImageGalleryAdd = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(2)]],
       description: ['', []],
-      imageTypeId: ['', [Validators.pattern(/^[0-9]+$/),Validators.required]]
+      imageGalleryTypeId: [-1, [Validators.pattern(/^[0-9]+$/),Validators.required]],
+      imageTemplateId: [1, [Validators.pattern(/^[0-9]+$/),Validators.required]],
     });
     
     this.formGalleryTypeAdd = this.fb.group({
@@ -108,18 +120,63 @@ export class BackendComponent implements OnInit {
     };
   }
 
-  public addImageGallery(data: any): void {
-    console.log('addImageGallery', data);
+  public addImageGallery(isSubmitted: boolean): void {
+    if (isSubmitted) {
+      if (this.authService.IsUserLoggedIn) {
+        const user: User = this.authService.getUser();
+        const _name: string = this.formImageGalleryAdd.controls.name.value as string;
+        const _description: string = this.formImageGalleryAdd.controls.description.value as string;
+        const _imageTypeId: number = this.formImageGalleryAdd.controls.imageGalleryTypeId.value as number;
+  
+        const ig: ImageGallery = {
+          name: _name,
+          description: _description,
+          imageTemplateId: 1,
+          imageGalleryTypeId: _imageTypeId,
+          createdBy: user.username
+        } as ImageGallery;
+  
+        this.imageGalleryService.insertImageGallery(ig).subscribe({
+          next: (res: boolean) => {
+            if (res) {
+              this.toastr.success(
+                this.i18nService.getTranslation('common.x-created', { x: this.i18nService.getTranslation('imagegallery') })
+              );
+              this.galleryCreated.emit(true);
+              this.bShowCreateGalleryModal = false;
+            } else {
+              this.toastr.error(
+                this.i18nService.getTranslation('error.creating-x', { x: this.i18nService.getTranslation('imagegallery') })
+              );
+            }
+          },
+          error: (err: any) => {
+            alert(err);
+          }
+        });
+      }
+    } else {
+      this.toastr.error(
+        this.i18nService.getTranslation('error.user-unauthorized')
+      );
+    }
   }
 
-  public addImageType(isSubmitted: boolean): void {
-    console.log('addImageType', this.galleryTypeData);
+  public insertImageType(isSubmitted: boolean): void {
     if (isSubmitted && this.galleryTypeData) {
       const igt: ImageGalleryType = this.galleryTypeData as ImageGalleryType;
-      this.imageGalleryTypeService.addImageGalleryType(igt).subscribe({
+      this.imageGalleryTypeService.insertImageGalleryType(igt).subscribe({
         next: (res: boolean) => {
           if (res) {
             this.imageGalleryTypes = [...this.imageGalleryTypes, igt];
+            this.toastr.success(
+              this.i18nService.getTranslation('common.x-created', { x: this.i18nService.getTranslation('imagegallery.imagegallerytype') })
+            );
+            this.bShowCreateTypeModal = false;
+          } else {
+            this.toastr.error(
+              this.i18nService.getTranslation('error.creating-x', { x: this.i18nService.getTranslation('imagegallery.imagegallerytype') })
+            );
           }
         },
         error: (err: any) => {

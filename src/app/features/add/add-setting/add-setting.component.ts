@@ -27,7 +27,7 @@ export class AddSettingComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public renderModal = false;
   @Input() public currentSettingCount = 999;
 
-  @Output() private closeChange: EventEmitter<Setting> = new EventEmitter();
+  @Output() public closeChange: EventEmitter<Setting> = new EventEmitter();
 
   public classicEditor = ClassicEditor;
   public formSettingAdd: FormGroup = new FormGroup({});

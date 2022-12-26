@@ -23,10 +23,10 @@
     (submitChanged)="addImageGallery($event)"
     (closeChanged)="closeCreateGalleryModal()"
 >
-    <form [formGroup]="formGroup">
+    <form [formGroup]="formImageGalleryAdd">
         <div class="formline">
             <label for="name">{{ 'common.name' | i18n }}</label>
-            <input id="name" type="text" formControlName="name" placeholder="{{ 'input.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}" />
+            <input id="name" type="text" formControlName="name" placeholder="{{ 'validation.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}" />
         </div>
         <div class="formline">
             <label for="igDescription">{{ 'common.content' | i18n }}</label>
@@ -43,7 +43,8 @@
                 <option *ngIf="imageGalleryTypes.length === 0">
                     {{ 'imagegallery.no-imagegalleries-found' | i18n }}
                 </option>
-                <option *ngFor="let imageGalleryType of imageGalleryTypes" value="imageGalleryType.Id">
+                <option value="-1" disabled selected>{{ 'common.choose-x' | i18n : { x: 'imagegallery' | i18n | lowercase } }}</option>
+                <option *ngFor="let imageGalleryType of imageGalleryTypes" value="{{imageGalleryType.id}}">
                     {{imageGalleryType.name}}
                 </option>
             </select>
@@ -53,6 +54,10 @@
                 [disabled]="bShowCreateTypeModal"
             >{{ 'imagegallery.create-{x}' | i18n : { x: 'imagetype' | i18n | lowercase } }}</button>
         </div>
+        <div class="formline">
+            <label for="igImageGalleryTemplate">{{ 'common.template' | i18n }}</label>
+            <input id="igImageGalleryTemplate" type="text" formControlName="imageTemplateId" [disableControl]="true" />
+        </div>
     </form>
     <app-modal
         *ngIf="bShowCreateTypeModal"
@@ -60,21 +65,21 @@
         modalId="type-modal"
         [renderModal]="bShowCreateTypeModal"
         [isNestedModal]="true"
-        (submitChanged)="addImageType($event)"
+        (submitChanged)="insertImageType($event)"
         (closeChanged)="closeCreateTypeModal($event)"
     >
         <app-content-wrapper>
             <form [formGroup]="formGalleryTypeAdd">
                 <div class="formline">
                     <label for="name">{{ 'common.name' | i18n }}</label>
-                    <input id="name" type="text" formControlName="name" placeholder="{{ 'input.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}" />
-                    <div *ngIf="formGalleryTypeAdd.get('name')?.invalid 
+                    <input id="name" type="text" formControlName="name" placeholder="{{ 'validation.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}" />
+                    <div class="warning" *ngIf="formGalleryTypeAdd.get('name')?.invalid 
                         && (
                             formGalleryTypeAdd.get('name')?.dirty 
-                            || formGalleryTypeAdd.get('ame')?.touched
+                            || formGalleryTypeAdd.get('name')?.touched
                         )"
                     >
-                        {{ 'input.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}
+                        {{ 'validation.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}
                     </div>
                 </div>
             </form>

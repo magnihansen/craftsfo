@@ -25,4 +25,12 @@ export class ImageGalleryService {
             this.httpOptions
         );
     }
+
+    public insertImageGallery(ig: ImageGallery): Observable<boolean> {
+        return this.http.post<boolean>(
+            `${this.apiUrl}${this.apiPath}/InsertImageGallery`,
+            ig,
+            this.httpOptions
+        );   
+    }
 }

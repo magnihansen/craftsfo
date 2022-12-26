@@ -3,6 +3,7 @@
   "common.choose-x": "Vælg {x}",
   "common.edit-x": "Redigér {x}",
   "common.save-x": "Gem {x}",
+  "common.x-created": "{x} oprettet",
   "common.x-saved": "{x} gemt",
   "common.x-updated": "{x} opdateret",
   "common.user": "Bruger",
@@ -16,6 +17,8 @@
   "common.close": "Luk",
   "common.setting-is-default": "Indstilling er standard",
   "common.search": "Søg",
+  "common.id": "Id",
+  "common.template": "Skabilon",
   "common.key": "Nøgle",
   "common.value": "Værdi",
   "common.is-default": "Er standard",
@@ -49,11 +52,13 @@
   "warning.page-delete": "Er du sikker på at du vil slette?",
   "warning.setting-not-deleted": "Indstilling ikke slettet!",
   "warning.no-results": "Ingen data tilgængelige",
+  "warning.disabled": "Kan ikke redigeres",
   "validation.x-required": "{x} krævet",
+  "validation.fill-out-x": "Udfyld {x}",
   "module.image-gallery": "Billede galleri",
-  "input.fill-out-x": "Udfyld {x}",
   "error.user-unauthorized": "Bruger har ikke de nødvendige rettigheder",
   "error.page-invalid": "Siden ikke gyldig",
   "error.page-save": "Fejl ved gemning af siden",
-  "error.setting-delete": "Fejl ved sletning af indstilling"
+  "error.setting-delete": "Fejl ved sletning af indstilling",
+  "error.creating-x": "Fejl ved oprettelse af {x}"
 }

@@ -21,6 +21,7 @@ import { ContentWrapperComponent } from 'src/app/shared/components/content-wrapp
 import { ImageGalleryComponent } from '../../../components/modules/image-gallery/image-gallery.component';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { FormsService } from 'src/app/services/forms.service';
+import { DisableControlDirective } from 'src/app/shared/directives/disable-control.directive';
 
 @Component({
   standalone: true,
@@ -36,7 +37,9 @@ import { FormsService } from 'src/app/services/forms.service';
     ModalComponent, 
     CKEditorModule, 
     ContentWrapperComponent, 
-    ImageGalleryComponent]
+    ImageGalleryComponent,
+    DisableControlDirective
+  ]
 })
 export class EditPageComponent implements OnInit {
   @Input() public pageId?: number;
@@ -123,18 +126,19 @@ export class EditPageComponent implements OnInit {
       if (this.page) {
         const user: User = this.authenticationService.getUser();
 
+        this.page.pageTypeId = this.formPageEdit.controls.pageTypeId.value as number;
         this.page.content = this.formPageEdit.controls.content.value as string;
         this.page.title = this.formPageEdit.controls.title.value as string;
         this.page.link = this.formPageEdit.controls.link.value as string;
         this.page.sort = this.formPageEdit.controls.sort.value as number;
         this.page.updatedBy = user.username;
-        this.page.pageTypeId = this.pageTypeId;
+        // this.page.pageTypeId = this.pageTypeId;
 
         this.pageService.updatePage(this.page).subscribe({
           next: (result: boolean) => {
             if (result) {
               this.toastr.success(
-                this.i18nService.getTranslation('common.x-saved', { x: 'common.page' })
+                this.i18nService.getTranslation('common.x-saved', { x: this.i18nService.getTranslation('common.page') })
               );
             } else {
               this.toastr.warning(
@@ -158,6 +162,12 @@ export class EditPageComponent implements OnInit {
       this.toastr.warning(
         this.i18nService.getTranslation('User not authorized')
       );
+    }
+  }
+
+  public createdChange(created: boolean): void {
+    if (created) {
+      // add to list
     }
   }
 
