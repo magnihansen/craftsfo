@@ -8,21 +8,17 @@ import { catchError, map } from 'rxjs/operators';
 import { AppEvent, AppEventType } from '../event-queue';
 import { EventQueueService } from '../event-queue/event.queue';
 import { User } from '../models/user';
+import { GlobalVariables } from '../shared/global-variables';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  static readonly API_TOKEN: string = 'apitoken';
-  static readonly USER: string = 'user';
-  static readonly IS_USER_LOGGED_IN: string = 'isUserLoggedIn';
-  static readonly ONE_HOUR_IN_MS: number = 3600000;
-
   private apiPath = '/V1/Auth';
   private isUserLoggedIn = false;
 
   public get IsUserLoggedIn(): boolean {
-    const lsUserLoggedIn: string = this.getWithExpiry(AuthenticationService.IS_USER_LOGGED_IN);
+    const lsUserLoggedIn: string = this.getWithExpiry(GlobalVariables.IS_USER_LOGGED_IN);
     if (lsUserLoggedIn === 'true') {
       return true;
     }
@@ -31,7 +27,7 @@ export class AuthenticationService {
 
   public set IsUserLoggedIn(value: boolean) {
     if (value === true) {
-      this.setWithExpiry(AuthenticationService.IS_USER_LOGGED_IN, 'true', AuthenticationService.ONE_HOUR_IN_MS * 8);
+      this.setWithExpiry(GlobalVariables.IS_USER_LOGGED_IN, 'true', GlobalVariables.ONE_HOUR_IN_MS * 8);
     }
     this.isUserLoggedIn = value;
   }
@@ -40,7 +36,8 @@ export class AuthenticationService {
     private http: HttpClient,
     private router: Router,
     private eventQueueService: EventQueueService,
-    @Inject('API_URL') private apiUrl: string
+    @Inject('API_URL') private apiUrl: string,
+    @Inject('CDN_URL') private cdnUrl: string
   ) { }
 
   public login(userName: string, passWord: string): Observable<boolean> {
@@ -52,8 +49,8 @@ export class AuthenticationService {
       .pipe(
         map(response => {
           this.IsUserLoggedIn = true;
-          localStorage.setItem(AuthenticationService.API_TOKEN, response);
-          localStorage.setItem(AuthenticationService.USER, JSON.stringify({
+          localStorage.setItem(GlobalVariables.API_TOKEN, response);
+          localStorage.setItem(GlobalVariables.USER, JSON.stringify({
             username: userName,
             token: response
           } as User));
@@ -66,8 +63,8 @@ export class AuthenticationService {
 
   public logout(gotoLogin = false): void {
     this.IsUserLoggedIn = false;
-    localStorage.removeItem(AuthenticationService.IS_USER_LOGGED_IN);
-    localStorage.removeItem(AuthenticationService.USER);
+    localStorage.removeItem(GlobalVariables.IS_USER_LOGGED_IN);
+    localStorage.removeItem(GlobalVariables.USER);
 
     this.router.navigate(['/' + (gotoLogin ? 'login' : '')]).then(() => {
       this.eventQueueService.dispatch(new AppEvent(AppEventType.Logout));
@@ -75,12 +72,12 @@ export class AuthenticationService {
   }
 
   public getUser(): User {
-    const user: string = localStorage.getItem(AuthenticationService.USER) || '{}';
+    const user: string = localStorage.getItem(GlobalVariables.USER) || '{}';
     return JSON.parse(user) as User;
   }
 
   public loadUser(): Observable<User> {
-    const apiToken: string = localStorage.getItem(AuthenticationService.API_TOKEN) || '{}';
+    const apiToken: string = localStorage.getItem(GlobalVariables.API_TOKEN) || '{}';
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: apiToken
@@ -89,7 +86,7 @@ export class AuthenticationService {
     return this.http.get<User>(`${this.apiUrl}${this.apiPath}/GetUserByIdentity`, httpOptions)
       .pipe(
         map((user: User) => {
-          localStorage.setItem(AuthenticationService.USER, JSON.stringify(user));
+          localStorage.setItem(GlobalVariables.USER, JSON.stringify(user));
           return user;
         }),
         catchError(this.handleError<User>('GetUserByIdentity'))
@@ -97,7 +94,7 @@ export class AuthenticationService {
   }
 
   public getClaimValue(claimType: string): Observable<object> {
-    const apiToken: string = localStorage.getItem(AuthenticationService.API_TOKEN) || '{}';
+    const apiToken: string = localStorage.getItem(GlobalVariables.API_TOKEN) || '{}';
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: apiToken
@@ -113,7 +110,7 @@ export class AuthenticationService {
   }
 
   public validateToken(): Observable<boolean> {
-    const apiToken: string = localStorage.getItem(AuthenticationService.API_TOKEN) || '';
+    const apiToken: string = localStorage.getItem(GlobalVariables.API_TOKEN) || '';
     const httpOptions = {
       headers: new HttpHeaders({
         Accept: 'application/json'
@@ -123,6 +120,20 @@ export class AuthenticationService {
       }
     };
     return this.http.get<boolean>(`${this.apiUrl}/V1/Auth/ValidateToken`, httpOptions);
+  }
+
+  public getCdnToken(): Observable<string> {
+    const apiToken: string = localStorage.getItem(GlobalVariables.API_TOKEN) || '{}';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: apiToken
+      })
+    };
+
+    return this.http.get<string>(
+      `${this.cdnUrl}${this.apiPath}/GetCdnToken`,
+      httpOptions
+    );
   }
 
   private handleError<T>(operation = 'operation', result?: T): any {

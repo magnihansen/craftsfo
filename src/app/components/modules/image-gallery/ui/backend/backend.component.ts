@@ -19,6 +19,7 @@ import { I18nService } from 'src/app/localization/i18n.service';
 import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DisableControlDirective } from 'src/app/shared/directives/disable-control.directive';
+import { ImageCdnService } from '../services/image-cdn.service';
 
 @Component({
   standalone: true,
@@ -38,7 +39,8 @@ import { DisableControlDirective } from 'src/app/shared/directives/disable-contr
   providers: [
     I18nPipe,
     ImageGalleryService, 
-    ImageGalleryTypeService
+    ImageGalleryTypeService,
+    ImageCdnService
   ]
 })
 export class BackendComponent implements OnInit {
@@ -55,6 +57,7 @@ export class BackendComponent implements OnInit {
   public isRootModalWithoutNestedModal = false;
   public formImageGalleryAdd: FormGroup = new FormGroup({});
   public formGalleryTypeAdd: FormGroup = new FormGroup({});
+  public imageGalleryFiles: File[] = [];
 
   private galleryTypeStatus = false;
   private galleryTypeData: Object = {};
@@ -62,6 +65,7 @@ export class BackendComponent implements OnInit {
   constructor(
     readonly imageGalleryService: ImageGalleryService,
     readonly imageGalleryTypeService: ImageGalleryTypeService,
+    readonly imageCdnService: ImageCdnService,
     readonly fb: FormBuilder,
     readonly toastr: ToastrService,
     readonly i18nService: I18nService,
@@ -207,6 +211,20 @@ export class BackendComponent implements OnInit {
     if (!this.bShowCreateTypeModal) {
       this.bShowCreateTypeModal = true;
       this.isRootModalWithoutNestedModal = false;
+    }
+  }
+
+  public onImageGalleryChange(imageGallery: any): void {
+    // fetch images for showcase from Image CDN
+    if (+imageGallery.value !== -1) {
+      this.imageCdnService.getImageCollection(+imageGallery.value).subscribe({
+        next: (files: File[]) => {
+          this.imageGalleryFiles = files;
+        },
+        error: (err: any) => {
+          console.log(err);
+        }
+      });
     }
   }
 
