@@ -3,7 +3,7 @@ import { Inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs/internal/Observable";
 
 @Injectable()
-export class ImageCdnService {
+export class CdnService {
     private cdnPath = '/V1/Cdn';
     private httpOptions = {
         headers: new HttpHeaders({

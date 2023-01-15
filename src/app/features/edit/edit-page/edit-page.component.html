@@ -22,13 +22,13 @@
       <input id="pageLink" type="text" formControlName="link" placeholder="{{ 'validation.fill-out-x' | i18n : { x: 'common.link' | i18n | lowercase } }}" />
     </div>
     <div class="formline">
-        <label for="pageContent">{{ 'common.content' | i18n }}</label>
+        <label *ngIf="page && page.pageTypeId === 46" for="pageContent">{{ 'common.content' | i18n }}</label>
         <ckeditor
           *ngIf="page && page.pageTypeId === 46"
-            id="pageContent" 
-            [editor]="classicEditor" 
-            formControlName="content"
-            (ready)="onReady($event)"
+          id="pageContent" 
+          [editor]="classicEditor" 
+          formControlName="content"
+          (ready)="onReady($event)"
         ></ckeditor>
         <app-image-gallery 
           *ngIf="page && page.pageTypeId === 47" 

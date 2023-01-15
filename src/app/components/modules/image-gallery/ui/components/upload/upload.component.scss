@@ -1,0 +1,108 @@
+@import '../../../../../../assets/variables.scss';
+
+.preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .inner {
+        position: relative;
+        cursor: pointer;
+        border-radius: 3px;
+
+        &:hover {
+            color: white;
+            background-color: var(--color-dark);
+            transition: .3s all ease-in-out;
+        }
+
+        .removeImage {
+            display: flex;
+            position: absolute;
+            align-items: center;
+            justify-content: center;
+            right: .5rem;
+            top: .5rem;
+            background-color: chartreuse;
+            color: darkcyan;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            transition: .3s all ease-in-out;
+
+            &:hover {
+                /* TODO: why must these be important*/
+                background-color: darkcyan !important;
+                color: chartreuse !important;
+                transition: .3s all ease-in-out !important;
+            }
+
+            &:focus-visible {
+                box-shadow: 0 0 0 0.175rem darkmagenta !important;
+                outline: none !important;
+            }
+        }
+
+        .dimensions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 6rem;
+            height: 6rem;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: .3s all ease-in-out;
+            border: 1px solid darkgoldenrod;
+
+            .image-preview {
+                img {
+                    width: 6rem;
+                    height: 6rem;
+                    border-radius: 3px;
+                    object-fit: cover;
+                }
+
+                &:focus-visible {
+                    box-shadow: 0 0 0 0.175rem darkmagenta !important;
+                    outline: none !important;
+                }
+            }
+        }
+    } 
+
+    .fileupload-container {
+        position: relative;
+    }
+
+    .fileupload {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 6rem;
+        height: 6rem;
+        background-color: var(--color-dark);
+        color: var(--font-color-light);
+        border-radius: 3px;
+        cursor: pointer;
+        transition: .3s all ease-in-out;
+        margin-bottom: 0;
+        padding: .5rem;
+
+        span {
+            font-size: 14px;
+            font-style: normal;
+            font-weight: bold;
+            line-height: 1rem;
+            margin-left: .5rem;
+        }
+
+        input {
+            display: none;
+        }
+
+        &:focus-visible {
+            box-shadow: 0 0 0 0.175rem darkmagenta !important;
+            outline: none !important;
+        }
+    }
+}

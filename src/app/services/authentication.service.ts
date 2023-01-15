@@ -36,8 +36,7 @@ export class AuthenticationService {
     private http: HttpClient,
     private router: Router,
     private eventQueueService: EventQueueService,
-    @Inject('API_URL') private apiUrl: string,
-    @Inject('CDN_URL') private cdnUrl: string
+    @Inject('API_URL') private apiUrl: string
   ) { }
 
   public login(userName: string, passWord: string): Observable<boolean> {
@@ -131,7 +130,7 @@ export class AuthenticationService {
     };
 
     return this.http.get<string>(
-      `${this.cdnUrl}${this.apiPath}/GetCdnToken`,
+      `${this.apiUrl}${this.apiPath}/GetCdnToken`,
       httpOptions
     );
   }

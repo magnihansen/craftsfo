@@ -4,9 +4,9 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } 
 import { I18nService } from 'src/app/localization/i18n.service';
 import { Page } from 'src/app/models/page.model';
 import { environment } from 'src/environments/environment';
-import { BackendComponent } from './ui/backend/backend.component';
+import { BackendComponent } from './ui/components/backend/backend.component';
 import { UiDirectiveDirective } from './ui/directives/ui-directive.directive';
-import { FrontendComponent } from './ui/frontend/frontend.component';
+import { FrontendComponent } from './ui/components/frontend/frontend.component';
 import languageDK from './ui/i18n/da.json';
 
 @Component({

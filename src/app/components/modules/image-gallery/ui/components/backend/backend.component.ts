@@ -7,19 +7,22 @@ import { Page } from 'src/app/models/page.model';
 import { ContentWrapperComponent } from 'src/app/shared/components/content-wrapper/content-wrapper.component';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { UploadAdapter } from 'src/app/shared/upload-adapter.class';
-import { ImageGallery } from '../models/image-gallery.model';
-import { ImageGalleryType } from '../models/image-gallery-type.model';
-import { ImageGalleryService } from '../services/image-gallery.service';
+import { ImageGallery } from '../../models/image-gallery.model';
+import { ImageGalleryType } from '../../models/image-gallery-type.model';
+import { ImageGalleryService } from '../../services/image-gallery.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { I18nPipe } from 'src/app/localization/i18n.pipe';
-import { ImageGalleryTypeService } from '../services/image-gallery-type.service';
+import { ImageGalleryTypeService } from '../../services/image-gallery-type.service';
 import { ToastrService } from 'ngx-toastr';
 import { I18nService } from 'src/app/localization/i18n.service';
 import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DisableControlDirective } from 'src/app/shared/directives/disable-control.directive';
-import { ImageCdnService } from '../services/image-cdn.service';
+import { CdnService } from '../../services/cdn.service';
+import { DisplayFile } from '../../models/display-file.model';
+import { UploadComponent } from '../upload/upload.component';
+import { FileUploadComponent } from '../file-upload/file-upload.component';
 
 @Component({
   standalone: true,
@@ -34,13 +37,15 @@ import { ImageCdnService } from '../services/image-cdn.service';
     LocalLocalizationModule,
     ModalComponent,
     CKEditorModule,
+    UploadComponent,
+    FileUploadComponent,
     DisableControlDirective
   ],
   providers: [
     I18nPipe,
     ImageGalleryService, 
     ImageGalleryTypeService,
-    ImageCdnService
+    CdnService
   ]
 })
 export class BackendComponent implements OnInit {
@@ -58,6 +63,13 @@ export class BackendComponent implements OnInit {
   public formImageGalleryAdd: FormGroup = new FormGroup({});
   public formGalleryTypeAdd: FormGroup = new FormGroup({});
   public imageGalleryFiles: File[] = [];
+  public isCollectionLoading = false;
+  public collectionValue = -1;
+
+  public fileLimit = 10;
+  public maxFileSize = 10485760;
+  public chosenFiles: DisplayFile[] = [];
+  public isLoading = false;
 
   private galleryTypeStatus = false;
   private galleryTypeData: Object = {};
@@ -65,7 +77,7 @@ export class BackendComponent implements OnInit {
   constructor(
     readonly imageGalleryService: ImageGalleryService,
     readonly imageGalleryTypeService: ImageGalleryTypeService,
-    readonly imageCdnService: ImageCdnService,
+    readonly cdnService: CdnService,
     readonly fb: FormBuilder,
     readonly toastr: ToastrService,
     readonly i18nService: I18nService,
@@ -216,13 +228,18 @@ export class BackendComponent implements OnInit {
 
   public onImageGalleryChange(imageGallery: any): void {
     // fetch images for showcase from Image CDN
-    if (+imageGallery.value !== -1) {
-      this.imageCdnService.getImageCollection(+imageGallery.value).subscribe({
+    this.isCollectionLoading = true;
+    this.collectionValue = +imageGallery.value;
+    
+    if (this.collectionValue !== -1) {
+      this.cdnService.getImageCollection(this.collectionValue).subscribe({
         next: (files: File[]) => {
           this.imageGalleryFiles = files;
+          this.isCollectionLoading = false;
         },
         error: (err: any) => {
           console.log(err);
+          this.isCollectionLoading = false;
         }
       });
     }
@@ -233,5 +250,13 @@ export class BackendComponent implements OnInit {
       this.isRootModalWithoutNestedModal = true;
       this.bShowCreateTypeModal = false;
     }
+  }
+
+  public startedUploadingFiles(): void {
+    this.isLoading = true;
+  }
+
+  public finishedUploading(): void {
+    this.isLoading = false;
   }
 }

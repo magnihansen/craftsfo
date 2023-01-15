@@ -1,5 +1,5 @@
 <div class="imagegallery-container">
-    <div>{{ 'imagegallery.choose' | i18n }}:</div>
+    <label>{{ 'imagegallery.choose' | i18n }}:</label>
     <select (change)="onImageGalleryChange($event.target)">
         <option *ngIf="imageGalleries.length === 0">
             {{ 'imagegallery.no-imagegalleries-found' | i18n }}
@@ -14,13 +14,29 @@
         (click)="showCreateGalleryModal($event)"
         [disabled]="bShowCreateGalleryModal"
     >{{ 'imagegallery.create-{x}' | i18n : { x: 'imagegallery' | i18n | lowercase } }}</button>
-</div>
-<ng-template #imagegallery *ngIf="imageGalleryFiles else loading">
-    Billede galleri
+</div>  
+<ng-template #imagegallery *ngIf="imageGalleryFiles.length > 0 else loading">
+    <div>
+        Billede galleri
+    </div>
 </ng-template>
 <ng-template #loading>
-    {{ 'common.loading' | i18n }}
+    <div *ngIf="collectionValue !== -1">
+        <div *ngIf="isCollectionLoading">
+            {{ 'common.loading' | i18n }}
+        </div>
+        <div *ngIf="!isCollectionLoading">
+            <span>{{ 'common.no-x' | i18n : { x: 'common.images' | i18n | lowercase } }}</span>
+            <app-file-upload
+                [tableIsLoading]="isLoading"
+                [imageGalleryId]="collectionValue"
+                (uploading)="startedUploadingFiles()"
+                (fileUploaded)="finishedUploading()"
+            ></app-file-upload>
+        </div>
+    </div>
 </ng-template>
+
 
 
 

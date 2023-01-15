@@ -1,0 +1,112 @@
+<div class="file-upload-wrapper">
+    <div class="preview-container">
+        <div 
+            class="inner"
+            *ngFor="let file of fileSource; let i = index"
+        >
+            <div 
+                *ngIf="!viewOnly"
+                tabindex="0"
+                role="button"
+                class="removeImage"
+                (click)="removeFile(i)"
+                (key.enter)="removeFile(i)"
+            >
+                <i class="fa fa-times"></i>
+            </div>
+            <div 
+                class="dimensions"
+                *ngIf="file.base64"
+            >
+                <ng-container
+                    *ngIf="showPreview; then preview; else changeSelected"
+                ></ng-container>
+                <ng-template #preview>
+                    <div
+                        #imgEl
+                        tabindex="0"
+                        role="button"
+                        class="image-preview"
+                        (click)="(file.type && file.type.includes('image')) ? openPreview(file.name, file.base64, file.type, imgEl) : download(file); selectedImageChange.emit(file)"
+                        (key.enter)="(file.type && file.type.includes('image')) ? openPreview(file.name, file.base64, file.type, imgEl) : download(file); selectedImageChange.emit(file)"
+                    >
+                        <ng-container ngIf="file.type?.includes('image'); then imageItem; else fileItem"></ng-container>
+                        <ng-template #imageItem>
+                            <img
+                                *ngIf="file?.base64"
+                                alt="Image"
+                                src="{{file.base64}}"
+                            />
+                        </ng-template>
+                        <ng-template #fileItem>
+                            <i
+                                style="font-size: 3rem;"
+                                class="{{ file.name.substr(file.name.lastIndexOf('.') + 1) | extensionToIcon }}"
+                            ></i>
+                        </ng-template>
+                        
+                    </div>
+                </ng-template>
+                <ng-template #changeSelected>
+                    <div
+                        tabindex="0"
+                        role="button"
+                        class="image-preview"
+                        (click)="selectedImageChange.emit(file)"
+                        (keyup.enter)="selectedImageChange.emit(file)"
+                    >
+                        <ng-container *ngIf="file.type?.includes('image'); then imageItem; else fileItem"></ng-container>
+                        <ng-template #imageItem>
+                            <img
+                                *ngIf="file?.base64"
+                                alt="{{ 'common.image' | i18n }}"
+                                src="{{ file.base64 }}" 
+                            />
+                        </ng-template>
+                        <ng-template #fileItem>
+                            <i
+                                style="font-size: 3rem;"
+                                class="{{ file.name.substr(file.name.lastIndexOf('.') + 1) | extensionToIcon }}"
+                            ></i>
+                        </ng-template>
+                    </div>
+                </ng-template>         
+            </div>
+        </div>
+
+        <div
+            class="fileupload-container"
+            *ngIf="!viewOnly && (fileSource.length < limit)"
+        >
+            <label
+                class="fileupload"
+                tabindex="0"
+                role="button"
+                (keyup.enter)="fileInput.click()"
+            >
+                <i class="fa fa-plus"></i>
+                <span id="addFiles">{{ 'common.add-x' | i18n : { x: 'common.image' | i18n | lowercase } }}</span>
+                <input
+                    #fileInput
+                    type="file"
+                    accept="'.jpeg, .jpg, .png'"
+                    [multiple]="multiple"
+                    [disabled]="viewOnly || isLoading"
+                    (change)="chooseAttachments(fileInput)"
+                >
+            </label>
+        </div>
+    </div>
+</div>
+
+<!-- image preview dialog -->
+
+<app-modal
+    *ngIf="showPreviewModal"
+    modalTitle="{{ 'common.edit-x' | i18n : { x: 'common.image' | i18n | lowercase } }}"
+    [renderModal]="showPreviewModal"
+>
+    <span>currentFileBase64: {{currentFileBase64}}</span>
+    <span>currentFileTitle: {{currentFileTitle}}</span>
+    <span>currentType: {{currentType}}</span>
+</app-modal>

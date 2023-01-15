@@ -1,0 +1,10 @@
+<div #pluploadcontainer [ngStyle]="{'display': tableIsLoading ? 'none' : 'flex' }">
+    <div class="plupload-container">
+        <div #pluploader class="document-button">
+            <button>
+                <i class="fa fa-plus"></i>
+                {{ 'common.add-x' | i18n : { x: 'common.images' | i18n | lowercase } }}
+            </button>
+        </div>
+    </div>
+</div>
