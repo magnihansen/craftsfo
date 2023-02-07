@@ -99,7 +99,8 @@ export class FileUploadComponent implements OnInit {
     this.uploader.bind('UploadComplete', (up: any, f: any) => {
       this.addedPercent = 100;
       this.percentageDone.emit(this.addedPercent);
-      this.fileUploaded.emit(false);
+      this.uploading.emit(false);
+      this.fileUploaded.emit(true);
       this.resetPlupload();
     });
   }
@@ -108,8 +109,9 @@ export class FileUploadComponent implements OnInit {
     if (this.uploader.files && this.uploader.files.length) {
       this.uploader.settings.multipart_params = this.getGroupParameters();
       this.uploader.start();
-    } else {
-      this.fileUploaded.emit(true);
+
+      this.uploading.emit(true);
+      this.fileUploaded.emit(false);
     }
   }
 

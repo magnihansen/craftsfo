@@ -1,6 +1,7 @@
 <app-modal
   #addSettingModalContent
   modalTitle="{{ 'common.edit-x' | i18n : { x: 'common.page' | i18n | lowercase } }}"
+  [widthClass]="widthClass"
   [renderModal]="renderModal"
   (submitChanged)="editPage($event)"
   (closeChanged)="closeModal($event)"

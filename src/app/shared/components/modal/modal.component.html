@@ -13,7 +13,11 @@
         >
             <div
                 tabindex="2" 
-                class="header">{{modalTitle}}</div>
+                class="header"
+            >
+                <div class="title">{{modalTitle}}</div>
+                <div class="close-button" (click)="closeModal()"><i class="fa fa-times-circle"></i></div>
+            </div>
             <div
                 tabindex="3" 
                 class="content">

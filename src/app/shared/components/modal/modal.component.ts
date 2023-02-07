@@ -1,5 +1,7 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, ContentChild, EventEmitter, HostListener, Inject, Input, OnChanges, OnDestroy, Output, SimpleChanges, TemplateRef, ViewChildren } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output, SimpleChanges, TemplateRef } from '@angular/core';
+
+import { EditorWidth } from 'src/app/core/generic-types';
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 
 @Component({
@@ -11,13 +13,13 @@ import { LocalLocalizationModule } from 'src/app/localization/local-localization
 })
 export class ModalComponent implements OnDestroy, OnChanges {
   @Input() modalContent!: TemplateRef<any>;
-  @Input() widthClass: 'w400' | 'w600' | 'w800' | 'fit-content' = 'fit-content';
-  @Input() renderModal = false;
+  @Input() widthClass: EditorWidth = EditorWidth.AUTO;
   @Input() modalTitle = '';
+  @Input() renderModal = false;
   @Input() isRootModalWithoutNestedModal = false;
   @Input() isNestedModal = false;
   @Input() modalId = '';
-  @Input() submitKey = 'common.submit';
+  @Input() submitKey = 'common.save';
 
   @Output() submitChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() closeChanged: EventEmitter<boolean> = new EventEmitter();

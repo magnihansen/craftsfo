@@ -18,6 +18,7 @@ import { PageTypeService } from 'src/app/services/pagetype.service';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { UploadAdapter } from 'src/app/shared/upload-adapter.class';
 import { ImageGalleryComponent } from 'src/app/components/modules/image-gallery/image-gallery.component';
+import { EditorWidth } from 'src/app/core/generic-types';
 
 @Component({
   selector: 'app-add-page',
@@ -38,6 +39,7 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
   public formPageAddState?: Subscription;
   public pageTypes: PageType[] = [];
   public isImageGallery = false;
+  public widthClass: EditorWidth = EditorWidth.MEDIUM;
 
   constructor(
     private pageService: PageService,

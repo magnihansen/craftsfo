@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { PageService } from '../../../services/page.service';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,6 +22,7 @@ import { ImageGalleryComponent } from '../../../components/modules/image-gallery
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { FormsService } from 'src/app/services/forms.service';
 import { DisableControlDirective } from 'src/app/shared/directives/disable-control.directive';
+import { EditorWidth } from 'src/app/core/generic-types';
 
 @Component({
   standalone: true,
@@ -49,14 +50,10 @@ export class EditPageComponent implements OnInit {
   
   public classicEditor = ClassicEditor;
   public pages: Page[] = [];
-  // public title = '';
-  // public content = '';
-  // public sort = 0;
-  // public pageuid = '';
   public page: Page | null = null;
   public pageTypeId = 0;
   public pageTypes: PageType[] = [];
-
+  public widthClass: EditorWidth = EditorWidth.AUTO; 
   public formPageEdit: FormGroup = new FormGroup({});
   public formPageEditState?: Subscription;
 
@@ -110,6 +107,8 @@ export class EditPageComponent implements OnInit {
         this.formPageEdit.controls.link.setValue(page.link);
         this.formPageEdit.controls.content.setValue(page.content.replace('\n', '<br />'));
         this.formPageEdit.controls.pageTypeId.setValue(page.pageTypeId);
+
+        this.widthClass = page.pageTypeId === 46 ? EditorWidth.MEDIUM : EditorWidth.SMALL;
       },
       error: (err: any) => {
         console.log(err);
@@ -132,7 +131,6 @@ export class EditPageComponent implements OnInit {
         this.page.link = this.formPageEdit.controls.link.value as string;
         this.page.sort = this.formPageEdit.controls.sort.value as number;
         this.page.updatedBy = user.username;
-        // this.page.pageTypeId = this.pageTypeId;
 
         this.pageService.updatePage(this.page).subscribe({
           next: (result: boolean) => {
@@ -140,6 +138,7 @@ export class EditPageComponent implements OnInit {
               this.toastr.success(
                 this.i18nService.getTranslation('common.x-saved', { x: this.i18nService.getTranslation('common.page') })
               );
+              this.closeChange.emit();
             } else {
               this.toastr.warning(
                 this.i18nService.getTranslation('warning.page-not-saved')

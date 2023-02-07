@@ -25,5 +25,5 @@
     *ngIf="showEditPageModal"
     [renderModal]="showEditPageModal"
     [pageId]="selectedPageId"
-    (closeChange)="showEditPageModal = false"
+    (closeChange)="onCloseChange()"
 ></app-edit-page>

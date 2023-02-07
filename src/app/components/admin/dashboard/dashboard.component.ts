@@ -104,6 +104,11 @@ export class DashboardComponent implements OnInit {
     } as DataRow
   }
 
+  public onCloseChange(): void {
+    this.loadPages();
+    this.showEditPageModal = false;
+  }
+
   public openAddNewPage(): void {
     this.showAddPageModal = true;
   }

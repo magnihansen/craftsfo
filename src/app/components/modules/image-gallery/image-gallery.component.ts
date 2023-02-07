@@ -51,12 +51,11 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
       const componentRef = viewContainerRef.createComponent<BackendComponent>(BackendComponent);
       componentRef.instance.data = this.page;
       componentRef.instance.galleryCreated.subscribe((created: boolean) => {
-        console.log('galleryCreated', created);
         this.createdChange.emit(created);
       });
     } else {
       const componentRef = viewContainerRef.createComponent<FrontendComponent>(FrontendComponent);
-      componentRef.instance.data = this.page;
+      componentRef.instance.page = this.page;
     } 
   }
 

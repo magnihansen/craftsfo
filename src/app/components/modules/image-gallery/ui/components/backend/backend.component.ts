@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControlStatus, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
+
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ToastrService } from 'ngx-toastr';
 
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 import { Page } from 'src/app/models/page.model';
@@ -10,11 +15,8 @@ import { UploadAdapter } from 'src/app/shared/upload-adapter.class';
 import { ImageGallery } from '../../models/image-gallery.model';
 import { ImageGalleryType } from '../../models/image-gallery-type.model';
 import { ImageGalleryService } from '../../services/image-gallery.service';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { I18nPipe } from 'src/app/localization/i18n.pipe';
 import { ImageGalleryTypeService } from '../../services/image-gallery-type.service';
-import { ToastrService } from 'ngx-toastr';
 import { I18nService } from 'src/app/localization/i18n.service';
 import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -23,6 +25,9 @@ import { CdnService } from '../../services/cdn.service';
 import { DisplayFile } from '../../models/display-file.model';
 import { UploadComponent } from '../upload/upload.component';
 import { FileUploadComponent } from '../file-upload/file-upload.component';
+import { ImageGalleryFile } from '../../models/image-gallery-file.model';
+import { FileContentResult } from '../../models/file-content-result.model';
+import { CdnImageGalleryUrlPipe } from '../../pipes/cdn-url.pipe';
 
 @Component({
   standalone: true,
@@ -39,7 +44,8 @@ import { FileUploadComponent } from '../file-upload/file-upload.component';
     CKEditorModule,
     UploadComponent,
     FileUploadComponent,
-    DisableControlDirective
+    DisableControlDirective,
+    CdnImageGalleryUrlPipe
   ],
   providers: [
     I18nPipe,
@@ -62,7 +68,7 @@ export class BackendComponent implements OnInit {
   public isRootModalWithoutNestedModal = false;
   public formImageGalleryAdd: FormGroup = new FormGroup({});
   public formGalleryTypeAdd: FormGroup = new FormGroup({});
-  public imageGalleryFiles: File[] = [];
+  public imageGalleryFiles: ImageGalleryFile[] = [];
   public isCollectionLoading = false;
   public collectionValue = -1;
 
@@ -81,7 +87,8 @@ export class BackendComponent implements OnInit {
     readonly fb: FormBuilder,
     readonly toastr: ToastrService,
     readonly i18nService: I18nService,
-    readonly authService: AuthenticationService
+    readonly authService: AuthenticationService,
+    readonly sanitizer: DomSanitizer
   ) {
     this.buildForms();
   }
@@ -131,7 +138,7 @@ export class BackendComponent implements OnInit {
 
   public onReady(eventData: any) {
     eventData.plugins.get('FileRepository').createUploadAdapter = function (loader: any) {
-      console.log(btoa(loader.file));
+      // console.log(btoa(loader.file));
       return new UploadAdapter(loader);
     };
   }
@@ -230,11 +237,17 @@ export class BackendComponent implements OnInit {
     // fetch images for showcase from Image CDN
     this.isCollectionLoading = true;
     this.collectionValue = +imageGallery.value;
-    
+    this.loadImageGalleryImages();
+  }
+
+  private loadImageGalleryImages(): void {
+    this.imageGalleryFiles = [];
     if (this.collectionValue !== -1) {
       this.cdnService.getImageCollection(this.collectionValue).subscribe({
-        next: (files: File[]) => {
-          this.imageGalleryFiles = files;
+        next: (files: ImageGalleryFile[]) => {
+          files.forEach((igf: ImageGalleryFile) => {
+            this.imageGalleryFiles = [...this.imageGalleryFiles, igf];
+          });
           this.isCollectionLoading = false;
         },
         error: (err: any) => {
@@ -252,11 +265,18 @@ export class BackendComponent implements OnInit {
     }
   }
 
-  public startedUploadingFiles(): void {
-    this.isLoading = true;
+  public startedUploadingFiles(isStartedUploading: boolean): void {
+    this.isLoading = isStartedUploading;
   }
 
-  public finishedUploading(): void {
+  public finishedUploading(fileUploaded: boolean): void {
     this.isLoading = false;
+    if (fileUploaded) {
+      this.loadImageGalleryImages();
+    }
+  }
+
+  public percentageDone(percentage: number): void {
+    console.log('percentageDone', percentage);
   }
 }

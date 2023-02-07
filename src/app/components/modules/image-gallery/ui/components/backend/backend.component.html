@@ -1,49 +1,64 @@
 <div class="imagegallery-container">
     <label>{{ 'imagegallery.choose' | i18n }}:</label>
-    <select (change)="onImageGalleryChange($event.target)">
-        <option *ngIf="imageGalleries.length === 0">
-            {{ 'imagegallery.no-imagegalleries-found' | i18n }}
-        </option>
-        <option value="-1">{{ 'common.choose-x' | i18n : { x: 'imagegallery' | i18n | lowercase } }}</option>
-        <option *ngFor="let gallery of imageGalleries" value="{{gallery.id}}">
-            {{gallery.name}}
-        </option>
-    </select>
-    <button
-        class="add-spacer"
-        (click)="showCreateGalleryModal($event)"
-        [disabled]="bShowCreateGalleryModal"
-    >{{ 'imagegallery.create-{x}' | i18n : { x: 'imagegallery' | i18n | lowercase } }}</button>
-</div>  
-<ng-template #imagegallery *ngIf="imageGalleryFiles.length > 0 else loading">
-    <div>
-        Billede galleri
+    <div class="imagegallery-select">
+        <select (change)="onImageGalleryChange($event.target)">
+            <option *ngIf="imageGalleries.length === 0">
+                {{ 'imagegallery.no-imagegalleries-found' | i18n }}
+            </option>
+            <option value="-1">{{ 'common.choose-x' | i18n : { x: 'imagegallery' | i18n | lowercase } }}</option>
+            <option *ngFor="let gallery of imageGalleries" value="{{gallery.id}}">
+                {{gallery.name}}
+            </option>
+        </select>
+        <button
+            class="add-spacer"
+            (click)="showCreateGalleryModal($event)"
+            [disabled]="bShowCreateGalleryModal"
+        >{{ 'imagegallery.create-{x}' | i18n : { x: 'imagegallery' | i18n | lowercase } }}</button>
+    </div>
+</div>
+<ng-content *ngIf="imageGalleryFiles.length > 0 && !isLoading then imagegalleryfiles; else loading;"></ng-content>
+<div *ngIf="!isCollectionLoading && collectionValue != -1">
+    <app-file-upload
+        [tableIsLoading]="isLoading"
+        [imageGalleryId]="collectionValue"
+        (uploading)="startedUploadingFiles($event)"
+        (fileUploaded)="finishedUploading($event)"
+        (percentageDone)="percentageDone($event)"
+    ></app-file-upload>
+</div>
+<ng-template #imagegalleryfiles>
+    <div class="imagegallery-files-container">
+        <div class="title">{{ 'imagegallery' | i18n }}</div>
+        <div class="files">
+            <div class="image-container" *ngFor="let file of imageGalleryFiles">
+                <img 
+                    src="{{file.filename | cdnImageGalleryUrl : 1 : 8}}"
+                    title="{{file.filename}}"
+                    alt="{{file.filename}}"
+                    style="width: 50px; height: 50px;"
+                />
+            </div>
+        </div>
     </div>
 </ng-template>
+
 <ng-template #loading>
     <div *ngIf="collectionValue !== -1">
         <div *ngIf="isCollectionLoading">
             {{ 'common.loading' | i18n }}
         </div>
-        <div *ngIf="!isCollectionLoading">
+        <div *ngIf="!isCollectionLoading && imageGalleryFiles.length == 0">
             <span>{{ 'common.no-x' | i18n : { x: 'common.images' | i18n | lowercase } }}</span>
-            <app-file-upload
-                [tableIsLoading]="isLoading"
-                [imageGalleryId]="collectionValue"
-                (uploading)="startedUploadingFiles()"
-                (fileUploaded)="finishedUploading()"
-            ></app-file-upload>
         </div>
     </div>
 </ng-template>
-
-
-
 
 <app-modal
     modalTitle="{{ 'common.create-x' | i18n : { x: 'imagegallery' | i18n | lowercase } }}"
     modalId="gallery-modal"
     [renderModal]="bShowCreateGalleryModal"
+    [isNestedModal]="true"
     [isRootModalWithoutNestedModal]="isRootModalWithoutNestedModal"
     (submitChanged)="addImageGallery($event)"
     (closeChanged)="closeCreateGalleryModal()"
@@ -84,30 +99,30 @@
             <input id="igImageGalleryTemplate" type="text" formControlName="imageTemplateId" [disableControl]="true" />
         </div>
     </form>
-    <app-modal
-        *ngIf="bShowCreateTypeModal"
-        modalTitle="{{ 'common.create-x' | i18n : { x: 'imagetype' | i18n | lowercase } }}"
-        modalId="type-modal"
-        [renderModal]="bShowCreateTypeModal"
-        [isNestedModal]="true"
-        (submitChanged)="insertImageType($event)"
-        (closeChanged)="closeCreateTypeModal($event)"
-    >
-        <app-content-wrapper>
-            <form [formGroup]="formGalleryTypeAdd">
-                <div class="formline">
-                    <label for="name">{{ 'common.name' | i18n }}</label>
-                    <input id="name" type="text" formControlName="name" placeholder="{{ 'validation.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}" />
-                    <div class="warning" *ngIf="formGalleryTypeAdd.get('name')?.invalid 
-                        && (
-                            formGalleryTypeAdd.get('name')?.dirty 
-                            || formGalleryTypeAdd.get('name')?.touched
-                        )"
-                    >
-                        {{ 'validation.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}
-                    </div>
+</app-modal>
+<app-modal
+    *ngIf="bShowCreateTypeModal"
+    modalTitle="{{ 'common.create-x' | i18n : { x: 'imagetype' | i18n | lowercase } }}"
+    modalId="type-modal"
+    [renderModal]="bShowCreateTypeModal"
+    [isNestedModal]="true"
+    (submitChanged)="insertImageType($event)"
+    (closeChanged)="closeCreateTypeModal($event)"
+>
+    <app-content-wrapper>
+        <form [formGroup]="formGalleryTypeAdd">
+            <div class="formline">
+                <label for="name">{{ 'common.name' | i18n }}</label>
+                <input id="name" type="text" formControlName="name" placeholder="{{ 'validation.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}" />
+                <div class="warning" *ngIf="formGalleryTypeAdd.get('name')?.invalid 
+                    && (
+                        formGalleryTypeAdd.get('name')?.dirty 
+                        || formGalleryTypeAdd.get('name')?.touched
+                    )"
+                >
+                    {{ 'validation.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}
                 </div>
-            </form>
-        </app-content-wrapper>
-    </app-modal>
+            </div>
+        </form>
+    </app-content-wrapper>
 </app-modal>

@@ -53,6 +53,11 @@ export class AuthenticationService {
             username: userName,
             token: response
           } as User));
+          this.getCdnToken().subscribe({
+            next: (cdn_token: string) => {
+              localStorage.setItem(GlobalVariables.CDN_TOKEN, cdn_token);
+            }
+          });
           this.eventQueueService.dispatch(new AppEvent(AppEventType.Login));
           return true;
         }),
@@ -62,8 +67,10 @@ export class AuthenticationService {
 
   public logout(gotoLogin = false): void {
     this.IsUserLoggedIn = false;
+    localStorage.removeItem(GlobalVariables.API_TOKEN);
     localStorage.removeItem(GlobalVariables.IS_USER_LOGGED_IN);
     localStorage.removeItem(GlobalVariables.USER);
+    localStorage.removeItem(GlobalVariables.CDN_TOKEN);
 
     this.router.navigate(['/' + (gotoLogin ? 'login' : '')]).then(() => {
       this.eventQueueService.dispatch(new AppEvent(AppEventType.Logout));

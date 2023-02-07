@@ -1,4 +1,6 @@
 :host {
+    display: contents;
+
     ::ng-deep {
         .ck-editor__editable_inline {
             min-height: 150px;
@@ -10,4 +12,48 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 100%;
+}
+
+.imagegallery-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .imagegallery-select {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        flex-wrap: nowrap;
+    }
+
+    .imagegallery-title {
+        display: flex;
+        margin-top: 10px;
+    }
+}
+.imagegallery-files-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-top: 5px;
+
+    .title {
+        display: flex;
+        flex-direction: row;
+        font-size: var(--font-size-sm);
+    }
+
+    .files {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 5px 5px;
+        margin-bottom: 10px;
+
+        .image-container {
+            display: flex;
+        }
+    }
 }

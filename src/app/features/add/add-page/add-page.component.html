@@ -1,6 +1,7 @@
 <app-modal
     #addPageModalContent
     modalTitle="{{ 'common.create-x' | i18n : { x: 'common.page' | i18n | lowercase } }}"
+    [widthClass]="widthClass"
     [renderModal]="renderModal"
     (submitChanged)="addPage($event)"
     (closeChanged)="closeModal($event)"
