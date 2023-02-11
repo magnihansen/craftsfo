@@ -6,7 +6,7 @@
     "start": "npm run start-craftsfo --optimization=false",
     "start-craftsfo": "ng serve --project craftsfo",
     "start-beautify-by-h": "ng serve --project beautify-by-h",
-    "build": "ng build --configuration production --output-hashing none --aot",
+    "build": "ng build --configuration production --project craftsfo --output-hashing none --aot",
     "deploy-craftsfo": "ng deploy --project craftsfo --host eweb802.discountasp.net --base-href '/craftsfo/' --username '0128497|instantview' --password 'Curri123m' --remote-dir 'craftsfo' --clean-remote",
     "deploy-beautify-by-h": "ng deploy --project beautify-by-h --host eweb802.discountasp.net --base-href '/beautify-by-h/' --username '0128497|instantview' --password 'Curri123m' --remote-dir 'beautify-by-h' --clean-remote",
     "test": "ng test",
@@ -49,6 +49,7 @@
     "zone.js": "~0.11.3"
   },
   "devDependencies": {
+    "@angular-devkit/architect": "^0.1501.4",
     "@angular/compiler-cli": "^15.1.3",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.19.16",
@@ -63,7 +64,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "ngx-deploy-ftp": "^1.1.0",
+    "ngx-deploy-ftp": "^2.0.0",
     "ngx-toastr": "^16.0.2",
     "protractor": "~7.0.0",
     "source-map-explorer": "^2.5.3",

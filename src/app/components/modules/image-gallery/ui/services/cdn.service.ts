@@ -2,8 +2,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
 
 import { Observable } from "rxjs/internal/Observable";
-import { FileContentResult } from "../models/file-content-result.model";
-
+import { ImageCollection } from "../models/image-collection.model";
 import { ImageGalleryFile } from "../models/image-gallery-file.model";
 
 @Injectable()
@@ -27,9 +26,9 @@ export class CdnService {
         );   
     }
 
-    public getImageCollectionByPageId(pageId: number): Observable<ImageGalleryFile[]> {
-        return this.http.get<ImageGalleryFile[]>(
-            `${this.cdnUrl}${this.cdnPath}/GetImageCollectionByPageIdAsync?pageId=${pageId}`,
+    public getImageCollectionByPageId(pageId: number): Observable<ImageCollection> {
+        return this.http.get<ImageCollection>(
+            `${this.cdnUrl}${this.cdnPath}/GetImageCollectionByPageId?pageId=${pageId}`,
             this.httpOptions
         );   
     }

@@ -1,16 +1,18 @@
-<app-content-wrapper alignContent="center">
-    <ng-content *ngIf="imageGalleryFiles.length > 0 then imagegalleryfiles; else loading;"></ng-content>
+<app-content-wrapper>
+    <ng-content *ngIf="imageCollection.images.length > 0 then imagegalleryfiles; else loading;"></ng-content>
     <ng-template #imagegalleryfiles>
         <div class="imagegallery-files-container">
             <div class="title">{{ 'imagegallery' | i18n }}</div>
             <div class="files">
-                <div class="image-container" *ngFor="let file of imageGalleryFiles">
-                    <img 
-                        src="{{file.filename | cdnImageGalleryUrl : 1 : 8}}"
-                        title="{{file.filename}}"
-                        alt="{{file.filename}}"
-                        style="width: 50px; height: 50px;"
-                    />
+                <div class="image-container" *ngFor="let file of imageCollection.images">
+                    <a href="{{file.filename | cdnImageGalleryUrl : imageCollection.domainId : imageCollection.id}}" target="_blank">
+                        <img 
+                            src="{{file.filename | cdnImageGalleryUrl : imageCollection.domainId : imageCollection.id}}"
+                            title="{{file.filename}}"
+                            alt="{{file.filename}}"
+                            style="width: 250px; height: 250px;"
+                        />
+                    </a>
                 </div>
             </div>
         </div>
@@ -19,7 +21,7 @@
         <div *ngIf="isCollectionLoading">
             {{ 'common.loading' | i18n }}
         </div>
-        <div *ngIf="!isCollectionLoading && imageGalleryFiles.length == 0">
+        <div *ngIf="!isCollectionLoading && imageCollection.images.length == 0">
             <span>{{ 'common.no-x' | i18n : { x: 'common.images' | i18n | lowercase } }}</span>
         </div>
     </ng-template>

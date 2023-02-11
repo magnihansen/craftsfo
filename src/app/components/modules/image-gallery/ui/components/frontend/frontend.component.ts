@@ -4,6 +4,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 import { Page } from 'src/app/models/page.model';
 import { ContentWrapperComponent } from 'src/app/shared/components/content-wrapper/content-wrapper.component';
+import { CollectionImage } from '../../models/collection-image.model';
+import { ImageCollection } from '../../models/image-collection.model';
 import { ImageGalleryFile } from '../../models/image-gallery-file.model';
 import { ImageGallery } from '../../models/image-gallery.model';
 import { CdnImageGalleryUrlPipe } from '../../pipes/cdn-url.pipe';
@@ -19,6 +21,9 @@ import { CdnService } from '../../services/cdn.service';
     LocalLocalizationModule, 
     ContentWrapperComponent,
     CdnImageGalleryUrlPipe 
+  ],
+  providers: [
+    CdnService
   ]
 })
 export class FrontendComponent implements OnInit {
@@ -26,27 +31,23 @@ export class FrontendComponent implements OnInit {
 
   public isCollectionLoading = false;
   public imageGalleries: ImageGallery[] = [];
-  public imageGalleryFiles: ImageGalleryFile[] = [];
+  public imageCollection: ImageCollection = {} as ImageCollection;
 
   constructor(
-    readonly cdnService: CdnService
+    private cdnService: CdnService
   ) { }
 
   ngOnInit(): void {
     if (this.page) {
-      console.log('Frontend : Data', this.page);
       this.loadImageGalleryImages();
     }
   }
 
   private loadImageGalleryImages(): void {
     this.isCollectionLoading = true;
-    this.imageGalleryFiles = [];
     this.cdnService.getImageCollectionByPageId(this.page.id).subscribe({
-      next: (files: ImageGalleryFile[]) => {
-        files.forEach((igf: ImageGalleryFile) => {
-          this.imageGalleryFiles = [...this.imageGalleryFiles, igf];
-        });
+      next: (imageCollection: ImageCollection) => {
+        this.imageCollection = imageCollection;
         this.isCollectionLoading = false;
       },
       error: (err: any) => {
