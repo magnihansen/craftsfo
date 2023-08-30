@@ -11,11 +11,11 @@ export class FormsService {
     ) {
         this.formGroups = this.fb.group({
             addpage: this.fb.group({
-                pageTypeId: this.fb.control<number>(0, { updateOn: 'blur', validators: [Validators.required] }),
-                title: this.fb.control<string>('', { updateOn: 'blur', validators: [Validators.required] }),
+                pageTypeId: this.fb.control<number>(0, { updateOn: 'change', validators: [Validators.required] }),
+                title: this.fb.control<string>('', { updateOn: 'change', validators: [Validators.required] }),
                 link: this.fb.control<string>('', { updateOn: 'blur', validators: [Validators.required] }),
                 content: this.fb.control<string>('', { updateOn: 'blur', validators: [Validators.required] }),
-                sort: this.fb.control<number>(0, {  updateOn: 'blur', validators: [Validators.required] })
+                sort: this.fb.control<number>(0, {  updateOn: 'change', validators: [Validators.required] })
             }),
             editpage: this.fb.group({
                 id: this.fb.control<number>(0, { updateOn: 'blur', validators: [Validators.required] }),
@@ -39,6 +39,14 @@ export class FormsService {
                 key: this.fb.control<string>('', { updateOn: 'blur', validators: [Validators.required,Validators.minLength(3)] }),
                 isDefault: this.fb.control<boolean>(false, { updateOn: 'blur', validators: [Validators.required] }),
                 defaultValue: this.fb.control<string>('', { updateOn: 'blur', validators: [Validators.required,Validators.minLength(3)] })
+            }),
+            imageGalleryAdd: this.fb.group({
+                name: this.fb.control<string>('', { updateOn: 'blur', validators: [Validators.required] }),
+                description: this.fb.control<string>('', { updateOn: 'blur', validators: [] }),
+                imageGalleryTypeId: this.fb.control<number>(-1, { updateOn: 'blur', validators: [Validators.pattern(/^[0-9]+$/),Validators.required] })
+            }),
+            galleryTypeAdd: this.fb.group({
+                name: this.fb.control<string>('', { updateOn: 'blur', validators: [Validators.required,Validators.minLength(2)] }),
             })
         });
 

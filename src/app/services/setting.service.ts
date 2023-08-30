@@ -13,6 +13,8 @@ import { AuthenticationService } from "./authentication.service";
   providedIn: 'root'
 })
 export class SettingService {
+  public readonly domainSettingKey: string = 'domainSettings';
+  
   private apiPath = '/V1/Setting';
   private httpOptions = {
     headers: new HttpHeaders({
@@ -62,7 +64,7 @@ export class SettingService {
     );
   }
 
-  public UpdateSetting(setting: Setting): Observable<boolean> {
+  public updateSetting(setting: Setting): Observable<boolean> {
     const user: User = this.authenticationService.getUser();
 
     const body = {

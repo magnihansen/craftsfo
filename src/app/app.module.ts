@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { APP_INITIALIZER, enableProdMode, InjectionToken, NgModule } from '@angular/core';
+import { APP_INITIALIZER, enableProdMode, inject, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -17,10 +17,8 @@ import languageDK from './localization/languages/da.json';
 import { SharedModule } from './shared/shared.module';
 import { ImageGalleryComponent } from './components/modules/image-gallery/image-gallery.component';
 import { ImageGalleryService } from './components/modules/image-gallery/ui/services/image-gallery.service';
-import { Observable } from 'rxjs/internal/Observable';
 import { SettingService } from './services/setting.service';
 import { DomainSetting } from './models/domain-setting.model';
-import cssVars, { CSSVarsPonyfillOptions } from 'css-vars-ponyfill';
 import { AuthenticationService } from './services/authentication.service';
 
 enableProdMode();
@@ -70,8 +68,7 @@ export function getBaseHref(): string {
 export function initializeDomainSettings(settingService: SettingService, authService: AuthenticationService): () => Promise<void> {
   return () =>
     new Promise((resolve) => {
-      const domainSettingKey: string = 'domainSettings';
-      const domainSettings: any = authService.getWithExpiry(domainSettingKey);
+      const domainSettings: any = authService.getWithExpiry(settingService.domainSettingKey);
       if (domainSettings) {
         settingService.setCssVariables(domainSettings);
         // settingService.loadCSS(domainSettings);
@@ -81,7 +78,7 @@ export function initializeDomainSettings(settingService: SettingService, authSer
           next: (_settings: DomainSetting[]) => {
             settingService.setCssVariables(_settings);
             // settingService.loadCSS(_settings);
-            authService.setWithExpiry(domainSettingKey, _settings, 3600000 * 8);
+            authService.setWithExpiry(settingService.domainSettingKey, _settings, 3600000 * 8);
             resolve();
           },
           error: () => resolve()

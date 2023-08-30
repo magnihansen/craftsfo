@@ -19,21 +19,21 @@ export class AuthenticationService {
   static readonly ONE_HOUR_IN_MS: number = 3600000;
 
   private apiPath = '/V1/Auth';
-  private isUserLoggedIn = false;
+  private _isUserLoggedIn = false;
 
-  public get IsUserLoggedIn(): boolean {
+  public get isUserLoggedIn(): boolean {
     const lsUserLoggedIn: string = this.getWithExpiry(AuthenticationService.IS_USER_LOGGED_IN);
     if (lsUserLoggedIn === 'true') {
       return true;
     }
-    return this.isUserLoggedIn;
+    return this._isUserLoggedIn;
   }
 
-  public set IsUserLoggedIn(value: boolean) {
+  public set isUserLoggedIn(value: boolean) {
     if (value === true) {
       this.setWithExpiry(AuthenticationService.IS_USER_LOGGED_IN, 'true', AuthenticationService.ONE_HOUR_IN_MS * 8);
     }
-    this.isUserLoggedIn = value;
+    this._isUserLoggedIn = value;
   }
 
   constructor(
@@ -51,7 +51,7 @@ export class AuthenticationService {
     return this.http.post<string>(`${this.apiUrl}${this.apiPath}/Login`, body)
       .pipe(
         map(response => {
-          this.IsUserLoggedIn = true;
+          this.isUserLoggedIn = true;
           localStorage.setItem(AuthenticationService.API_TOKEN, response);
           localStorage.setItem(AuthenticationService.USER, JSON.stringify({
             username: userName,
@@ -65,7 +65,7 @@ export class AuthenticationService {
   }
 
   public logout(gotoLogin = false): void {
-    this.IsUserLoggedIn = false;
+    this.isUserLoggedIn = false;
     localStorage.removeItem(AuthenticationService.IS_USER_LOGGED_IN);
     localStorage.removeItem(AuthenticationService.USER);
 

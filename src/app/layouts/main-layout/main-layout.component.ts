@@ -1,8 +1,6 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
-import cssVars, { CSSVarsPonyfillOptions } from 'css-vars-ponyfill';
 
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
@@ -34,8 +32,7 @@ export class MainLayoutComponent implements OnInit {
     this.showToTopButton = this.hasScrollBar(this.document.body);
   }
   ngOnInit(): void {
-    const domainSettingKey: string = 'domainSettings';
-    const domainSettings: DomainSetting[] = this.authService.getWithExpiry(domainSettingKey) || [];
+    const domainSettings: DomainSetting[] = this.authService.getWithExpiry(this.settingService.domainSettingKey) || [];
     if (domainSettings) {
       this.setDomainSettingValues(domainSettings);
     } else {
@@ -43,7 +40,7 @@ export class MainLayoutComponent implements OnInit {
         next: (_domainSettings: DomainSetting[]) => {
           this.setDomainSettingValues(_domainSettings);
           this.settingService.setCssVariables(_domainSettings);
-          this.authService.setWithExpiry(domainSettingKey, _domainSettings, 3600000 * 8);
+          this.authService.setWithExpiry(this.settingService.domainSettingKey, _domainSettings, 3600000 * 8);
         }
       });
     }

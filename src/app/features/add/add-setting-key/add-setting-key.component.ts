@@ -59,7 +59,7 @@ export class AddSettingKeyComponent {
     }
 
     public addSettingKey(form: any): void {
-        if (this.authService.IsUserLoggedIn) {
+        if (this.authService.isUserLoggedIn) {
             const _settingTypeId: number = this.formSettingKeyAdd.controls.settingTypeId.value as number;
             const _key: string = this.formSettingKeyAdd.controls.key.value as string;
             const _isDefault: boolean = this.formSettingKeyAdd.controls.isDefault.value as boolean;

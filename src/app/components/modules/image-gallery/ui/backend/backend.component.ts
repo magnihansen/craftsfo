@@ -14,6 +14,7 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { I18nPipe } from 'src/app/localization/i18n.pipe';
 import { ImageGalleryTypeService } from '../services/image-gallery-type.service';
+import { FormsService } from 'src/app/services/forms.service';
 
 @Component({
   standalone: true,
@@ -53,9 +54,11 @@ export class BackendComponent implements OnInit {
   constructor(
     readonly imageGalleryService: ImageGalleryService,
     readonly imageGalleryTypeService: ImageGalleryTypeService,
-    readonly fb: FormBuilder
-  ) {
-    this.buildForms();
+    readonly fb: FormBuilder,
+    private formsService: FormsService
+  ) { 
+    this.formImageGalleryAdd = this.formsService.formGroups.controls['imageGalleryAdd'] as FormGroup;
+    this.formGalleryTypeAdd = this.formsService.formGroups.controls['galleryTypeAdd'] as FormGroup;
   }
 
   ngOnInit(): void {
@@ -79,15 +82,15 @@ export class BackendComponent implements OnInit {
   }
 
   private buildForms(): void {
-    this.formImageGalleryAdd = this.fb.group({
-      name: ['', [Validators.required]],
-      description: ['', []],
-      imageTypeId: ['', [Validators.pattern(/^[0-9]+$/),Validators.required]]
-    });
+    // this.formImageGalleryAdd = this.fb.group({
+    //   name: ['', [Validators.required]],
+    //   description: ['', []],
+    //   imageTypeId: ['', [Validators.pattern(/^[0-9]+$/),Validators.required]]
+    // });
     
-    this.formGalleryTypeAdd = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]]
-    });
+    // this.formGalleryTypeAdd = this.fb.group({
+    //   name: ['', [Validators.required, Validators.minLength(2)]]
+    // });
 
     this.formGalleryTypeAdd.valueChanges.subscribe((obj: any) => {
       if (this.galleryTypeStatus) {
@@ -136,6 +139,7 @@ export class BackendComponent implements OnInit {
 
     if (!this.bShowCreateGalleryModal) {
       this.bShowCreateGalleryModal = true;
+      this.buildForms();
     }
   }
 

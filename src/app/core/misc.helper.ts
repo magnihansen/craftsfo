@@ -17,5 +17,13 @@ export class MiscHelper {
         //     errorMessage = `Server returned: ${err}`;
         // }
         return throwError(err);
-      }
+    }
+
+    public stringToSlug = (str: string) => {
+        return str
+          .trim()
+          .toLowerCase()
+          .replace(/[\W_]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      };
 }

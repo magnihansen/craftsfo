@@ -41,6 +41,8 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadPages();
+
     this.eventQueueService.on(AppEventType.Login).subscribe({
       next: () => {
         this.loadPages();
@@ -70,7 +72,7 @@ export class NavigationComponent implements OnInit {
   }
 
   private loadPages(): void {
-    this.isLoggedIn = this.authenticationService.IsUserLoggedIn;
+    this.isLoggedIn = this.authenticationService.isUserLoggedIn;
     if (this.isLoggedIn) {
       this.pageService.getAdminPages().subscribe({
         next: (adminPages: Page[]) => {

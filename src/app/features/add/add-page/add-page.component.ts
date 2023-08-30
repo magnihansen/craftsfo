@@ -17,6 +17,7 @@ import { PageService } from 'src/app/services/page.service';
 import { PageTypeService } from 'src/app/services/pagetype.service';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { UploadAdapter } from 'src/app/shared/upload-adapter.class';
+import { MiscHelper } from 'src/app/core/misc.helper';
 
 @Component({
   selector: 'app-add-page',
@@ -41,7 +42,8 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
     private pageService: PageService,
     private authService: AuthenticationService,
     private formsService: FormsService,
-    private pageTypeService: PageTypeService
+    private pageTypeService: PageTypeService,
+    private miscHelper: MiscHelper
   ) { 
     this.loadPageTypes();
   }
@@ -58,6 +60,14 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
           this.formsService.isFormValid = (state === 'INVALID' ? false : true);
         }
       });
+    
+    this.onCreatePageTitleFormValueChange();
+  }
+
+  private onCreatePageTitleFormValueChange(): void {
+    this.formPageAdd.controls.title.valueChanges.subscribe(value => {
+      this.formPageAdd.controls.link.setValue(this.miscHelper.stringToSlug(value));
+    });
   }
 
   private loadPageTypes(): void {
@@ -79,7 +89,7 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public addPage(form: any): void {
-    if (this.authService.IsUserLoggedIn) {
+    if (this.authService.isUserLoggedIn) {
       const user: User = this.authService.getUser();
 
       const pageTypeId: number = this.formPageAdd.controls.pageTypeId.value as number;

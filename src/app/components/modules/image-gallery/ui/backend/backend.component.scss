@@ -1,3 +1,5 @@
+@import '../../../../../assets/variables.scss';
+
 :host {
     ::ng-deep {
         .ck-editor__editable_inline {
@@ -10,4 +12,10 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 100%;
+}
+
+.imagegallery-container {
+    .title {
+        font-size: var(--font-size-sm);
+    }
 }

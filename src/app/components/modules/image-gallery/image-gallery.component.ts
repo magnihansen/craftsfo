@@ -25,7 +25,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
   @ViewChild(UiDirectiveDirective, {static: true}) uiHost!: UiDirectiveDirective;
 
   @Input() public isBackend = false;
-  @Input() public page!: Page;
+  @Input() public page: Page = {} as Page;
 
   constructor(
     private i18nService: I18nService

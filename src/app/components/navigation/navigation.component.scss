@@ -24,11 +24,15 @@
     align-items: center;
 
     &.admin-navbar {
-      background-color: #e9e9e9;
+      background-color: #e9e9e9 !important;
 
       .top-navbar {
         .navbartop-btn {
-          color: #000;
+          color: #000 !important;
+
+          &:hover {
+            background-color: var(--color-light) !important;
+          }
         }
       }
     }

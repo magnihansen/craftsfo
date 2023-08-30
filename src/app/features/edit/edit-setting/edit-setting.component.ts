@@ -5,6 +5,7 @@ import { FormControlStatus, FormGroup, FormsModule, ReactiveFormsModule } from '
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { ToastrService } from 'ngx-toastr';
 
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 import { User } from 'src/app/models/user';
@@ -14,6 +15,8 @@ import { ModalComponent } from 'src/app/shared/components/modal/modal.component'
 import { Setting } from 'src/app/models/setting.model';
 import { SettingService } from 'src/app/services/setting.service';
 import { SettingKey } from 'src/app/models/setting-key.model';
+import { DomainSetting } from 'src/app/models/domain-setting.model';
+import { I18nService } from 'src/app/localization/i18n.service';
 
 @Component({
   selector: 'app-edit-setting',
@@ -37,7 +40,9 @@ export class EditSettingComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private settingService: SettingService,
     private authService: AuthenticationService,
-    private formsService: FormsService
+    private formsService: FormsService,
+    private i18nService: I18nService,
+    private toastr: ToastrService
   ) { 
     this.loadSettingKeys();
   }
@@ -76,7 +81,7 @@ export class EditSettingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public editSetting(form: any): void {
-    if (this.authService.IsUserLoggedIn) {
+    if (this.authService.isUserLoggedIn) {
       const user: User = this.authService.getUser();
 
       const _id: number = this.formSettingEdit.controls.id.value as number;
@@ -90,15 +95,31 @@ export class EditSettingComponent implements OnInit, AfterViewInit, OnDestroy {
         createdBy: user.username
       } as unknown as Setting;
 
-      this.settingService.UpdateSetting(newSetting).subscribe({
+      const obj: string = this.i18nService.getTranslation('common.setting');
+
+      this.settingService.updateSetting(newSetting).subscribe({
         next: (updated: boolean) => {
           if (updated) {
+            this.settingService.getDomainSettings().subscribe({
+              next: (_domainSettings: DomainSetting[]) => {
+                this.settingService.setCssVariables(_domainSettings);
+                this.authService.setWithExpiry(this.settingService.domainSettingKey, _domainSettings, 3600000 * 8);
+              }
+            });
             this.formsService.formGroups.reset();
             this.closeChange.emit(updated);
+          } else {
+            this.toastr.warning(
+              this.i18nService.getTranslation('warning.x-not-saved', { x: obj }),
+              this.i18nService.getTranslation('common.warning')
+            );
           }
         },
         error: (err: any) => {
-          // do nothing yet 
+          this.toastr.error(
+            this.i18nService.getTranslation('error.x-not-saved', { x: obj }),
+            this.i18nService.getTranslation('common.error')
+          );
         }
       });
     }

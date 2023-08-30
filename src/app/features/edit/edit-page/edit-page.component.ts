@@ -21,6 +21,7 @@ import { ContentWrapperComponent } from 'src/app/shared/components/content-wrapp
 import { ImageGalleryComponent } from '../../../components/modules/image-gallery/image-gallery.component';
 import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { FormsService } from 'src/app/services/forms.service';
+import { FrontendComponent } from 'src/app/components/modules/image-gallery/ui/frontend/frontend.component';
 
 @Component({
   standalone: true,
@@ -36,7 +37,9 @@ import { FormsService } from 'src/app/services/forms.service';
     ModalComponent, 
     CKEditorModule, 
     ContentWrapperComponent, 
-    ImageGalleryComponent]
+    ImageGalleryComponent,
+    FrontendComponent
+  ]
 })
 export class EditPageComponent implements OnInit {
   @Input() public pageId?: number;
@@ -46,16 +49,12 @@ export class EditPageComponent implements OnInit {
   
   public classicEditor = ClassicEditor;
   public pages: Page[] = [];
-  // public title = '';
-  // public content = '';
-  // public sort = 0;
-  // public pageuid = '';
   public page: Page | null = null;
   public pageTypeId = 0;
   public pageTypes: PageType[] = [];
-
   public formPageEdit: FormGroup = new FormGroup({});
   public formPageEditState?: Subscription;
+  public errorLoading = false;
 
   public model = {
     editorData: '<p>Hello, world!</p>'
@@ -97,19 +96,33 @@ export class EditPageComponent implements OnInit {
   }
 
   private loadPage(pageId: number): void {
+    this.errorLoading = false;
     this.pageService.getPage(pageId).subscribe({
       next: (page: Page) => {
         this.page = page;
-        
-        this.formPageEdit.controls.id.setValue(page.id);
-        this.formPageEdit.controls.title.setValue(page.title);
-        this.formPageEdit.controls.sort.setValue(page.sort);
-        this.formPageEdit.controls.link.setValue(page.link);
-        this.formPageEdit.controls.content.setValue(page.content.replace('\n', '<br />'));
-        this.formPageEdit.controls.pageTypeId.setValue(page.pageTypeId);
+
+        if (page.pageTypeId > 0) {
+          this.formPageEdit.controls.id.setValue(page.id);
+          this.formPageEdit.controls.title.setValue(page.title);
+          this.formPageEdit.controls.sort.setValue(page.sort);
+          this.formPageEdit.controls.link.setValue(page.link);
+          this.formPageEdit.controls.content.setValue(page.content.replace('\n', '<br />'));
+          this.formPageEdit.controls.pageTypeId.setValue(page.pageTypeId);
+        } else {
+          this.errorLoading = true;
+          const commonPage: string = this.i18nService.getTranslation('common.page');
+          this.toastr.error(
+            this.i18nService.getTranslation('error.x-details-not-loaded', { x: commonPage }),
+            this.i18nService.getTranslation('common.error')
+          );
+        }
       },
       error: (err: any) => {
-        console.log(err);
+        this.errorLoading = true;
+        this.toastr.error(
+          err,
+          this.i18nService.getTranslation('common.error')
+        );
       }
     });
   }
@@ -119,22 +132,23 @@ export class EditPageComponent implements OnInit {
   }
 
   public editPage(form: any): void {
-    if (this.authenticationService.IsUserLoggedIn) {
-      if (this.page) {
-        const user: User = this.authenticationService.getUser();
+    if (this.authenticationService.isUserLoggedIn) {
+      const user: User = this.authenticationService.getUser();
 
+      if (user && this.page) {
         this.page.content = this.formPageEdit.controls.content.value as string;
         this.page.title = this.formPageEdit.controls.title.value as string;
         this.page.link = this.formPageEdit.controls.link.value as string;
         this.page.sort = this.formPageEdit.controls.sort.value as number;
         this.page.updatedBy = user.username;
-        this.page.pageTypeId = this.pageTypeId;
+        this.page.pageTypeId = this.formPageEdit.controls.pageTypeId.value as number;
 
         this.pageService.updatePage(this.page).subscribe({
           next: (result: boolean) => {
             if (result) {
+              const commonPage: string = this.i18nService.getTranslation('common.page');
               this.toastr.success(
-                this.i18nService.getTranslation('common.x-saved', { x: 'common.page' })
+                this.i18nService.getTranslation('common.x-saved', { x: commonPage })
               );
             } else {
               this.toastr.warning(
@@ -145,7 +159,7 @@ export class EditPageComponent implements OnInit {
           error: (err: any) => {
             this.toastr.error(
               err,
-              this.i18nService.getTranslation('Error'),
+              this.i18nService.getTranslation('common.error')
             );
           }
         });
@@ -159,6 +173,11 @@ export class EditPageComponent implements OnInit {
         this.i18nService.getTranslation('User not authorized')
       );
     }
+  }
+
+  public changePageType(): void {
+    console.log(this.formPageEdit.controls.pageTypeId.value as number);
+    // this.formPageEdit.controls.pageTypeId.setValue(page.pageTypeId);
   }
 
   public closeModal(modalClosed: boolean): void {

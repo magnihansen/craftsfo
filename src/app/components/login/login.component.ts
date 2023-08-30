@@ -4,6 +4,8 @@ import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Va
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CommonModule } from '@angular/common';
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
+import { EventQueueService } from 'src/app/event-queue/event.queue';
+import { AppEvent, AppEventType } from 'src/app/event-queue';
 
 @Component({
   standalone: true,
@@ -22,7 +24,8 @@ export class LoginComponent implements OnInit {
     private fb: NonNullableFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private eventQueueService: EventQueueService
   ) {
     this.loginForm = this.fb.group({
       username: this.fb.control('', Validators.required),
@@ -34,10 +37,29 @@ export class LoginComponent implements OnInit {
     // get return url from route parameters or default to '/'
     const qParam = 'returnUrl';
     this.returnUrl = this.route.snapshot.queryParams[qParam] || '/';
+
+    this.validateApiToken();
   }
 
   get f(): any {
     return this.loginForm.controls;
+  }
+
+  private validateApiToken(): void {
+    if (localStorage.getItem(AuthenticationService.API_TOKEN)) {
+      this.authenticationService.validateToken().subscribe({
+        next: (tokenValid: boolean) => {
+          if (tokenValid) {
+            this.authenticationService.isUserLoggedIn = true;
+            this.eventQueueService.dispatch(new AppEvent(AppEventType.Login));
+            this.router.navigate(['/admin/dashboard']);
+          } else {
+            localStorage.removeItem(AuthenticationService.API_TOKEN);
+            this.eventQueueService.dispatch(new AppEvent(AppEventType.Logout));
+          }
+        }
+      });
+    }
   }
 
   onSubmit(): void {

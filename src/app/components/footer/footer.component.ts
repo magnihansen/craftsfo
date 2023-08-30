@@ -37,15 +37,15 @@ export class FooterComponent implements OnInit {
   public ngOnInit(): void {
     this.eventQueueService.on(AppEventType.Login).subscribe({
       next: () => {
-        this.isLoggedIn = this.authenticationService.IsUserLoggedIn;
+        this.isLoggedIn = this.authenticationService.isUserLoggedIn;
       }
     });
     this.eventQueueService.on(AppEventType.Logout).subscribe({
       next: () => {
-        this.isLoggedIn = this.authenticationService.IsUserLoggedIn;
+        this.isLoggedIn = this.authenticationService.isUserLoggedIn;
       }
     });
-    this.isLoggedIn = this.authenticationService.IsUserLoggedIn;
+    this.isLoggedIn = this.authenticationService.isUserLoggedIn;
   }
 
   public clearSearch(search: any): void {

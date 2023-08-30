@@ -64,7 +64,7 @@ export class AddSettingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public addSetting(form: any): void {
-    if (this.authService.IsUserLoggedIn) {
+    if (this.authService.isUserLoggedIn) {
       const user: User = this.authService.getUser();
 
       const _settingKeyId: number = this.formSettingAdd.controls.settingKeyId.value as number;
