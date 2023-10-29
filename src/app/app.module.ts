@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { APP_INITIALIZER, enableProdMode, inject, NgModule } from '@angular/core';
+import { APP_INITIALIZER, enableProdMode, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -8,8 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ErrorInterceptor } from './core/error.interceptor';
-import { JwtInterceptor } from './core/jwt.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { MySqlService } from './services/mysql.service';
 import { PageHubService } from './services/pagehub.service';
 import { I18nService } from './localization/i18n.service';
@@ -19,7 +19,9 @@ import { ImageGalleryComponent } from './components/modules/image-gallery/image-
 import { ImageGalleryService } from './components/modules/image-gallery/ui/services/image-gallery.service';
 import { SettingService } from './services/setting.service';
 import { DomainSetting } from './models/domain-setting.model';
-import { AuthenticationService } from './services/authentication.service';
+import { LocalStorageService } from './services/local-storage.service';
+import { ServiceProviderFactory } from './core/factories/service-provider.factory';
+import { ServiceProvider } from './services/provider.service';
 
 enableProdMode();
 
@@ -38,13 +40,13 @@ enableProdMode();
     ImageGalleryComponent
   ],
   providers: [
-    { provide: APP_INITIALIZER, useFactory: initializeDomainSettings, deps: [SettingService, AuthenticationService], multi: true },
+    { provide: APP_INITIALIZER, useFactory: initializeDomainSettings, deps: [SettingService, LocalStorageService, ServiceProvider], multi: true },
     MySqlService,
     PageHubService,
+    ImageGalleryService,
     { provide: 'HUB_URL', useValue: environment.hubSettings.url },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    ImageGalleryService
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
@@ -65,10 +67,15 @@ export function getBaseHref(): string {
   return window.location.pathname;
 }
 
-export function initializeDomainSettings(settingService: SettingService, authService: AuthenticationService): () => Promise<void> {
+export function initializeDomainSettings(
+  settingService: SettingService,
+  localStorageService: LocalStorageService,
+  providerService: ServiceProvider
+): () => Promise<void> {
   return () =>
     new Promise((resolve) => {
-      const domainSettings: any = authService.getWithExpiry(settingService.domainSettingKey);
+      providerService.setNonce();
+      const domainSettings: any = localStorageService.getWithExpiry(settingService.domainSettingKey);
       if (domainSettings) {
         settingService.setCssVariables(domainSettings);
         // settingService.loadCSS(domainSettings);
@@ -78,7 +85,7 @@ export function initializeDomainSettings(settingService: SettingService, authSer
           next: (_settings: DomainSetting[]) => {
             settingService.setCssVariables(_settings);
             // settingService.loadCSS(_settings);
-            authService.setWithExpiry(settingService.domainSettingKey, _settings, 3600000 * 8);
+            localStorageService.setWithExpiry(settingService.domainSettingKey, _settings, 3600000 * 8);
             resolve();
           },
           error: () => resolve()

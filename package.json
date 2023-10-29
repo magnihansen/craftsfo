@@ -14,7 +14,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "source-map-explorer": "source-map-explorer dist/**/*.js"
+    "source-map-explorer": "source-map-explorer dist/**/*.js",
+    "update-angular": "ng update @angular/cli @angular/core @angular/material @angular/cdk"
   },
   "private": true,
   "dependencies": {
@@ -39,6 +40,7 @@
     "core-js": "^3.31.1",
     "crypto-js": "^4.1.1",
     "css-vars-ponyfill": "^2.4.8",
+    "dompurify": "^3.0.6",
     "popper.js": "^1.16.1",
     "querystring": "^0.2.1",
     "rxjs": "^7.8.1",
@@ -48,6 +50,7 @@
   },
   "devDependencies": {
     "@angular/compiler-cli": "^16.1.4",
+    "@types/dompurify": "^3.0.3",
     "@types/jasmine": "~3.6.0",
     "@types/uuid": "^9.0.2",
     "clean-webpack-plugin": "3.0.0",

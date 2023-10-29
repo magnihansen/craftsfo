@@ -35,6 +35,7 @@ export class ContactComponent {
     //   this.content = (Object.values(snapshot.val())[0] as Page).content;
     // });
   }
+  
   onSubmit(): void {
     const now = new Date();
     this.contact = {

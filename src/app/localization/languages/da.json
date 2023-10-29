@@ -22,6 +22,7 @@
   "common.name": "Navn",
   "common.username": "Brugernavn",
   "common.password": "Kodeord",
+  "common.remember": "Husk login på denne enhed",
   "common.email": "E-mail",
   "common.phone": "Telefon",
   "common.message": "Besked",

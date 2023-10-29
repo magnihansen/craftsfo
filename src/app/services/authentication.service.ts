@@ -8,52 +8,51 @@ import { catchError, map } from 'rxjs/operators';
 import { AppEvent, AppEventType } from '../event-queue';
 import { EventQueueService } from '../event-queue/event.queue';
 import { User } from '../models/user';
+import { LocalStorageService } from './local-storage.service';
+import { SessionStorageService } from './session-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  static readonly API_TOKEN: string = 'apitoken';
-  static readonly USER: string = 'user';
-  static readonly IS_USER_LOGGED_IN: string = 'isUserLoggedIn';
   static readonly ONE_HOUR_IN_MS: number = 3600000;
 
   private apiPath = '/V1/Auth';
   private _isUserLoggedIn = false;
 
   public get isUserLoggedIn(): boolean {
-    const lsUserLoggedIn: string = this.getWithExpiry(AuthenticationService.IS_USER_LOGGED_IN);
+    const lsUserLoggedIn: string = this.sessionStorageService.get(environment.storage.session.IS_USER_LOGGED_IN);
     if (lsUserLoggedIn === 'true') {
-      return true;
+      this._isUserLoggedIn = true;
     }
     return this._isUserLoggedIn;
-  }
-
-  public set isUserLoggedIn(value: boolean) {
-    if (value === true) {
-      this.setWithExpiry(AuthenticationService.IS_USER_LOGGED_IN, 'true', AuthenticationService.ONE_HOUR_IN_MS * 8);
-    }
-    this._isUserLoggedIn = value;
   }
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private eventQueueService: EventQueueService,
+    private localStorageService: LocalStorageService,
+    private sessionStorageService: SessionStorageService,
     @Inject('HUB_URL') private apiUrl: string
   ) { }
 
-  public login(userName: string, passWord: string): Observable<boolean> {
+  public login(userName: string, passWord: string, remember: boolean = false): Observable<boolean> {
     const body = {
       username: userName,
       password: passWord
     };
     return this.http.post<string>(`${this.apiUrl}${this.apiPath}/Login`, body)
       .pipe(
-        map(response => {
-          this.isUserLoggedIn = true;
-          localStorage.setItem(AuthenticationService.API_TOKEN, response);
-          localStorage.setItem(AuthenticationService.USER, JSON.stringify({
+        map((response: string) => {
+          console.log('Login response', response);
+          this._isUserLoggedIn = true;
+          this.sessionStorageService.set(environment.storage.session.IS_USER_LOGGED_IN, 'true');
+          if (remember) {
+            this.localStorageService.set(environment.storage.local.API_TOKEN, response);
+          }
+          this.localStorageService.set(environment.storage.local.USER, JSON.stringify({
             username: userName,
             token: response
           } as User));
@@ -65,9 +64,11 @@ export class AuthenticationService {
   }
 
   public logout(gotoLogin = false): void {
-    this.isUserLoggedIn = false;
-    localStorage.removeItem(AuthenticationService.IS_USER_LOGGED_IN);
-    localStorage.removeItem(AuthenticationService.USER);
+    console.log('Logout');
+    this._isUserLoggedIn = false;
+    this.sessionStorageService.remove(environment.storage.session.IS_USER_LOGGED_IN);
+    this.localStorageService.remove(environment.storage.local.API_TOKEN);
+    this.localStorageService.remove(environment.storage.local.USER);
 
     this.router.navigate(['/' + (gotoLogin ? 'login' : '')]).then(() => {
       this.eventQueueService.dispatch(new AppEvent(AppEventType.Logout));
@@ -75,12 +76,12 @@ export class AuthenticationService {
   }
 
   public getUser(): User {
-    const user: string = localStorage.getItem(AuthenticationService.USER) || '{}';
+    const user: string = this.localStorageService.get(environment.storage.local.USER) || '{}';
     return JSON.parse(user) as User;
   }
 
   public loadUser(): Observable<User> {
-    const apiToken: string = localStorage.getItem(AuthenticationService.API_TOKEN) || '{}';
+    const apiToken: string = this.getApiToken();
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: apiToken
@@ -89,7 +90,7 @@ export class AuthenticationService {
     return this.http.get<User>(`${this.apiUrl}${this.apiPath}/GetUserByIdentity`, httpOptions)
       .pipe(
         map((user: User) => {
-          localStorage.setItem(AuthenticationService.USER, JSON.stringify(user));
+          this.localStorageService.set(environment.storage.local.USER, JSON.stringify(user));
           return user;
         }),
         catchError(this.handleError<User>('GetUserByIdentity'))
@@ -97,7 +98,7 @@ export class AuthenticationService {
   }
 
   public getClaimValue(claimType: string): Observable<object> {
-    const apiToken: string = localStorage.getItem(AuthenticationService.API_TOKEN) || '{}';
+    const apiToken: string = this.getApiToken();
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: apiToken
@@ -113,7 +114,7 @@ export class AuthenticationService {
   }
 
   public validateToken(): Observable<boolean> {
-    const apiToken: string = localStorage.getItem(AuthenticationService.API_TOKEN) || '';
+    const apiToken: string = this.getApiToken();
     const httpOptions = {
       headers: new HttpHeaders({
         Accept: 'application/json'
@@ -122,7 +123,26 @@ export class AuthenticationService {
         token: apiToken
       }
     };
-    return this.http.get<boolean>(`${this.apiUrl}/V1/Auth/ValidateToken`, httpOptions);
+    return this.http.get<boolean>(`${this.apiUrl}/V1/Auth/ValidateToken`, httpOptions)
+      .pipe(
+        map((value: boolean) => {
+          console.log('validateToken()', value)
+          if (value) {
+            this._isUserLoggedIn = value;
+            this.sessionStorageService.set(environment.storage.session.IS_USER_LOGGED_IN, 'true');
+            this.eventQueueService.dispatch(new AppEvent(AppEventType.Login));
+          }
+          return value;
+        })
+      );
+  }
+
+  public getApiToken(): string {
+    return this.localStorageService.get(environment.storage.local.API_TOKEN) || '{}';
+  }
+
+  public get isApiTokenSet(): boolean {
+    return this.getApiToken() !== '{}';
   }
 
   private handleError<T>(operation = 'operation', result?: T): any {
@@ -133,28 +153,5 @@ export class AuthenticationService {
       // }
       return of(result as T);
     };
-  }
-
-  public getWithExpiry(key: string): any {
-    const itemStr = localStorage.getItem(key);
-    if (!itemStr) {
-      return null;
-    }
-    const item = JSON.parse(itemStr);
-    const now = new Date();
-    if (now.getTime() > item.expiry) {
-      localStorage.removeItem(key);
-      return null;
-    }
-    return item.value;
-  }
-
-  public setWithExpiry(key: string, value: any, ttl_ms: number) {
-    const now = new Date();
-    const item = {
-      value: value,
-      expiry: now.getTime() + ttl_ms,
-    };
-    localStorage.setItem(key, JSON.stringify(item))
   }
 }

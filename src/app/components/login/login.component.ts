@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
-import { EventQueueService } from 'src/app/event-queue/event.queue';
-import { AppEvent, AppEventType } from 'src/app/event-queue';
+import { FormsService } from 'src/app/services/forms.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   standalone: true,
@@ -21,16 +22,12 @@ export class LoginComponent implements OnInit {
   returnUrl = '';
 
   constructor(
-    private fb: NonNullableFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private eventQueueService: EventQueueService
+    private formsService: FormsService
   ) {
-    this.loginForm = this.fb.group({
-      username: this.fb.control('', Validators.required),
-      password: this.fb.control('', Validators.required)
-    });
+    this.loginForm = this.formsService.formGroups.controls['login'] as FormGroup;
   }
 
   ngOnInit(): void {
@@ -46,16 +43,13 @@ export class LoginComponent implements OnInit {
   }
 
   private validateApiToken(): void {
-    if (localStorage.getItem(AuthenticationService.API_TOKEN)) {
+    if (this.authenticationService.isApiTokenSet) {
       this.authenticationService.validateToken().subscribe({
         next: (tokenValid: boolean) => {
           if (tokenValid) {
-            this.authenticationService.isUserLoggedIn = true;
-            this.eventQueueService.dispatch(new AppEvent(AppEventType.Login));
             this.router.navigate(['/admin/dashboard']);
           } else {
-            localStorage.removeItem(AuthenticationService.API_TOKEN);
-            this.eventQueueService.dispatch(new AppEvent(AppEventType.Logout));
+            this.authenticationService.logout();
           }
         }
       });
@@ -69,9 +63,10 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value)
+    this.authenticationService.login(this.f.username.value, this.f.password.value, this.f.remember.value)
     .subscribe({
       next: (res: boolean) => {
+        console.log('Login result', res);
         if (res) {
           this.router.navigate(['/admin/dashboard']);
         }

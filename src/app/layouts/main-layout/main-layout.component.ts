@@ -6,6 +6,7 @@ import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
 import { DomainSetting } from 'src/app/models/domain-setting.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { SettingService } from 'src/app/services/setting.service';
 import { SettingValuePipe } from 'src/app/shared/pipes/settingvalue.pipe';
 import { environment } from 'src/environments/environment';
@@ -27,12 +28,13 @@ export class MainLayoutComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     readonly settingService: SettingService,
-    readonly authService: AuthenticationService
+    readonly authService: AuthenticationService,
+    private localStorageService: LocalStorageService
   ) {
     this.showToTopButton = this.hasScrollBar(this.document.body);
   }
   ngOnInit(): void {
-    const domainSettings: DomainSetting[] = this.authService.getWithExpiry(this.settingService.domainSettingKey) || [];
+    const domainSettings: DomainSetting[] = this.localStorageService.getWithExpiry(this.settingService.domainSettingKey) || [];
     if (domainSettings) {
       this.setDomainSettingValues(domainSettings);
     } else {
@@ -40,7 +42,7 @@ export class MainLayoutComponent implements OnInit {
         next: (_domainSettings: DomainSetting[]) => {
           this.setDomainSettingValues(_domainSettings);
           this.settingService.setCssVariables(_domainSettings);
-          this.authService.setWithExpiry(this.settingService.domainSettingKey, _domainSettings, 3600000 * 8);
+          this.localStorageService.setWithExpiry(this.settingService.domainSettingKey, _domainSettings, 3600000 * 8);
         }
       });
     }

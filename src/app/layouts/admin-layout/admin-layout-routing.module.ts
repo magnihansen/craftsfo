@@ -7,7 +7,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AdminLayoutComponent } from './admin-layout.component';
 import { MessagesComponent } from '../../components/admin/messages/messages.component';
 import { DashboardComponent } from '../../components/admin/dashboard/dashboard.component';
-import { AuthGuard } from 'src/app/core/auth.guard';
+import { AuthGuard } from 'src/app/core/guards/auth.guard';
 import { LocalLocalizationModule } from '../../localization/local-localization.module';
 import { I18nPipe } from '../../localization/i18n.pipe';
 import { ImageGalleryComponent } from 'src/app/components/modules/image-gallery/image-gallery.component';
@@ -20,12 +20,13 @@ const routes: Routes = [
   {
     path: '',
     component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
-      { path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'} },
+      { path: 'dashboard', component: DashboardComponent, data: {title: 'Dashboard'} },
       { path: 'contact', pathMatch: 'full', component: MessagesComponent, data: {title: 'Messages'} },
       { path: 'users', pathMatch: 'full', component: UsersComponent, data: {title: 'Users'} },
-      { path: 'settings', pathMatch: 'full', component: SettingsComponent, data: {title: 'Settings'} }
+      { path: 'settings', pathMatch: 'full', component: SettingsComponent, data: {title: 'Settings'} },
+      { path: '', redirectTo: 'dashboard' }
     ]
   }
 ];

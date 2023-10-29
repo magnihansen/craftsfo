@@ -82,16 +82,6 @@ export class BackendComponent implements OnInit {
   }
 
   private buildForms(): void {
-    // this.formImageGalleryAdd = this.fb.group({
-    //   name: ['', [Validators.required]],
-    //   description: ['', []],
-    //   imageTypeId: ['', [Validators.pattern(/^[0-9]+$/),Validators.required]]
-    // });
-    
-    // this.formGalleryTypeAdd = this.fb.group({
-    //   name: ['', [Validators.required, Validators.minLength(2)]]
-    // });
-
     this.formGalleryTypeAdd.valueChanges.subscribe((obj: any) => {
       if (this.galleryTypeStatus) {
         this.galleryTypeData = obj;

@@ -6,5 +6,15 @@ export const environment = {
   brandName: 'P-Grillen',
   hubSettings: {
     url: 'http://api.instantcms.dk/api'
-  }
+  },
+  storage: {
+    local: {
+      API_TOKEN: 'apitoken',
+      USER: 'user'
+    },
+    session: {
+      IS_USER_LOGGED_IN: 'isUserLoggedIn'
+    }
+  },
+  nonce: null
 };

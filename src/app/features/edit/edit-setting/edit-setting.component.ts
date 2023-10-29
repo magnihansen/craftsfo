@@ -17,6 +17,7 @@ import { SettingService } from 'src/app/services/setting.service';
 import { SettingKey } from 'src/app/models/setting-key.model';
 import { DomainSetting } from 'src/app/models/domain-setting.model';
 import { I18nService } from 'src/app/localization/i18n.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-edit-setting',
@@ -42,7 +43,8 @@ export class EditSettingComponent implements OnInit, AfterViewInit, OnDestroy {
     private authService: AuthenticationService,
     private formsService: FormsService,
     private i18nService: I18nService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private localStorageService: LocalStorageService
   ) { 
     this.loadSettingKeys();
   }
@@ -103,7 +105,7 @@ export class EditSettingComponent implements OnInit, AfterViewInit, OnDestroy {
             this.settingService.getDomainSettings().subscribe({
               next: (_domainSettings: DomainSetting[]) => {
                 this.settingService.setCssVariables(_domainSettings);
-                this.authService.setWithExpiry(this.settingService.domainSettingKey, _domainSettings, 3600000 * 8);
+                this.localStorageService.setWithExpiry(this.settingService.domainSettingKey, _domainSettings, 3600000 * 8);
               }
             });
             this.formsService.formGroups.reset();

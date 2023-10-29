@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { NonNullableFormBuilder, FormGroup, Validators } from '@angular/forms';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class FormsService {
     public readonly formGroups: FormGroup = new FormGroup({});
     public isFormValid = false;
@@ -10,6 +12,11 @@ export class FormsService {
         private fb: NonNullableFormBuilder
     ) {
         this.formGroups = this.fb.group({
+            login: this.fb.group({
+                username: this.fb.control('', { updateOn: 'blur', validators: [Validators.required,Validators.minLength(4)] }),
+                password: this.fb.control('', { updateOn: 'blur', validators: [Validators.required,Validators.minLength(4)] }),
+                remember: this.fb.control('', { updateOn: 'blur', validators: [Validators.required] })
+            }),
             addpage: this.fb.group({
                 pageTypeId: this.fb.control<number>(0, { updateOn: 'change', validators: [Validators.required] }),
                 title: this.fb.control<string>('', { updateOn: 'change', validators: [Validators.required] }),
@@ -52,6 +59,7 @@ export class FormsService {
 
         // not required fields
         (this.formGroups.controls.addpage as FormGroup).controls.link.clearValidators();
+        (this.formGroups.controls.login as FormGroup).controls.remember.clearValidators();
     }
 
     public update(): void {

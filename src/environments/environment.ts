@@ -11,7 +11,17 @@ export const environment = {
   brandName: 'Crafts.fo',
   hubSettings: {
     url: 'https://localhost:5001'
-  }
+  },
+  storage: {
+    local: {
+      API_TOKEN: 'apitoken',
+      USER: 'user'
+    },
+    session: {
+      IS_USER_LOGGED_IN: 'isUserLoggedIn'
+    }
+  },
+  nonce: null
 };
 
 

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 import { NotfoundComponent } from './components/notfound/notfound.component';
-import { CanActivateGuard } from './core/can-activate.guard';
-import { CanLoadGuard } from './core/can-load.guard';
+import { CanActivateGuard } from './core/guards/can-activate.guard';
+import { CanLoadGuard } from './core/guards/can-load.guard';
 import { SharedModule } from './shared/shared.module';
 
 const routes: Routes = [

@@ -10,6 +10,7 @@ import { LocalLocalizationModule } from 'src/app/localization/local-localization
 import { CommonModule } from '@angular/common';
 import { ImageGalleryComponent } from '../modules/image-gallery/image-gallery.component';
 import { LoaderComponent } from 'src/app/shared/components/loader/loader.component';
+import { HandleSafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
 
 @Component({
   standalone: true,
@@ -17,7 +18,14 @@ import { LoaderComponent } from 'src/app/shared/components/loader/loader.compone
   templateUrl: './routerpagecontent.component.html',
   styleUrls: ['./routerpagecontent.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  imports: [ LoaderComponent, ContentWrapperComponent, ImageGalleryComponent, CommonModule, LocalLocalizationModule ]
+  imports: [ 
+    LoaderComponent, 
+    ContentWrapperComponent, 
+    ImageGalleryComponent, 
+    CommonModule, 
+    LocalLocalizationModule,
+    HandleSafeHtmlPipe
+  ]
 })
 export class RouterpagecontentComponent {
   public content = '';
@@ -52,7 +60,7 @@ export class RouterpagecontentComponent {
             this.moduleType = ModuleType.None;
             break;
         }
-        this.content = page.content.replace(/\n/gi, '<br />').replace(/<p>&nbsp;<\/p>/gi, '<p class="empty">&nbsp;</p>');
+        this.content = page.content;
       },
       error: (err: HttpErrorResponse) => {
         this.miscHelper.handleError(err);
