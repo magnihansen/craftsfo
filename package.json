@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "npm run start-craftsfo --optimization=false",
-    "start-craftsfo": "ng serve --project craftsfo",
+    "start": "npm run start-craftsfo",
+    "start-craftsfo": "ng serve --project craftsfo --configuration development",
     "start-beautify-by-h": "ng serve --project beautify-by-h",
     "start-p-grillen": "ng serve --project p-grillen",
     "build": "ng build --configuration production --output-hashing none --aot",
@@ -15,7 +15,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "source-map-explorer": "source-map-explorer dist/**/*.js",
-    "update-angular": "ng update @angular/cli @angular/core @angular/material @angular/cdk"
+    "update-angular": "npm install -g npm@latest & ng update @angular/cli @angular/core @angular/material @angular/cdk"
   },
   "private": true,
   "dependencies": {
@@ -45,6 +45,7 @@
     "popper.js": "^1.16.1",
     "querystring": "^0.2.1",
     "rxjs": "^7.8.1",
+    "trusted-types": "^2.0.0",
     "tslib": "^2.6.0",
     "uuid": "^9.0.0",
     "zone.js": "^0.13.1"

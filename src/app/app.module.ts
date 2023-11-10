@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { APP_INITIALIZER, enableProdMode, NgModule } from '@angular/core';
+import { APP_INITIALIZER, CSP_NONCE, enableProdMode, Inject, NgModule, Renderer2 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -18,10 +18,11 @@ import { SharedModule } from './shared/shared.module';
 import { ImageGalleryComponent } from './components/modules/image-gallery/image-gallery.component';
 import { ImageGalleryService } from './components/modules/image-gallery/ui/services/image-gallery.service';
 import { SettingService } from './services/setting.service';
-import { DomainSetting } from './models/domain-setting.model';
 import { LocalStorageService } from './services/local-storage.service';
+import { NonceService } from './services/nonce.service';
 import { ServiceProviderFactory } from './core/factories/service-provider.factory';
-import { ServiceProvider } from './services/provider.service';
+import { DomainSettingFactory } from './core/factories/domain-setting.factory';
+import { CSP_CONFIG } from './core/configs/csp.config';
 
 enableProdMode();
 
@@ -40,7 +41,8 @@ enableProdMode();
     ImageGalleryComponent
   ],
   providers: [
-    { provide: APP_INITIALIZER, useFactory: initializeDomainSettings, deps: [SettingService, LocalStorageService, ServiceProvider], multi: true },
+    { provide: APP_INITIALIZER, useFactory: DomainSettingFactory, deps: [SettingService, LocalStorageService], multi: true },
+    { provide: APP_INITIALIZER, useFactory: ServiceProviderFactory, deps: [NonceService], multi: true },
     MySqlService,
     PageHubService,
     ImageGalleryService,
@@ -65,31 +67,4 @@ export class AppModule {
 
 export function getBaseHref(): string {
   return window.location.pathname;
-}
-
-export function initializeDomainSettings(
-  settingService: SettingService,
-  localStorageService: LocalStorageService,
-  providerService: ServiceProvider
-): () => Promise<void> {
-  return () =>
-    new Promise((resolve) => {
-      providerService.setNonce();
-      const domainSettings: any = localStorageService.getWithExpiry(settingService.domainSettingKey);
-      if (domainSettings) {
-        settingService.setCssVariables(domainSettings);
-        // settingService.loadCSS(domainSettings);
-        resolve();
-      } else {
-        settingService.getDomainSettings().subscribe({
-          next: (_settings: DomainSetting[]) => {
-            settingService.setCssVariables(_settings);
-            // settingService.loadCSS(_settings);
-            localStorageService.setWithExpiry(settingService.domainSettingKey, _settings, 3600000 * 8);
-            resolve();
-          },
-          error: () => resolve()
-        });
-      }
-    });
 }
