@@ -15,7 +15,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "source-map-explorer": "source-map-explorer dist/**/*.js",
-    "update-angular": "update @angular/cli @angular/core @angular/material @angular/cdk"
+    "update-angular": "update @angular/cdk @angular/cli @angular/core @angular/material"
   },
   "private": true,
   "dependencies": {
