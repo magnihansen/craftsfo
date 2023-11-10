@@ -167,24 +167,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "craftsfo:build"
+            "buildTarget": "craftsfo:build"
           },
           "configurations": {
             "da": {
-              "browserTarget": "*project-name*:build:da"
+              "buildTarget": "*project-name*:build:da"
             },
             "development": {
-              "browserTarget": "craftsfo:build:development"
+              "buildTarget": "craftsfo:build:development"
             },
             "production": {
-              "browserTarget": "craftsfo:build:production"
+              "buildTarget": "craftsfo:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "craftsfo:build"
+            "buildTarget": "craftsfo:build"
           }
         },
         "test": {
@@ -367,21 +367,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "beautify-by-h:build"
+            "buildTarget": "beautify-by-h:build"
           },
           "configurations": {
             "da": {
-              "browserTarget": "*project-name*:build:da"
+              "buildTarget": "*project-name*:build:da"
             },
             "production": {
-              "browserTarget": "beautify-by-h:build:production"
+              "buildTarget": "beautify-by-h:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "beautify-by-h:build"
+            "buildTarget": "beautify-by-h:build"
           }
         },
         "test": {
@@ -564,21 +564,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "p-grillen:build"
+            "buildTarget": "p-grillen:build"
           },
           "configurations": {
             "da": {
-              "browserTarget": "*project-name*:build:da"
+              "buildTarget": "*project-name*:build:da"
             },
             "production": {
-              "browserTarget": "p-grillen:build:production"
+              "buildTarget": "p-grillen:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "p-grillen:build"
+            "buildTarget": "p-grillen:build"
           }
         },
         "test": {
