@@ -4,7 +4,8 @@
         [ngClass]="{ 'context-menu-open': openContextMenu }"
         (click)="openContextMenu = !openContextMenu"
     >&#xe5d3;</i>
-    <div *ngIf="openContextMenu" class="contextmenu">
+    @if (openContextMenu) {
+<div class="contextmenu">
         <ul>
             <li (click)="deleteRow(dataRow)">
                 <i class="material-icons no-hover">&#xe872;</i>
@@ -12,4 +13,5 @@
             </li>
         </ul>
     </div>
+}
 </span>

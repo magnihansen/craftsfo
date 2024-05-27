@@ -3,19 +3,24 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "npm run start-craftsfo",
+    "start-nginx": "docker run --rm -it -p 4200:80 craftsfo",
+    "start": "npm run stop-docker-image && npm run build-docker-image && npm run start-nginx",
     "start-craftsfo": "ng serve --project craftsfo --configuration development",
     "start-beautify-by-h": "ng serve --project beautify-by-h",
     "start-p-grillen": "ng serve --project p-grillen",
-    "build": "ng build --configuration production --output-hashing none --aot",
+    "start-kageogform": "ng serve --project kageogform",
+    "build": "ng build --project craftsfo --configuration production --output-hashing none --aot",
     "deploy-craftsfo": "ng deploy --project craftsfo --host eweb802.discountasp.net --base-href '/craftsfo/' --username '0128497|instantview' --password 'Curri123m' --remote-dir 'craftsfo' --clean-remote",
     "deploy-beautify-by-h": "ng deploy --project beautify-by-h --host eweb802.discountasp.net --base-href '/beautify-by-h/' --username '0128497|instantview' --password 'Curri123m' --remote-dir 'beautify-by-h' --clean-remote",
     "deploy-p-grillen": "ng deploy --project p-grillen --host eweb802.discountasp.net --base-href '/p-grillen/' --username '0128497|instantview' --password 'Curri123m' --remote-dir 'p-grillen' --clean-remote",
+    "deploy-kageogform": "ng deploy --project kageogform --host eweb802.discountasp.net --base-href '/kageogform/' --username '0128497|instantview' --password 'Curri123m' --remote-dir 'kageogform' --clean-remote",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "source-map-explorer": "source-map-explorer dist/**/*.js",
-    "update-angular": "ng update @angular-devkit/schematics @angular/cdk @angular/cli @angular/core @angular/material"
+    "update-angular": "ng update @angular-devkit/schematics @angular/cdk @angular/cli @angular/core @angular/material",
+    "build-docker-image": "docker build -t craftsfo .",
+    "stop-docker-image": "docker stop craftsfo || true && docker rm craftsfo || true"
   },
   "private": true,
   "dependencies": {

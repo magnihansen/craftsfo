@@ -22,8 +22,10 @@
         </div>
     </footer>
 
-    <a href="#" class="scrollup" *ngIf="showToTopButton">
+    @if (showToTopButton) {
+<a href="#" class="scrollup">
         <i class="fa fa-angle-up active"></i>
     </a>
+}
 </div>
   

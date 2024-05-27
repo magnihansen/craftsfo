@@ -1,6 +1,14 @@
-<app-image-gallery *ngIf="moduleType === 'ImageGallery' && currentPage" [page]="currentPage"></app-image-gallery>
-<p *ngIf="moduleType === 'Content'" class="aligncenter" [innerHTML]="content | safeHtml"></p>
-<p *ngIf="moduleType === 'None'">{{ 'common.no-content' | i18n }}</p>
-<app-content-wrapper alignContent="center" *ngIf="moduleType === 'IsLoading'">
+@if (moduleType === 'ImageGallery' && currentPage) {
+<app-image-gallery [page]="currentPage"></app-image-gallery>
+}
+@if (moduleType === 'Content') {
+<p class="aligncenter" [innerHTML]="content | safeHtml"></p>
+}
+@if (moduleType === 'None') {
+<p>{{ 'common.no-content' | i18n }}</p>
+}
+@if (moduleType === 'IsLoading') {
+<app-content-wrapper alignContent="center">
     <app-loader></app-loader>
 </app-content-wrapper>
+}

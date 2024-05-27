@@ -10,10 +10,12 @@
             <label for="settingKey">{{ 'common.key' | i18n }}</label>
             <select id="settingKey" formControlName="settingKeyId">
                 <option value="-1" disabled selected>{{ 'common.choose-x' | i18n : { x: 'common.key' | i18n | lowercase } }}</option>
-                <option 
-                    *ngFor="let sk of settingKeys" 
+                @for (sk of settingKeys; track sk) {
+  <option 
+                    
                     value="{{sk.id}}"
                 >{{sk.key}}</option>
+}
             </select>
         </div>
         <div class="formline">

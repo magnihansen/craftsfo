@@ -16,7 +16,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
   imports: [ CommonModule, FormsModule, ReactiveFormsModule, LocalLocalizationModule ]
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
+  loginForm!: FormGroup;
   loading = false;
   submitted = false;
   returnUrl = '';
@@ -26,14 +26,15 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private formsService: FormsService
-  ) {
-    this.loginForm = this.formsService.formGroups.controls['login'] as FormGroup;
-  }
+  ) { }
 
   ngOnInit(): void {
     // get return url from route parameters or default to '/'
     const qParam = 'returnUrl';
     this.returnUrl = this.route.snapshot.queryParams[qParam] || '/';
+
+    this.loginForm = this.formsService.formGroups.controls['login'] as FormGroup;
+    console.log(this.loginForm);
 
     this.validateApiToken();
   }
@@ -58,6 +59,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.submitted = true;
+    console.log(this.loginForm);
     if (this.loginForm.invalid) {
         return;
     }

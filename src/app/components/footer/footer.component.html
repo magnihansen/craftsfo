@@ -1,27 +1,35 @@
 <div class="footer">
   <div class="footer-text">
     Copyright &#64;{{date | date:'yyyy' }}<br />
-    <span *ngIf="developer.url">Design og layout by <a href="{{developer.url}}" target="_blank">{{developer.name}}</a></span>
+    @if (developer.url) {
+<span>Design og layout by <a href="{{developer.url}}" target="_blank">{{developer.name}}</a></span>
+}
   </div>
   <div class="login">
-    <div class="facebook-link" *ngIf="developer.facebook">
+    @if (developer.facebook) {
+<div class="facebook-link">
       <a href="{{developer.facebook}}" title="Besøg mig på Facebook" target="_blank">
         <img src="/assets/img/facebook_small.png" alt="Besøg mig på Facebook" />
       </a>
     </div>
-    <div 
+}
+    @if (!isLoggedIn) {
+<div 
       class="login-link" 
-      *ngIf="!isLoggedIn"
+     
       (click)="gotoLogin()"
     >
       <i class="fa fa-lock"></i>
       {{ 'common.login' | i18n }}
     </div>
-    <div 
+}
+    @if (isLoggedIn) {
+<div 
       class="login-link" 
-      *ngIf="isLoggedIn"
+     
       (click)="gotoLogout()"
     >{{ 'common.logout' | i18n }}</div>
+}
 </div>
 <div id="sb-search" class="sb-search" style="display:none;">
     <form (submit)="onSearch(search.value)" >

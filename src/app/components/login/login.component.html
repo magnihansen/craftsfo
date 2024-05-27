@@ -4,16 +4,30 @@
       <div class="form-group">
           <label for="username">{{ 'common.username' | i18n }}</label>
           <input type="text" formControlName="username" class="form-control" autofocus [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-          <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-              <div *ngIf="f.username.errors.required">{{ 'validation.x-required' | i18n : { x: 'common.username' | i18n } }}</div>
-          </div>
+          @if (submitted && f.username.errors) {
+            <div class="invalid-feedback">
+              @if (f.username.errors.required) {
+                <div>{{ 'validation.x-required' | i18n : { x: 'common.username' | i18n } }}</div>
+              }
+            </div>
+          }
       </div>
       <div class="form-group">
-          <label for="password">{{ 'common.password' | i18n }}</label>
-          <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-              <div *ngIf="f.password.errors.required">{{ 'validation.x-required' | i18n : { x: 'common.password' | i18n } }}</div>
+        <label for="password">{{ 'common.password' | i18n }}</label>
+        <input 
+          type="password" 
+          formControlName="password" 
+          class="form-control" 
+          [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+          (keydown.enter)='onSubmit()'
+        />
+        @if (submitted && f.password.errors) {
+          <div class="invalid-feedback">
+            @if (f.password.errors.required) {
+              <div>{{ 'validation.x-required' | i18n : { x: 'common.password' | i18n } }}</div>
+            }
           </div>
+        }
       </div>
       <div class="for-group">
         <input type="checkbox" formControlName="remember" [ngClass]="{ 'is-invalid': submitted && f.remember.errors }" />
@@ -21,8 +35,10 @@
       </div>
       <div class="form-group space-between">
           <button type="submit" [disabled]="submitted && loading" class="btn btn-primary">
-              <span *ngIf="submitted && loading" class="spinner-border spinner-border-sm mr-1"></span>
-              {{ 'common.login' | i18n }}
+            @if (submitted && loading) {
+              <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            {{ 'common.login' | i18n }}
           </button>
           <button type="button" class="btn btn-primary p-l-10" (click)="onReset()">
             <span class="spinner-border spinner-border-sm mr-1"></span>

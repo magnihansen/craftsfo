@@ -126,7 +126,6 @@ export class AuthenticationService {
     return this.http.get<boolean>(`${this.apiUrl}/V1/Auth/ValidateToken`, httpOptions)
       .pipe(
         map((value: boolean) => {
-          console.log('validateToken()', value)
           if (value) {
             this._isUserLoggedIn = value;
             this.sessionStorageService.set(environment.storage.session.IS_USER_LOGGED_IN, 'true');

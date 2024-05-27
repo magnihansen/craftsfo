@@ -14,12 +14,18 @@
          </button>
       </div>
       <div class="top-navbar">
-         <ng-container *ngFor="let page of pages">
-            <a *ngIf="page.link !== '/logout'" [routerLink]="[(isLoggedIn ? '/' : '/page/') + page.link]"
+         @for (page of pages; track page) {
+  
+            @if (page.link !== '/logout') {
+<a [routerLink]="[(isLoggedIn ? '/' : '/page/') + page.link]"
                (click)="navbarOpened = false" mat-button class="navbartop-btn">{{ page['title'] | i18n }}</a>
-            <a *ngIf="page.link === '/logout'" (click)="onSignOut()" mat-button class="navbartop-btn">{{ page['title'] |
+}
+            @if (page.link === '/logout') {
+<a (click)="onSignOut()" mat-button class="navbartop-btn">{{ page['title'] |
                i18n }}</a>
-         </ng-container>
+}
+         
+}
       </div>
    </div>
 </header>

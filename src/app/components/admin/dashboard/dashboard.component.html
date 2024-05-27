@@ -14,16 +14,18 @@
   (deleteRowChange)="deleteRow($any($event))"
 ></app-table>
 
+@if (showAddPageModal) {
 <app-add-page 
-    *ngIf="showAddPageModal"
     [renderModal]="showAddPageModal"
     [currentPageCount]="pageRows.length"
     (closeChange)="closeAddPage($any($event))"
 ></app-add-page>
+}
 
+@if (showEditPageModal) {
 <app-edit-page 
-    *ngIf="showEditPageModal"
     [renderModal]="showEditPageModal"
     [pageId]="selectedPageId"
     (closeChange)="showEditPageModal = false"
 ></app-edit-page>
+}

@@ -19,22 +19,28 @@
   (deleteRowChange)="deleteRow($any($event))"
 ></app-table>
 
+@if (showAddSettingModal) {
 <app-add-setting 
-    *ngIf="showAddSettingModal"
+   
     [renderModal]="showAddSettingModal"
     [currentSettingCount]="rows.length"
     (closeChange)="closeAddSetting($any($event))"
 ></app-add-setting>
+}
 
+@if (showEditSettingModal) {
 <app-edit-setting 
-    *ngIf="showEditSettingModal"
+   
     [settingId]="selectedSettingId"
     [renderModal]="showEditSettingModal"
     (closeChange)="closeEditSetting($any($event))"
 ></app-edit-setting>
+}
 
+@if (showAddSettingKeyModal) {
 <app-add-setting-key
-    *ngIf="showAddSettingKeyModal"
+   
     [renderModal]="showAddSettingKeyModal"
     (closeChange)="closeAddSettingKey($any($event))"
 ></app-add-setting-key>
+}

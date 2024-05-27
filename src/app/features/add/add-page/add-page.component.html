@@ -10,20 +10,26 @@
             <label for="pageType">{{ 'common.page-type' | i18n }}</label>
             <select id="pageType" formControlName="pageTypeId">
                 <option disabled selected value="undefined">{{ 'common.choose-x' | i18n : { x: 'common.page-type' | i18n | lowercase } }}</option>
-                <option 
-                    *ngFor="let pt of pageTypes;" 
+                @for (pt of pageTypes; track pt) {
+  <option 
+                    
                     value="{{pt.id}}"
                 >{{pt.name}}</option>
+}
             </select>
         </div>
         <div class="formline">
             <label for="title">{{ 'common.title' | i18n }}</label>
             <input id="title" type="text"formControlName="title" value="title.value" placeholder="{{ 'input.fill-out-x' | i18n : { x: 'common.title' | i18n | lowercase } }}" />
-            <div *ngIf="formPageAdd.controls.title.invalid && (formPageAdd.controls.title.dirty || formPageAdd.controls.title.touched)" class="alert">
-                <div *ngIf="formPageAdd.controls.title.errors?.['required']">
+            @if (formPageAdd.controls.title.invalid && (formPageAdd.controls.title.dirty || formPageAdd.controls.title.touched)) {
+<div class="alert">
+                @if (formPageAdd.controls.title.errors?.['required']) {
+<div>
                     Title is required.
                 </div>
+}
             </div>
+}
             <span *hasError="'required'">Title is required</span>
         </div>
         <div class="formline">

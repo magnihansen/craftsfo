@@ -5,7 +5,8 @@
   (submitChanged)="editPage($event)"
   (closeChanged)="closeModal($event)"
 >
-  <form [formGroup]="formPageEdit" *ngIf="!errorLoading">
+  @if (!errorLoading) {
+<form [formGroup]="formPageEdit">
     <div class="formline">
       <label for="id">{{ 'common.id' | i18n }}:</label>
       <input type="text" name="id" formControlName="id" />
@@ -13,7 +14,9 @@
     <div class="formline">
       <label for="title">{{ 'common.page-type' | i18n }}:</label>
       <select name="pagetype" formControlName="pageTypeId">
-        <option *ngFor="let pt of pageTypes" [value]="pt.id">{{pt.name}}</option>
+        @for (pt of pageTypes; track pt) {
+  <option [value]="pt.id">{{pt.name}}</option>
+}
       </select>
     </div>
     <div class="formline">
@@ -24,7 +27,8 @@
       <label for="pageLink">{{ 'common.link' | i18n }}:</label>
       <input id="pageLink" type="text" formControlName="link" placeholder="{{ 'input.fill-out-x' | i18n : { x: 'common.link' | i18n | lowercase } }}" />
     </div>
-    <div *ngIf="page && page.pageTypeId === 46" class="formline">
+    @if (page && page.pageTypeId === 46) {
+<div class="formline">
         <label for="pageContent">{{ 'common.content' | i18n }}:</label>
         <ckeditor 
             id="pageContent" 
@@ -33,16 +37,22 @@
             (ready)="onReady($event)"
         ></ckeditor>
     </div>
+}
     <div class="formline">
       <label for="title">{{ 'common.sort' | i18n }}:</label>
       <input type="number" name="sort" formControlName="sort" />
     </div>
-    <div *ngIf="page && page.pageTypeId === 47" class="formline">
-      <app-image-gallery 
-        *ngIf="page && page.pageTypeId === 47" 
+    @if (page && page.pageTypeId === 47) {
+<div class="formline">
+      @if (page && page.pageTypeId === 47) {
+<app-image-gallery 
+        
         [isBackend]="true" 
         [page]="page"
       ></app-image-gallery>
+}
     </div>
+}
   </form>
+}
 </app-modal>

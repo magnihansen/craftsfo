@@ -1,12 +1,16 @@
 <div class="imagegallery-container">
     <div class="title">{{ 'imagegallery.choose' | i18n }}:</div>
     <select>
-        <option *ngIf="imageGalleries.length === 0">
+        @if (imageGalleries.length === 0) {
+<option>
             {{ 'imagegallery.no-imagegalleries-found' | i18n }}
         </option>
-        <option *ngFor="let gallery of imageGalleries" value="gallery.Id">
+}
+        @for (gallery of imageGalleries; track gallery) {
+  <option value="gallery.Id">
             {{gallery.name}}
         </option>
+}
     </select>
     <button
         class="add-spacer"
@@ -40,12 +44,16 @@
         <div class="formline">
             <label for="igImageGalleryType">{{ 'common.type' | i18n }}</label>
             <select id="igImageGalleryType" formControlName="imageGalleryTypeId">
-                <option *ngIf="imageGalleryTypes.length === 0">
+                @if (imageGalleryTypes.length === 0) {
+<option>
                     {{ 'imagegallery.no-imagegalleries-found' | i18n }}
                 </option>
-                <option *ngFor="let imageGalleryType of imageGalleryTypes" value="imageGalleryType.Id">
+}
+                @for (imageGalleryType of imageGalleryTypes; track imageGalleryType) {
+  <option value="imageGalleryType.Id">
                     {{imageGalleryType.name}}
                 </option>
+}
             </select>
             <button
                 class="add-spacer"
@@ -54,8 +62,9 @@
             >{{ 'imagegallery.create-{x}' | i18n : { x: 'imagetype' | i18n | lowercase } }}</button>
         </div>
     </form>
-    <app-modal
-        *ngIf="bShowCreateTypeModal"
+    @if (bShowCreateTypeModal) {
+<app-modal
+       
         modalTitle="{{ 'common.create-x' | i18n : { x: 'imagetype' | i18n | lowercase } }}"
         modalId="type-modal"
         [renderModal]="bShowCreateTypeModal"
@@ -68,16 +77,19 @@
                 <div class="formline">
                     <label for="name">{{ 'common.name' | i18n }}</label>
                     <input id="name" type="text" formControlName="name" placeholder="{{ 'input.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}" />
-                    <div *ngIf="formGalleryTypeAdd.get('name')?.invalid 
+                    @if (formGalleryTypeAdd.get('name')?.invalid 
                         && (
                             formGalleryTypeAdd.get('name')?.dirty 
                             || formGalleryTypeAdd.get('ame')?.touched
-                        )"
+                        )) {
+<div
                     >
                         {{ 'input.fill-out-x' | i18n : { x: 'common.name' | i18n | lowercase } }}
                     </div>
+}
                 </div>
             </form>
         </app-content-wrapper>
     </app-modal>
+}
 </app-modal>

@@ -10,7 +10,6 @@ export class SessionStorageService {
   }
 
   public set(key: string, value: any): void {
-    console.log('SessionStorageService', 'set', key, value);
     sessionStorage.setItem(key, value);
   }
 

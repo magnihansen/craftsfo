@@ -42,7 +42,7 @@ enableProdMode();
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: DomainSettingFactory, deps: [SettingService, LocalStorageService], multi: true },
-    { provide: APP_INITIALIZER, useFactory: ServiceProviderFactory, deps: [NonceService], multi: true },
+    // { provide: APP_INITIALIZER, useFactory: ServiceProviderFactory, deps: [NonceService], multi: true },
     MySqlService,
     PageHubService,
     ImageGalleryService,

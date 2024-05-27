@@ -1,7 +1,9 @@
-<table class="table" *ngIf="dataRows.length > 0">
+@if (dataRows.length > 0) {
+<table class="table">
     <thead class="thead">
-        <th 
-            *ngFor="let column of columns; let i = index"
+        @for (column of columns; track column; let i = $index) {
+  <th 
+           
             title="{{ column.name | i18n }}" 
             [attr.data-index]="i" 
             [attr.style.width]="column.columnWidth ? column.columnWidth : null"
@@ -10,34 +12,48 @@
                 {{ column.name | i18n }}
             </span>
         </th>
-        <th 
-            *ngIf="showContextMenu"
+}
+        @if (showContextMenu) {
+<th 
+           
             class="contextmenu"
         ></th>
+}
     </thead>
     <tbody class="tbody">
-        <tr *ngFor="let datarow of dataRows">
-            <td 
-                *ngFor="let column of columns; let i = index" 
+        @for (datarow of dataRows; track datarow) {
+  <tr>
+            @for (column of columns; track column; let i = $index) {
+  <td 
+                
                 [attr.data-index]="i" 
                 (click)="rowClick(datarow)"
             >
                 <span>{{ datarow.dataColumns[i].value }}</span>
             </td>
-            <td 
-                *ngIf="showContextMenu"
+}
+            @if (showContextMenu) {
+<td 
+               
                 class="contextmenu"
             >
-                <app-table-context-menu 
-                    *ngIf="allowDelete"
+                @if (allowDelete) {
+<app-table-context-menu 
+                   
                     [dataRow]="datarow"
                     (deleteRowChange)="deleteRow($event)"
                 ></app-table-context-menu>
+}
             </td>
+}
         </tr>
+}
     </tbody>
 </table>
+}
+@if (dataRows.length == 0) {
 <app-empty-state
-    *ngIf="dataRows.length == 0"
+   
     emptyStateKey="warning.no-results"
 ></app-empty-state>
+}
