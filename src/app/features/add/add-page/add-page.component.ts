@@ -5,7 +5,7 @@ import { FormControlStatus, FormGroup, FormsModule, ReactiveFormsModule } from '
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Subscription } from 'rxjs/internal/Subscription';
-import * as uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 import { PageType } from 'src/app/models/page-type.model';
@@ -99,7 +99,7 @@ export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
       const content: string = this.formPageAdd.controls.content.value as string;
 
       const newPage: Page = {
-        uid: uuid.v4(),
+        uid: uuidv4(),
         parentId: null,
         pageTypeId: pageTypeId,
         title,

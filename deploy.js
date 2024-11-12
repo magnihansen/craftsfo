@@ -2,13 +2,13 @@ const FtpDeploy = require("ftp-deploy");
 const ftpDeploy = new FtpDeploy();
 
 const config = {
-    user: "user",
+    user: "instantcms.dk",
     // Password optional, prompted if none given
-    password: "password",
-    host: "ftp.someserver.com",
+    password: "x23G9FtzenyRAgka6pd4",
+    host: "nt35.unoeuro.com",
     port: 21,
-    localRoot: __dirname + "/local-folder",
-    remoteRoot: "/public_html/remote-folder/",
+    localRoot: __dirname + "/dist",
+    remoteRoot: "/craftsfo/",
     // include: ["*", "**/*"],      // this would upload everything except dot files
     include: ["dist/*"],
     // e.g. exclude sourcemaps, and ALL files in node_modules (including dot files)

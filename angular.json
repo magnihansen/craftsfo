@@ -227,9 +227,6 @@
               "devServerTarget": "craftsfo:serve:production"
             }
           }
-        },
-        "deploy": {
-          "builder": "ngx-deploy-ftp:deploy"
         }
       }
     },
@@ -424,9 +421,6 @@
               "devServerTarget": "beautify-by-h:serve:production"
             }
           }
-        },
-        "deploy": {
-          "builder": "ngx-deploy-ftp:deploy"
         }
       }
     },
@@ -621,9 +615,6 @@
               "devServerTarget": "p-grillen:serve:production"
             }
           }
-        },
-        "deploy": {
-          "builder": "ngx-deploy-ftp:deploy"
         }
       }
     },
@@ -818,9 +809,6 @@
               "devServerTarget": "kageogform:serve:production"
             }
           }
-        },
-        "deploy": {
-          "builder": "ngx-deploy-ftp:deploy"
         }
       }
     }
