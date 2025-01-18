@@ -11,11 +11,10 @@ import { TableComponent } from '../../table/table.component';
 import { HeaderComponent } from '../header/header.component';
 
 @Component({
-    standalone: true,
     selector: 'app-users',
     templateUrl: './users.component.html',
     styleUrls: ['./users.component.scss'],
-    imports: [ CommonModule, LocalLocalizationModule, TableComponent, HeaderComponent ]
+    imports: [CommonModule, LocalLocalizationModule, TableComponent, HeaderComponent]
 })
 export class UsersComponent implements OnInit {
     @Input() public userRows: DataRow[] = [];

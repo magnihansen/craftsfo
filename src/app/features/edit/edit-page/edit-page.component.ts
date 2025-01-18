@@ -24,22 +24,19 @@ import { FormsService } from 'src/app/services/forms.service';
 import { FrontendComponent } from 'src/app/components/modules/image-gallery/ui/frontend/frontend.component';
 
 @Component({
-  standalone: true,
-  selector: 'app-edit-page',
-  templateUrl: './edit-page.component.html',
-  styleUrls: ['./edit-page.component.scss'],
-  imports: [
+    selector: 'app-edit-page',
+    templateUrl: './edit-page.component.html',
+    styleUrls: ['./edit-page.component.scss'],
+    imports: [
     RouterModule,
-    FormsModule, 
-    ReactiveFormsModule, 
-    CommonModule, 
-    LocalLocalizationModule, 
-    ModalComponent, 
-    CKEditorModule, 
-    ContentWrapperComponent, 
-    ImageGalleryComponent,
-    FrontendComponent
-  ]
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+    LocalLocalizationModule,
+    ModalComponent,
+    CKEditorModule,
+    ImageGalleryComponent
+]
 })
 export class EditPageComponent implements OnInit {
   @Input() public pageId?: number;

@@ -11,11 +11,10 @@ import { Company } from '../../models/company.model';
 import { Developer } from '../../models/developer.model';
 
 @Component({
-  standalone: true,
-  selector: 'app-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss'],
-  imports: [ FormsModule, CommonModule, LocalLocalizationModule ]
+    selector: 'app-footer',
+    templateUrl: './footer.component.html',
+    styleUrls: ['./footer.component.scss'],
+    imports: [FormsModule, CommonModule, LocalLocalizationModule]
 })
 export class FooterComponent implements OnInit {
   public company: Company;

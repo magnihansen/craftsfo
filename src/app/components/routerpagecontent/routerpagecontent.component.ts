@@ -13,19 +13,18 @@ import { LoaderComponent } from 'src/app/shared/components/loader/loader.compone
 import { HandleSafeHtmlPipe } from 'src/app/core/pipes/safe-html.pipe';
 
 @Component({
-  standalone: true,
-  selector: 'app-routerpagecontent',
-  templateUrl: './routerpagecontent.component.html',
-  styleUrls: ['./routerpagecontent.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  imports: [ 
-    LoaderComponent, 
-    ContentWrapperComponent, 
-    ImageGalleryComponent, 
-    CommonModule, 
-    LocalLocalizationModule,
-    HandleSafeHtmlPipe
-  ]
+    selector: 'app-routerpagecontent',
+    templateUrl: './routerpagecontent.component.html',
+    styleUrls: ['./routerpagecontent.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        LoaderComponent,
+        ContentWrapperComponent,
+        ImageGalleryComponent,
+        CommonModule,
+        LocalLocalizationModule,
+        HandleSafeHtmlPipe
+    ]
 })
 export class RouterpagecontentComponent {
   public content = '';

@@ -17,24 +17,23 @@ import { ImageGalleryTypeService } from '../services/image-gallery-type.service'
 import { FormsService } from 'src/app/services/forms.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-backend',
-  templateUrl: './backend.component.html',
-  styleUrls: ['./backend.component.scss'],
-  imports: [
-    CommonModule, 
-    FormsModule,
-    ReactiveFormsModule,
-    ContentWrapperComponent, 
-    LocalLocalizationModule,
-    ModalComponent,
-    CKEditorModule
-  ],
-  providers: [
-    I18nPipe,
-    ImageGalleryService, 
-    ImageGalleryTypeService
-  ]
+    selector: 'app-backend',
+    templateUrl: './backend.component.html',
+    styleUrls: ['./backend.component.scss'],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ContentWrapperComponent,
+        LocalLocalizationModule,
+        ModalComponent,
+        CKEditorModule
+    ],
+    providers: [
+        I18nPipe,
+        ImageGalleryService,
+        ImageGalleryTypeService
+    ]
 })
 export class BackendComponent implements OnInit {
   @Input() public data: any;

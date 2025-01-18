@@ -7,14 +7,13 @@ import { ImageGalleryComponent } from '../../image-gallery.component';
 import { ImageGalleryService } from '../services/image-gallery.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-frontend',
-  templateUrl: './frontend.component.html',
-  styleUrls: ['./frontend.component.scss'],
-  imports: [ 
-    LocalLocalizationModule, 
-    ContentWrapperComponent 
-  ]
+    selector: 'app-frontend',
+    templateUrl: './frontend.component.html',
+    styleUrls: ['./frontend.component.scss'],
+    imports: [
+        LocalLocalizationModule,
+        ContentWrapperComponent
+    ]
 })
 export class FrontendComponent implements OnInit {
   @Input() public data: any;

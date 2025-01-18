@@ -17,20 +17,19 @@ import { TableComponent } from "../../table/table.component";
 import { HeaderComponent } from "../header/header.component";
 
 @Component({
-    standalone: true,
     selector: 'app-setting',
     templateUrl: './settings.component.html',
     styleUrls: ['./settings.component.scss'],
-    imports: [ 
-      CommonModule, 
-      LocalLocalizationModule, 
-      TableComponent, 
-      HeaderComponent, 
-      AddSettingComponent, 
-      AddSettingKeyComponent, 
-      EditSettingComponent 
+    imports: [
+        CommonModule,
+        LocalLocalizationModule,
+        TableComponent,
+        HeaderComponent,
+        AddSettingComponent,
+        AddSettingKeyComponent,
+        EditSettingComponent
     ]
-  }) 
+}) 
   export class SettingsComponent implements OnInit {
     @Input() public rows: DataRow[] = [];
 

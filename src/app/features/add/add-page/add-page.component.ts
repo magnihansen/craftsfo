@@ -20,12 +20,11 @@ import { UploadAdapter } from 'src/app/shared/upload-adapter.class';
 import { MiscHelper } from 'src/app/core/misc.helper';
 
 @Component({
-  selector: 'app-add-page',
-  standalone: true,
-  templateUrl: './add-page.component.html',
-  styleUrls: ['./add-page.component.scss'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, CKEditorModule, LocalLocalizationModule],
-  providers: [FormsService]
+    selector: 'app-add-page',
+    templateUrl: './add-page.component.html',
+    styleUrls: ['./add-page.component.scss'],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, CKEditorModule, LocalLocalizationModule],
+    providers: [FormsService]
 })
 export class AddpageComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public renderModal = false;

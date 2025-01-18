@@ -20,12 +20,11 @@ import { I18nService } from 'src/app/localization/i18n.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
-  selector: 'app-edit-setting',
-  standalone: true,
-  templateUrl: './edit-setting.component.html',
-  styleUrls: ['./edit-setting.component.scss'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, CKEditorModule, LocalLocalizationModule],
-  providers: [FormsService]
+    selector: 'app-edit-setting',
+    templateUrl: './edit-setting.component.html',
+    styleUrls: ['./edit-setting.component.scss'],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, CKEditorModule, LocalLocalizationModule],
+    providers: [FormsService]
 })
 export class EditSettingComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() settingId: number = 0;

@@ -13,11 +13,10 @@ import { environment } from 'src/environments/environment';
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 
 @Component({
-  standalone: true,
-  selector: 'app-navigation',
-  templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.scss'],
-  imports: [CommonModule, RouterModule, MatIconModule, LocalLocalizationModule]
+    selector: 'app-navigation',
+    templateUrl: './navigation.component.html',
+    styleUrls: ['./navigation.component.scss'],
+    imports: [CommonModule, RouterModule, MatIconModule, LocalLocalizationModule]
 }) 
 export class NavigationComponent implements OnInit {
   @Input() pageType = 'pages';

@@ -16,12 +16,11 @@ import { SettingService } from 'src/app/services/setting.service';
 import { SettingKey } from 'src/app/models/setting-key.model';
 
 @Component({
-  selector: 'app-add-setting',
-  standalone: true,
-  templateUrl: './add-setting.component.html',
-  styleUrls: ['./add-setting.component.scss'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, CKEditorModule, LocalLocalizationModule],
-  providers: [FormsService]
+    selector: 'app-add-setting',
+    templateUrl: './add-setting.component.html',
+    styleUrls: ['./add-setting.component.scss'],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, CKEditorModule, LocalLocalizationModule],
+    providers: [FormsService]
 })
 export class AddSettingComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public renderModal = false;

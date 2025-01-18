@@ -3,11 +3,10 @@ import { Component, ContentChild, EventEmitter, HostListener, Inject, Input, OnC
 import { LocalLocalizationModule } from 'src/app/localization/local-localization.module';
 
 @Component({
-  standalone: true,
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss'],
-  imports: [CommonModule, LocalLocalizationModule]
+    selector: 'app-modal',
+    templateUrl: './modal.component.html',
+    styleUrls: ['./modal.component.scss'],
+    imports: [CommonModule, LocalLocalizationModule]
 })
 export class ModalComponent implements OnDestroy, OnChanges {
   @Input() modalContent!: TemplateRef<any>;

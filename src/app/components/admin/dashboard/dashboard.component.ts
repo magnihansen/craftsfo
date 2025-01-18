@@ -17,23 +17,22 @@ import { HeaderComponent } from '../header/header.component';
 import { EditPageComponent } from 'src/app/features/edit/edit-page/edit-page.component';
 
 @Component({
-  standalone: true,
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
-  imports: [
-    RouterModule,
-    FormsModule, 
-    ReactiveFormsModule, 
-    CommonModule, 
-    LocalLocalizationModule, 
-    CKEditorModule,
-    AddpageComponent,
-    EditPageComponent,
-    TableComponent,
-    HeaderComponent
-  ],
-  providers: [FormsService]
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    imports: [
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CommonModule,
+        LocalLocalizationModule,
+        CKEditorModule,
+        AddpageComponent,
+        EditPageComponent,
+        TableComponent,
+        HeaderComponent
+    ],
+    providers: [FormsService]
 })
 export class DashboardComponent implements OnInit {
   @ContentChild('addPageModalContent', { static: false }) private modalContent!: any;

@@ -1,0 +1,21 @@
+@mixin defaultTexts {
+    font-family: var(--font-family);
+
+    .brand-text-h1 {
+        font-size: var(--font-size-h1) !important;
+        color: var(--color-middle) !important;
+
+        &:hover {
+            text-decoration: none !important;
+        }
+    }
+
+    .brand-text-h2 {
+        font-size: var(--font-size-h2) !important;
+        color: var(--color-middle) !important;
+
+        &:hover {
+            text-decoration: none !important;
+        }
+    }
+}

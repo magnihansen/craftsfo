@@ -6,11 +6,10 @@ import { TableComponent } from '../../table/table.component';
 import { HeaderComponent } from '../header/header.component';
 
 @Component({
-  selector: 'app-messages',
-  standalone: true,
-  templateUrl: './messages.component.html',
-  styleUrls: ['./messages.component.scss'],
-  imports: [CommonModule,TableComponent,HeaderComponent]
+    selector: 'app-messages',
+    templateUrl: './messages.component.html',
+    styleUrls: ['./messages.component.scss'],
+    imports: [CommonModule, TableComponent, HeaderComponent]
 })
 export class MessagesComponent {
   messages: DataRow[] = [];

@@ -1,7 +1,8 @@
 import {AfterContentChecked, Directive, ElementRef} from '@angular/core';
 
 @Directive({
-  selector: 'autofocus'
+    selector: 'autofocus',
+    standalone: false
 })
 export class AutoFocusDirective implements AfterContentChecked {
   private isFocused = false;

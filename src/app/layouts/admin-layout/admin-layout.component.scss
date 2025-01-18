@@ -1,4 +1,5 @@
-@import '../../assets/variables.scss';
+@use '../../../mix.scss' as *;
+@import url('../../assets/variables.scss');
 
 #wrapper {
     display: flex;

@@ -9,11 +9,10 @@ import { FormsService } from 'src/app/services/forms.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  imports: [ CommonModule, FormsModule, ReactiveFormsModule, LocalLocalizationModule ]
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, LocalLocalizationModule]
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;

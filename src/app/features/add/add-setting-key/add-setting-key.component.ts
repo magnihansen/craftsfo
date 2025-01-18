@@ -14,7 +14,6 @@ import { ModalComponent } from "src/app/shared/components/modal/modal.component"
 
 @Component({
     selector: 'app-add-setting-key',
-    standalone: true,
     templateUrl: './add-setting-key.component.html',
     styleUrls: ['./add-setting-key.component.scss'],
     imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent, LocalLocalizationModule],

@@ -1,4 +1,5 @@
-@import '../../assets/variables.scss';
+@use '../../../mix' as *;
+@import url('../../assets/variables.scss');
 
 #wrapper {
     position: relative;
@@ -15,7 +16,7 @@
         background: var(--color-dark);
         box-shadow: var(--box-shadow);
 
-        @include defaultTexts;
+        // @include defaultTexts;
     }
 
     & .main-layout-container {

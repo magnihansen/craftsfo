@@ -12,11 +12,10 @@ import { SettingValuePipe } from 'src/app/shared/pipes/settingvalue.pipe';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  standalone: true,
-  selector: 'app-main-layout',
-  templateUrl: './main-layout.component.html',
-  styleUrls: ['./main-layout.component.scss'],
-  imports: [CommonModule, SettingValuePipe, NavigationComponent, FooterComponent, RouterModule]
+    selector: 'app-main-layout',
+    templateUrl: './main-layout.component.html',
+    styleUrls: ['./main-layout.component.scss'],
+    imports: [CommonModule, NavigationComponent, FooterComponent, RouterModule]
 })
 export class MainLayoutComponent implements OnInit {
   public environment = environment;

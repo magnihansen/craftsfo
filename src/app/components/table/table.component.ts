@@ -7,11 +7,10 @@ import { DataColumn } from './data-column';
 import { DataRow } from './data-row';
 
 @Component({
-  standalone: true,
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
-  imports: [ CommonModule, LocalLocalizationModule, ContextMenuComponent, EmptyStateComponent ]
+    selector: 'app-table',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss'],
+    imports: [CommonModule, LocalLocalizationModule, ContextMenuComponent, EmptyStateComponent]
 })
 export class TableComponent implements OnChanges {
   @Input()

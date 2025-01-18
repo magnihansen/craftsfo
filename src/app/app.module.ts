@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { APP_INITIALIZER, CSP_NONCE, enableProdMode, Inject, NgModule, Renderer2 } from '@angular/core';
+import { CSP_NONCE, enableProdMode, Inject, NgModule, Renderer2, inject, provideAppInitializer } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -41,7 +41,10 @@ enableProdMode();
     ImageGalleryComponent
   ],
   providers: [
-    { provide: APP_INITIALIZER, useFactory: DomainSettingFactory, deps: [SettingService, LocalStorageService], multi: true },
+    provideAppInitializer(() => {
+        const initializerFn = (DomainSettingFactory)(inject(SettingService), inject(LocalStorageService));
+        return initializerFn();
+      }),
     // { provide: APP_INITIALIZER, useFactory: ServiceProviderFactory, deps: [NonceService], multi: true },
     MySqlService,
     PageHubService,

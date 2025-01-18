@@ -5,11 +5,10 @@ import { LocalLocalizationModule } from 'src/app/localization/local-localization
 import { DataRow } from '../data-row';
 
 @Component({
-  standalone: true,
-  selector: 'app-table-context-menu',
-  templateUrl: './context-menu.component.html',
-  styleUrls: ['./context-menu.component.scss'],
-  imports: [ CommonModule, LocalLocalizationModule ]
+    selector: 'app-table-context-menu',
+    templateUrl: './context-menu.component.html',
+    styleUrls: ['./context-menu.component.scss'],
+    imports: [CommonModule, LocalLocalizationModule]
 })
 export class ContextMenuComponent {
   @Input() public dataRow!: DataRow;

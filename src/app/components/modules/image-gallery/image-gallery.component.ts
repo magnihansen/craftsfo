@@ -10,16 +10,13 @@ import { FrontendComponent } from './ui/frontend/frontend.component';
 import languageDK from './ui/i18n/da.json';
 
 @Component({
-  selector: 'app-image-gallery',
-  templateUrl: './image-gallery.component.html',
-  styleUrls: ['./image-gallery.component.scss'],
-  standalone: true,
-  imports: [ 
-    FrontendComponent, 
-    BackendComponent, 
-    CommonModule, 
+    selector: 'app-image-gallery',
+    templateUrl: './image-gallery.component.html',
+    styleUrls: ['./image-gallery.component.scss'],
+    imports: [
+    CommonModule,
     UiDirectiveDirective
-  ]
+]
 })
 export class ImageGalleryComponent implements OnInit, OnDestroy {
   @ViewChild(UiDirectiveDirective, {static: true}) uiHost!: UiDirectiveDirective;
