@@ -46,7 +46,7 @@
         "locales": {
           "da-DK": {
             "translation": "src/locale/messages.da.xlf",
-            "baseHref": ""
+            "subPath": ""
           }
         }
       },
@@ -268,7 +268,7 @@
         "locales": {
           "da-DK": {
             "translation": "src/locale/messages.da.xlf",
-            "baseHref": ""
+            "subPath": ""
           }
         }
       },
@@ -462,7 +462,7 @@
         "locales": {
           "da-DK": {
             "translation": "src/locale/messages.da.xlf",
-            "baseHref": ""
+            "subPath": ""
           }
         }
       },
@@ -656,7 +656,7 @@
         "locales": {
           "da-DK": {
             "translation": "src/locale/messages.da.xlf",
-            "baseHref": ""
+            "subPath": ""
           }
         }
       },
